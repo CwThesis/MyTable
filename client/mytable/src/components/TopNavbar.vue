@@ -1,22 +1,4 @@
-<script setup lang="ts">
-// import {
-//   Disclosure,
-//   DisclosureButton,
-//   DisclosurePanel,
-//   Menu,
-//   MenuButton,
-//   MenuItem,
-//   MenuItems,
-// } from "@headlessui/vue";
-// import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-
-// const navigation = [
-//   { name: "Dashboard", href: "#", current: true },
-//   { name: "Team", href: "#", current: false },
-//   { name: "Projects", href: "#", current: false },
-//   { name: "Calendar", href: "#", current: false },
-// ];
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <nav class="bg-gray-800">
@@ -188,24 +170,6 @@
           class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
           aria-current="page"
           >Dashboard</a
-        >
-
-        <a
-          href="#"
-          class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >Team</a
-        >
-
-        <a
-          href="#"
-          class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >Projects</a
-        >
-
-        <a
-          href="#"
-          class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >Calendar</a
         >
       </div>
     </div>
