@@ -1,8 +1,4 @@
-<script setup lang="ts">
-defineProps<{
-  msg: string;
-}>();
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <html class="h-full bg-gray-50">

@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tailwindcss/forms": "^0.5.3"
+    "@headlessui/vue": "^1.7.4",
+    "@heroicons/vue": "^2.0.13",
+    "@tailwindcss/forms": "^0.5.3",
+    "@vue-hero-icons/outline": "^1.7.2"
   }
 }

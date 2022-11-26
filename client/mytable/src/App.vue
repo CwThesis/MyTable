@@ -4,13 +4,13 @@ import "../src/style.css";
 </script>
 
 <template>
-  <!-- <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/register">Register</RouterLink>
-        <RouterLink to="/login">Login</RouterLink>
-      </nav>
-    </div>
-  </header> -->
-  <RouterView />
+  <div class="wrapper">
+    <RouterView />
+  </div>
 </template>
+
+<style scoped>
+.wrapper {
+  height: 100vh;
+}
+</style>
