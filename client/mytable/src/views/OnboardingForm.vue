@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import TopNavbarVue from "@/components/TopNavbar.vue";
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 
+const restName = ref("");
+const bankName = ref("");
+const IBAN = ref("");
+const street = ref("");
+const city = ref("");
+const zip = ref("");
+const country = ref("");
+const tables = ref("1");
 const staff = ref<string[]>([]);
 
 function addWaiter(event: Event) {
@@ -12,7 +20,18 @@ function addWaiter(event: Event) {
 
 function submitForm() {
   console.log("Form submitted!");
-
+  const formInput = {
+    restName: restName.value,
+    bankName: bankName.value,
+    IBAN: IBAN.value,
+    street: street.value,
+    city: city.value,
+    zip: zip.value,
+    country: country.value,
+    tables: tables.value,
+    staff: toRaw(staff.value),
+  };
+  console.log(formInput);
 }
 </script>
 
@@ -21,7 +40,7 @@ function submitForm() {
   <div class="container mx-auto content-center max-w-5xl">
     <div class="shadow sm:overflow-hidden sm:rounded-md mb-4 mt-4">
       <div class="space-y-4 bg-gray-100 px-4 py-5 sm:p-6">
-        <h1 class="text-2xl">Welcome to my table!</h1>
+        <h1 class="text-2xl">Welcome to mytable!</h1>
         <h3 class="text-sm font-medium text-gray-700">
           You're almost ready to start.
         </h3>
@@ -45,10 +64,11 @@ function submitForm() {
                       >Restaurant Name</label
                     >
                     <input
+                      v-model="restName"
                       type="text"
-                      name="email-address"
-                      id="email-address"
-                      autocomplete="email"
+                      required
+                      name="restaurant-name"
+                      id="restaurant-name"
                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
@@ -60,10 +80,11 @@ function submitForm() {
                       >Bank Name</label
                     >
                     <input
+                      v-model="bankName"
                       type="text"
-                      name="first-name"
-                      id="first-name"
-                      autocomplete="given-name"
+                      required
+                      name="bank-name"
+                      id="bank-name"
                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
@@ -75,10 +96,12 @@ function submitForm() {
                       >IBAN</label
                     >
                     <input
+                      v-model="IBAN"
                       type="text"
-                      name="last-name"
-                      id="last-name"
-                      autocomplete="family-name"
+                      required
+                      name="IBAN"
+                      id="IBAN"
+                      autocomplete="IBAN"
                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
@@ -90,7 +113,9 @@ function submitForm() {
                       >Street address</label
                     >
                     <input
+                      v-model="street"
                       type="text"
+                      required
                       name="street-address"
                       id="street-address"
                       autocomplete="street-address"
@@ -105,7 +130,9 @@ function submitForm() {
                       >City</label
                     >
                     <input
+                      v-model="city"
                       type="text"
+                      required
                       name="city"
                       id="city"
                       autocomplete="address-level2"
@@ -120,7 +147,9 @@ function submitForm() {
                       >ZIP / Postal code</label
                     >
                     <input
+                      v-model="zip"
                       type="text"
+                      required
                       name="postal-code"
                       id="postal-code"
                       autocomplete="postal-code"
@@ -135,6 +164,7 @@ function submitForm() {
                       >Country</label
                     >
                     <select
+                      v-model="country"
                       id="country"
                       name="country"
                       autocomplete="country-name"
@@ -156,9 +186,10 @@ function submitForm() {
                     <label
                       for="country"
                       class="block text-sm font-medium text-gray-700"
-                      >How many tables do you have?</label
+                      >How many tables does your restaurant have?</label
                     >
                     <select
+                      v-model="tables"
                       id="table-number"
                       name="table-number"
                       class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
