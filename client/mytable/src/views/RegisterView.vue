@@ -16,7 +16,7 @@
             <h2
               class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900"
             >
-              Create new account
+              Create your account
             </h2>
             <p class="mt-2 text-center text-sm text-gray-600">
               Or
@@ -24,7 +24,7 @@
                 <a
                   href="#"
                   class="font-medium text-indigo-600 hover:text-indigo-500"
-                  >login</a
+                  >log in</a
                 >
               </RouterLink>
             </p>
@@ -41,7 +41,7 @@
                   autocomplete="email"
                   required
                   class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  placeholder="Email address"
+                  placeholder="Enter your email address..."
                 />
               </div>
               <div>
@@ -53,32 +53,20 @@
                   autocomplete="current-password"
                   required
                   class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  placeholder="Password"
+                  placeholder="Enter your password..."
                 />
               </div>
-            </div>
-
-            <div class="flex items-center justify-between">
-              <div class="flex items-center">
+              <div>
+                <label for="password" class="sr-only">Password</label>
                 <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  required
+                  class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  placeholder="Enter your password again..."
                 />
-                <label
-                  for="remember-me"
-                  class="ml-2 block text-sm text-gray-900"
-                  >Remember me</label
-                >
-              </div>
-
-              <div class="text-sm">
-                <a
-                  href="#"
-                  class="font-medium text-indigo-600 hover:text-indigo-500"
-                  >Forgot your password?</a
-                >
               </div>
             </div>
 
@@ -103,7 +91,7 @@
                     />
                   </svg>
                 </span>
-                Sign in
+                Register now!
               </button>
             </div>
           </form>
