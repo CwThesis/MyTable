@@ -1,13 +1,16 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import TopNavbarVue from "@/components/TopNavbar.vue";
+</script>
 
 <template>
+  <TopNavbarVue></TopNavbarVue>
   <div>
     <h1>Welcome to my table!</h1>
     <h1>You're almost ready to start.</h1>
     <h3>We'll need some more information to complete your onboarding.</h3>
   </div>
 
-  <div class="container mx-auto content-center max-w-3xl">
+  <div class="container mx-auto content-center max-w-5xl">
     <form action="#" method="POST">
       <div class="shadow sm:overflow-hidden sm:rounded-md">
         <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
@@ -128,10 +131,7 @@
             Save
           </button>
         </div>
-
       </div>
     </form>
-
   </div>
-
 </template>
