@@ -1,5 +1,9 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import { Amplify } from "aws-amplify";
+import awsmobile from "./services/AWS2";
+
+Amplify.configure(awsmobile);
 
 import App from "./App.vue";
 import router from "./router";

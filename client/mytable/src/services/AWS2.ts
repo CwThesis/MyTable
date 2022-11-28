@@ -1,9 +1,10 @@
 const awsmobile = {
   aws_project_region: "us-east-1",
-  aws_cognito_identity_pool_id: process.env.VUE_APP_COGNITO_USER_POOL_ID,
+  aws_cognito_identity_pool_id:
+    "us-east-1:4a87e8d5-3b2d-4ca0-9159-9c70482a2273",
   aws_cognito_region: "us-east-1",
   aws_user_pools_id: "us-east-1_HgmJAYO5D",
-  aws_user_pools_web_client_id: process.env.VUE_APP_USER_POOLS_WEB_CLIENT_ID,
+  aws_user_pools_web_client_id: "9fiv9o1j5qnj2boklpiea2155",
   oauth: {},
   aws_cognito_username_attributes: ["EMAIL"],
   aws_cognito_social_providers: [],
@@ -25,10 +26,9 @@ const awsmobile = {
   aws_cloud_logic_custom: [
     {
       name: "apiMyTable",
-      endpoint: process.env.VUE_APP_AWS_CLOUD_LOGIC_ENDPOINT,
+      endpoint: "https://slqrleg0j1.execute-api.us-east-1.amazonaws.com/dev",
       region: "us-east-1",
     },
   ],
 };
-console.log(awsmobile);
 export default awsmobile;
