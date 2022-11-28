@@ -25,6 +25,31 @@ const router = createRouter({
       component: () => import("../views/DashboardView.vue"),
     },
     {
+      path: "/dashboard/overview",
+      name: "overview",
+      component: () => import("../components/Overview/OverviewView.vue"),
+    },
+    {
+      path: "/dashboard/tickets",
+      name: "tickets",
+      component: () => import("../components/Tickets/TicketsView.vue"),
+    },
+    {
+      path: "/dashboard/tables",
+      name: "tables",
+      component: () => import("../components/Tables/TablesView.vue"),
+    },
+    {
+      path: "/dashboard/menu",
+      name: "menu",
+      component: () => import("../components/Menu/MenuView.vue"),
+    },
+    {
+      path: "/dashboard/profile",
+      name: "profile",
+      component: () => import("../components/Profile/ProfileView.vue"),
+    },
+    {
       path: "/onboarding",
       name: "onboarding",
       component: () => import("../views/OnboardingForm.vue"),

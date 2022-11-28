@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import TopNavbar from "../components/TopNavbar.vue";
-import SideNavbar from "../components/SideNavbar.vue";
+import SideNavbar from "../SideNavbar.vue";
+import TopNavbar from "../TopNavbar.vue";
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import SideNavbar from "../components/SideNavbar.vue";
     <SideNavbar />
     <div class="flex-1">
       <TopNavbar />
-      <main class="flex-1 justify-center"></main>
+      <main class="flex-1 justify-center">PROFILE</main>
     </div>
   </div>
 </template>
