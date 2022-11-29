@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TopNavbarVue from "@/components/TopNavbar.vue";
+import TopNavbarVue from "../components/TopNavbar.vue";
 import { ref, toRaw } from "vue";
 
 const restName = ref("");

@@ -30,5 +30,4 @@ const awsmobile = {
     },
   ],
 };
-console.log(awsmobile);
 export default awsmobile;
