@@ -54,6 +54,11 @@ const router = createRouter({
       name: "onboarding",
       component: () => import("../views/OnboardingForm.vue"),
     },
+    {
+      path: "/mobile",
+      name: "mobile",
+      component: () => import("../views/MobileView.vue"),
+    },
   ],
 });
 
