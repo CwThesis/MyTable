@@ -12,7 +12,6 @@ function addWaiter(event: Event) {
 
 function submitForm() {
   console.log("Form submitted!");
-
 }
 </script>
 
