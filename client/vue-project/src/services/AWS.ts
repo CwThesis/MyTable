@@ -1,4 +1,3 @@
-/* eslint-disable */
 const awsmobile = {
     "aws_project_region": "us-east-1",
     "aws_dynamodb_all_tables_region": "us-east-1",
@@ -8,10 +7,10 @@ const awsmobile = {
             "region": "us-east-1"
         }
     ],
-    "aws_cognito_identity_pool_id": "us-east-1:06f41363-762c-4505-9ebb-12fccfc43c7f",
+    "aws_cognito_identity_pool_id": import.meta.env.VITE_COGNITO_USER_POOL_ID,
     "aws_cognito_region": "us-east-1",
     "aws_user_pools_id": "us-east-1_fJoHmHAuf",
-    "aws_user_pools_web_client_id": "6vdtecd429075cq9cp19ob6f84",
+    "aws_user_pools_web_client_id": import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID,
     "oauth": {},
     "aws_cognito_username_attributes": [
         "EMAIL"
@@ -34,7 +33,7 @@ const awsmobile = {
     "aws_cloud_logic_custom": [
         {
             "name": "myTableApi",
-            "endpoint": "https://dd30g6mi2g.execute-api.us-east-1.amazonaws.com/dev",
+            "endpoint": import.meta.env.VITE_AWS_CLOUD_LOGIC_ENDPOINT,
             "region": "us-east-1"
         }
     ]
