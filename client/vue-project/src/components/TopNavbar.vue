@@ -4,7 +4,11 @@ import { Auth } from 'aws-amplify';
 
 const show = ref(false);
 const props = defineProps(["user"]);
+const userData = ref(null)
 
+Auth.currentAuthenticatedUser().then((u)=>{
+  userData.value = u.attributes.email;
+})
 
 async function signOut() {
     try {
@@ -37,7 +41,7 @@ async function signOut() {
             href="#"
             class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
             aria-current="page"
-            ></a
+            >{{userData}}</a
           >
           <div class="relative ml-3">
             <div>

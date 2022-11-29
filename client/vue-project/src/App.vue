@@ -8,11 +8,7 @@ import "./style.css";
 <template>
   <div class="wrapper">
     <Authenticator>
-      <!-- <template v-slot="{ user, signOut }"> -->
-        <!-- <h1>Hello {{ user.username }}!</h1> -->
-        <!-- <button @click="signOut">Sign Out</button> -->
         <RouterView />
-      <!-- </template> -->
     </Authenticator>
   </div>
 </template>
