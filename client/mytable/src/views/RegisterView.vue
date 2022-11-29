@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import { Auth } from "aws-amplify";
 import { ref, toRaw } from "vue";
 import type { AWSUser } from "../types";
 
+const router = useRouter();
 const email = ref("");
 const password = ref("");
 const password2 = ref("");
@@ -49,15 +51,15 @@ const register = async () => {
 
 const confirm = async () => {
   try {
-    await Auth.confirmSignUp(user.username, code.value);
+    await Auth.confirmSignUp(user.username, code.value).then(() => {
+      router.push("/onboarding");
+    });
   } catch (error) {
     console.log("error confirming sign up", error);
   }
 };
 
 function submitCode() {
-  const rcode = toRaw(code.value);
-  console.log(rcode);
   confirm();
 }
 </script>
