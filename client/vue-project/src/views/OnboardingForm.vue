@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import TopNavbarVue from "../components/TopNavbar.vue";
 import { ref, toRaw } from "vue";
+import {Auth} from 'aws-amplify';
+import restaurantAPIService from '../services/restaurantAPI';
 
-//handle Auth
-import { storeToRefs } from "pinia";
-import { useAuthStore } from "../stores/auth.store";
-const authStore = useAuthStore();
-const { loggedUser } = storeToRefs(authStore);
 
 const restName = ref("");
 const bankName = ref("");
@@ -17,6 +14,14 @@ const zip = ref("");
 const country = ref("");
 const tables = ref("1");
 const staff = ref<string[]>([]);
+const userData: any = ref(null);
+
+Auth.currentAuthenticatedUser().then((u)=>{
+  const email = u.attributes.email;
+  const username = u.username;
+  const user = {email, username}
+  userData.value = user;
+})
 
 function addWaiter(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -24,7 +29,7 @@ function addWaiter(event: Event) {
   target.value = "";
 }
 
-function submitForm() {
+async function submitForm() {
   console.log("Form submitted!");
   const formInput = {
     restName: restName.value,
@@ -38,16 +43,23 @@ function submitForm() {
     staff: toRaw(staff.value),
   };
   console.log(formInput);
+  const res = await restaurantAPIService.newRestaurant(formInput, userData.value.username)
+  console.log(res)
 }
 
-function testData() {
-  console.log("First store log: ", loggedUser);
+async function testGET(){
+  const res = await restaurantAPIService.getRestaurant(userData.value.username);
+  console.log(res);
 }
+
 </script>
 
 <template>
   <div>
-    <TopNavbarVue :user="loggedUser"></TopNavbarVue>
+    <TopNavbarVue></TopNavbarVue>
+
+    <button @click="testGET">test GET</button>
+    <button> test POST</button>
     <div class="container mx-auto content-center max-w-5xl">
       <div class="shadow sm:overflow-hidden sm:rounded-md mb-4 mt-4">
         <div class="space-y-4 bg-gray-100 px-4 py-5 sm:p-6">
@@ -259,6 +271,5 @@ function testData() {
     </div>
   </div>
   <div>
-    <button @click="testData">test</button>
   </div>
 </template>
