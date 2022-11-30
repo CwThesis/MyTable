@@ -4,6 +4,7 @@ import type { Dish } from "../../types";
 
 const props = defineProps({
   dish: Object,
+  showDeleteButton: Boolean,
 });
 
 const emit = defineEmits(['addToOrder', 'removeFromOrder']);
@@ -34,7 +35,7 @@ const emit = defineEmits(['addToOrder', 'removeFromOrder']);
         {{ props.dish?.price }}
       </p>
     </div>
-    <button class="p-2 bg-gray-200 rounded-sm" @click="$emit('removeFromOrder', props.dish)">➖</button>
+    <button class="p-2 bg-gray-200 rounded-sm" v-show="showDeleteButton" @click="$emit('removeFromOrder', props.dish)">➖</button>
     <label
       class="inline-flex absolute items-center cursor-pointer bottom-3 right-3"
     > num

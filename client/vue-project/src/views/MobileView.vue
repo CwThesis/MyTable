@@ -3,10 +3,12 @@ import type { Dish, DishIdWithAmount } from "../types";
 import { computed } from "vue";
 import DishCardMobile from "../components/Mobile/DishCardMobile.vue";
 import type { Ref } from 'vue';
-import { ref, toRaw } from "vue";
+import { ref, toRaw, watch } from "vue";
 
 
 let order: Ref<DishIdWithAmount[]> = ref([]);
+let showDeleteButton = ref(false);
+let showOrder =  ref(false);
 
 // fetching dishes ---->
 const dishes: Dish[] = [
@@ -15,7 +17,8 @@ const dishes: Dish[] = [
     title: "Paella",
     description:
       "Typical spanish paella, contains rice, chicken, seafood and vegetables",
-    price: "21€",
+    price: 21,
+    currency: "€",
     category: "mains",
     id: 1
   },
@@ -23,7 +26,8 @@ const dishes: Dish[] = [
     img: "https://www.laylita.com/recetas/wp-content/uploads/2021/02/Receta-de-la-arepa-reina-pepiada.jpg",
     title: "Arepa",
     description: "Arepa with cheese, ham and egg",
-    price: "9€",
+    price: 9,
+    currency: "€",
     category: "starters",
     id: 2
   },
@@ -31,7 +35,8 @@ const dishes: Dish[] = [
     img: "https://www.laylita.com/recetas/wp-content/uploads/2021/02/Receta-de-la-arepa-reina-pepiada.jpg",
     title: "Brownie",
     description: "Chocolate and raspberries with nuts",
-    price: "9€",
+    price: 9,
+    currency: "€",
     category: "desserts",
     id: 3
   },
@@ -40,7 +45,8 @@ const dishes: Dish[] = [
     title: "Paella",
     description:
       "Typical spanish paella, contains rice, chicken, seafood and vegetables",
-    price: "21€",
+    price: 21,
+    currency: "€",
     category: "mains",
     id: 4
   },
@@ -48,7 +54,8 @@ const dishes: Dish[] = [
     img: "https://images.hola.com/imagenes/cocina/recetas/20200917175530/paella-valenciana-clasica/0-866-670/paella-age-t.jpg",
     title: "Milkshake",
     description: "Fresco y platano",
-    price: "4€",
+    price: 4,
+    currency: "€",
     category: "drinks",
     id: 5
   },
@@ -68,6 +75,7 @@ const sortByCategory = computed(() => {
 });
 
 function addToOrder (dish: Dish) {
+  showDeleteButton.value = true;
    if (order.value.find(element => element.id === dish.id)) {
    const object = order.value.find(element => element.id === dish.id)
     if(object)object.amount++
@@ -88,12 +96,20 @@ function removeFromOrder (dish: Dish) {
         const newOrder = toRaw(order.value);
         console.log(newOrder);
         if(object.amount === 0){
-          console.log("I should hide MINUS button")
-          console.log("I should delete object")
+          const index = order.value.indexOf(object);
+          order.value.splice(index, 1);
+          showDeleteButton.value = false;
+          console.log("I should hide button")
         }
       }
 }
 
+watch(
+  () => obj.count,
+  (count) => {
+    console.log(`count is: ${count}`)
+  }
+)
 
 </script>
 
@@ -109,7 +125,7 @@ function removeFromOrder (dish: Dish) {
         :key="dish.title"
         class="bg-gray-50 px-4 py-3"
       >
-        <DishCardMobile :dish="dish" @addToOrder="addToOrder" @removeFromOrder="removeFromOrder"></DishCardMobile>
+        <DishCardMobile :dish="dish" @addToOrder="addToOrder" @removeFromOrder="removeFromOrder" :showDeleteButton="showDeleteButton"></DishCardMobile>
       </div>
     </div>
 
@@ -120,7 +136,7 @@ function removeFromOrder (dish: Dish) {
         :key="dish.title"
         class="bg-gray-50 px-4 py-3"
       >
-        <DishCardMobile :dish="dish" @add-to-order="addToOrder" @removeFromOrder="removeFromOrder"></DishCardMobile>
+        <DishCardMobile :dish="dish" @add-to-order="addToOrder" @removeFromOrder="removeFromOrder" :showDeleteButton="showDeleteButton"></DishCardMobile>
       </div>
     </div>
 
@@ -131,7 +147,7 @@ function removeFromOrder (dish: Dish) {
         :key="dish.title"
         class="bg-gray-50 px-4 py-3"
       >
-        <DishCardMobile :dish="dish" @addToOrder="addToOrder" @removeFromOrder="removeFromOrder"></DishCardMobile>
+        <DishCardMobile :dish="dish" @addToOrder="addToOrder" @removeFromOrder="removeFromOrder" :showDeleteButton="showDeleteButton"></DishCardMobile>
       </div>
     </div>
     <div>
@@ -141,11 +157,11 @@ function removeFromOrder (dish: Dish) {
         :key="dish.title"
         class="bg-gray-50 px-4 py-3"
       >
-        <DishCardMobile :dish="dish" @addToOrder="addToOrder" @removeFromOrder="removeFromOrder"></DishCardMobile>
+        <DishCardMobile :dish="dish" @addToOrder="addToOrder" @removeFromOrder="removeFromOrder" :showDeleteButton="showDeleteButton"></DishCardMobile>
       </div>
     </div>
 
-    <div v-if="order" class="bg-gray-300">
+    <div v-show="showOrder" class="bg-gray-300 z-40 fixed bottom-0 w-full h-20 bg-amber-200 flex justify-center">
       <button>ORDER</button>
     </div>
 

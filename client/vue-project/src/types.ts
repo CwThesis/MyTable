@@ -13,7 +13,8 @@ export type Dish = {
   img: string
   title: string
   description: string
-  price: string
+  price: number
+  currency: string
   category: 'mains' | 'starters' | 'desserts' | 'drinks'
   id: number
 }
