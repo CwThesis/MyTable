@@ -12,7 +12,7 @@ const tableAPIService = {
       });
       return await res.json();
     } catch (err) {
-      return console.log("Error generating the new restaurant: ", err);
+      return console.log("Error generating the new table: ", err);
     }
   },
 
@@ -26,7 +26,7 @@ const tableAPIService = {
       const resParsed =  await res.json();
       return JSON.parse(resParsed.body);
     } catch (err) {
-      return console.log("Error getting the restaurant: ", err);
+      return console.log("Error getting the table: ", err);
     }
   },
 
@@ -40,7 +40,7 @@ const tableAPIService = {
       });
       return await res.json();
     } catch (err) {
-      return console.log("Error updating the restaurant: ", err);
+      return console.log("Error updating the table: ", err);
     }
   },
 
@@ -54,7 +54,7 @@ const tableAPIService = {
       });
       return await res.json();
     } catch (err) {
-      return console.log("Error deleting the dish: ", err);
+      return console.log("Error deleting the table: ", err);
     }
   }
 

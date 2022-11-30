@@ -47,10 +47,6 @@ async function submitForm() {
   console.log(res)
 }
 
-async function testGET(){
-  const res = await restaurantAPIService.getRestaurant(userData.value.username);
-  console.log(res);
-}
 
 </script>
 
