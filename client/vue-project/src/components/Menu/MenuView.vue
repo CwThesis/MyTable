@@ -4,7 +4,6 @@ import SideNavbar from "../SideNavbar.vue";
 import TopNavbar from "../TopNavbar.vue";
 import DishCard from "./DishCard.vue";
 import AddToMenu from "./AddToMenu.vue";
-import YourMenu from "./YourMenu.vue";
 
 function addDish(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -69,7 +68,6 @@ const dishes = [
           </div>
           <div id="dishes" class="w-1/2 p-7 gap-1">
             <AddToMenu />
-            <YourMenu />
           </div>
         </div>
       </main>
