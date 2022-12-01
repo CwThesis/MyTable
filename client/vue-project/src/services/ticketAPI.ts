@@ -4,7 +4,7 @@ const ticketAPIService = {
 
   newTicket : async (ticket: any, userID: string) => {
     try {
-      const res = await fetch(`${BE_URL}/customer/${tableID}/newTicket`, {
+      const res = await fetch(`${BE_URL}/customer/${restID}/${tableID}/newTicket`, {
         method: "POST",
         mode: "cors",
         headers:{"Content-Type": "application/json"},
@@ -18,7 +18,7 @@ const ticketAPIService = {
 
   getAllTickets : async (userID: string) => {
     try {
-      const res = await fetch(`${BE_URL}/customer/${tableID}/getAllTickets`, {
+      const res = await fetch(`${BE_URL}/customer/${restID}/${tableID}/getAllTickets`, {
         method: "GET",
         mode: "cors",
         headers:{"Content-Type": "application/json"},
@@ -32,7 +32,7 @@ const ticketAPIService = {
 
   updateTicket : async (ticket: any, userID: string) => {
     try {
-      const res = await fetch(`${BE_URL}/customer/${tableID}/updateTicket`, {
+      const res = await fetch(`${BE_URL}/customer/${restID}/${tableID}/updateTicket`, {
         method: "PUT",
         mode: "cors",
         headers:{"Content-Type": "application/json"},
@@ -46,7 +46,7 @@ const ticketAPIService = {
 
   deleteTicket : async (ticket: any, userID: string) => {
     try {
-      const res = await fetch(`${BE_URL}/customer/${tableID}//deleteTicket`, {
+      const res = await fetch(`${BE_URL}/customer/${restID}/${tableID}/deleteTicket`, {
         method: "DELETE",
         mode: "cors",
         headers:{"Content-Type": "application/json"},
