@@ -8,7 +8,9 @@ export const useOrderStore = defineStore("order", () => {
   const currentOrder = ref<DishIdWithAmount[] | null>(
     parsedDataFromStorage && parsedDataFromStorage.CO ? parsedDataFromStorage.CO : null
   );
-  const currentTotal = ref<number>(0);
+  const currentTotal = ref<number>(
+    parsedDataFromStorage && parsedDataFromStorage.CT ? parsedDataFromStorage.CT : 0
+  );
 
   function addToOrder(dish: DishIdWithAmount, price: number) {
     if (currentOrder.value !== null) {
