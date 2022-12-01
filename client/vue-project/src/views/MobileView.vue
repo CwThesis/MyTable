@@ -4,12 +4,10 @@ import { computed } from "vue";
 import DishCardMobile from "../components/Mobile/DishCardMobile.vue";
 import type { Ref } from 'vue';
 import { ref, toRaw, watch } from "vue";
+import { useOrderStore } from "../stores/order.store";
 
 
-let order: Ref<DishIdWithAmount[]> = ref([]);
-let showDeleteButton = ref(false);
-let showOrder =  ref(false);
-
+const orderStore = useOrderStore();
 // fetching dishes ---->
 const dishes: Dish[] = [
   {
@@ -20,7 +18,7 @@ const dishes: Dish[] = [
     price: 21,
     currency: "€",
     category: "mains",
-    id: 1
+    id: "132412dasd23"
   },
   {
     img: "https://www.laylita.com/recetas/wp-content/uploads/2021/02/Receta-de-la-arepa-reina-pepiada.jpg",
@@ -29,7 +27,7 @@ const dishes: Dish[] = [
     price: 9,
     currency: "€",
     category: "starters",
-    id: 2
+    id: "132882dasd55"
   },
   {
     img: "https://www.laylita.com/recetas/wp-content/uploads/2021/02/Receta-de-la-arepa-reina-pepiada.jpg",
@@ -38,7 +36,7 @@ const dishes: Dish[] = [
     price: 9,
     currency: "€",
     category: "desserts",
-    id: 3
+    id: "132409lksd26"
   },
   {
     img: "https://images.hola.com/imagenes/cocina/recetas/20200917175530/paella-valenciana-clasica/0-866-670/paella-age-t.jpg",
@@ -48,7 +46,7 @@ const dishes: Dish[] = [
     price: 21,
     currency: "€",
     category: "mains",
-    id: 4
+    id: "13241fjasd99"
   },
   {
     img: "https://images.hola.com/imagenes/cocina/recetas/20200917175530/paella-valenciana-clasica/0-866-670/paella-age-t.jpg",
@@ -57,7 +55,7 @@ const dishes: Dish[] = [
     price: 4,
     currency: "€",
     category: "drinks",
-    id: 5
+    id: "33412dasd564s"
   },
 ];
 
@@ -74,43 +72,6 @@ const sortByCategory = computed(() => {
   return menu;
 });
 
-function addToOrder (dish: Dish) {
-  showDeleteButton.value = true;
-   if (order.value.find(element => element.id === dish.id)) {
-   const object = order.value.find(element => element.id === dish.id)
-    if(object)object.amount++
-    } else {
-    const dishIdWithAmount = {
-      id: dish.id,
-      amount: 1
-    }
-    order.value.push(dishIdWithAmount);
-    }
-    const newOrder = toRaw(order.value);
-    console.log(newOrder);
-  }
-
-function removeFromOrder (dish: Dish) {
-   const object = order.value.find(element => element.id === dish.id)
-      if(object){object.amount--
-        const newOrder = toRaw(order.value);
-        console.log(newOrder);
-        if(object.amount === 0){
-          const index = order.value.indexOf(object);
-          order.value.splice(index, 1);
-          showDeleteButton.value = false;
-          console.log("I should hide button")
-        }
-      }
-}
-
-watch(
-  () => obj.count,
-  (count) => {
-    console.log(`count is: ${count}`)
-  }
-)
-
 </script>
 
 <template>
@@ -125,7 +86,7 @@ watch(
         :key="dish.title"
         class="bg-gray-50 px-4 py-3"
       >
-        <DishCardMobile :dish="dish" @addToOrder="addToOrder" @removeFromOrder="removeFromOrder" :showDeleteButton="showDeleteButton"></DishCardMobile>
+        <DishCardMobile :dish="dish"></DishCardMobile>
       </div>
     </div>
 
@@ -136,7 +97,7 @@ watch(
         :key="dish.title"
         class="bg-gray-50 px-4 py-3"
       >
-        <DishCardMobile :dish="dish" @add-to-order="addToOrder" @removeFromOrder="removeFromOrder" :showDeleteButton="showDeleteButton"></DishCardMobile>
+        <DishCardMobile :dish="dish"></DishCardMobile>
       </div>
     </div>
 
@@ -147,7 +108,7 @@ watch(
         :key="dish.title"
         class="bg-gray-50 px-4 py-3"
       >
-        <DishCardMobile :dish="dish" @addToOrder="addToOrder" @removeFromOrder="removeFromOrder" :showDeleteButton="showDeleteButton"></DishCardMobile>
+        <DishCardMobile :dish="dish"></DishCardMobile>
       </div>
     </div>
     <div>
@@ -157,12 +118,16 @@ watch(
         :key="dish.title"
         class="bg-gray-50 px-4 py-3"
       >
-        <DishCardMobile :dish="dish" @addToOrder="addToOrder" @removeFromOrder="removeFromOrder" :showDeleteButton="showDeleteButton"></DishCardMobile>
+        <DishCardMobile :dish="dish"></DishCardMobile>
       </div>
     </div>
 
-    <div v-show="showOrder" class="bg-gray-300 z-40 fixed bottom-0 w-full h-20 bg-amber-200 flex justify-center">
-      <button>ORDER</button>
+    <div v-if="(orderStore.currentOrder)" class="flex bg-gray-300 z-40 fixed bottom-0 w-full h-20 bg-amber-200 flex justify-center">
+      <button >ORDER</button>
+      <div v-for="dish in orderStore.currentOrder">
+        <div>{{dish.id}}, {{dish.amount}} - </div>
+      </div>
+      <div>TOTAL: {{orderStore.currentTotal}}</div>
     </div>
 
   </div>

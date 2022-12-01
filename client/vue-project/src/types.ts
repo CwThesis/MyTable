@@ -16,10 +16,10 @@ export type Dish = {
   price: number
   currency: string
   category: 'mains' | 'starters' | 'desserts' | 'drinks'
-  id: number
+  id: string
 }
 
 export type DishIdWithAmount = {
-  id: number
+  id: string
   amount: number
 }
