@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { ref } from "vue";
+
 const props = defineProps({
   dish: Object,
 });
 </script>
 
 <template>
+ <div>
   <li
     class="relative p-4 mb-3 flex justify-between items-center bg-white shadow rounded-lg cursor-move border border-white"
   >
     <div class="flex items-center">
       <img
         class="w-20 h-20 rounded-full"
-        :src="props.dish?.img"
+        :src="props.dish?.imgUrl"
         :alt="props.dish?.title"
       />
     </div>
@@ -41,4 +43,5 @@ const props = defineProps({
       ></span>
     </label>
   </li>
+</div>
 </template>

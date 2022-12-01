@@ -1,11 +1,30 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import type { Ref } from 'vue'
 import SideNavbar from "../SideNavbar.vue";
 import TopNavbar from "../TopNavbar.vue";
 import DishCard from "./DishCard.vue";
 import AddToMenu from "./AddToMenu.vue";
+import  dishAPIService  from "../../services/dishAPI"
+import { Auth } from 'aws-amplify';
 
-function addDish(event: Event) {
+let userId = "";
+let dishes: Ref<any> = ref([]);
+
+Auth.currentAuthenticatedUser().then((u) => {
+  const email = u.attributes.email;
+  const username = u.username;
+  const user = { email, username }
+  userId = user.username;
+  (async () => {
+    console.log(userId);
+    const res = await dishAPIService.getAllDishes(userId);
+    dishes.value = res.body;
+    console.log(dishes.value)
+  })()
+});
+
+/* function addDish(event: Event) {
   const target = event.target as HTMLInputElement;
   console.log(target.title);
 }
@@ -17,9 +36,9 @@ const categories: string[] = ["mains", "starters"];
 const searchCategory = computed(() => {
   let filter = new RegExp(category as unknown as string);
   return categories.filter((item) => item.match(filter));
-});
+}); */
 
-const dishes = [
+/* const dishes = [
   {
     img: "https://images.hola.com/imagenes/cocina/recetas/20200917175530/paella-valenciana-clasica/0-866-670/paella-age-t.jpg",
     title: "Paella",
@@ -46,7 +65,8 @@ const dishes = [
     category: "mains",
     status: true,
   },
-];
+]; */
+
 </script>
 
 <template>

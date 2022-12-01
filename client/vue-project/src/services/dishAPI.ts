@@ -21,16 +21,16 @@ const dishAPIService = {
         mode: 'cors',
         headers: { 'Content-Type': 'application/json' },
       })
-      const resParsed = await res.json()
-      return JSON.parse(resParsed.body)
+
+      return await res.json()
     } catch (err) {
       return console.log('Error getting the dishes: ', err)
     }
   },
 
-  updateDish: async (dish: any, userID: string, dishID: string) => {
+  updateDish: async (dish: any, userID: string) => {
     try {
-      const res = await fetch(`${BE_URL}/dishes/${userID}/editDish/${dishID}`, {
+      const res = await fetch(`${BE_URL}/dishes/${userID}/editDish/`, {
         method: 'PUT',
         mode: 'cors',
         headers: { 'Content-Type': 'application/json' },
@@ -42,17 +42,14 @@ const dishAPIService = {
     }
   },
 
-  deleteDish: async (dish: any, userID: string, dishID: string) => {
+  deleteDish: async (dish: any, userID: string) => {
     try {
-      const res = await fetch(
-        `${BE_URL}/dishes/${userID}/deleteDish/${dishID}`,
-        {
-          method: 'DELETE',
-          mode: 'cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(dish),
-        },
-      )
+      const res = await fetch(`${BE_URL}/dishes/${userID}/deleteDish/`, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dish),
+      })
       return await res.json()
     } catch (err) {
       return console.log('Error deleting the dish: ', err)

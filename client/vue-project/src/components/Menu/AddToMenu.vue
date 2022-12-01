@@ -32,7 +32,6 @@ function openUploadModal () {
 }
 
 async function addDish(event: Event) {
-  //const target = event.target as HTMLInputElement;
   const formInput = {
     title: dishTitle.value,
     description: dishDescription.value,
@@ -41,7 +40,6 @@ async function addDish(event: Event) {
     category: dishCategory.value,
     imgUrl: dishImgUrl,
   };
-  console.log(userId);
   const res = await dishAPIService.newDish(formInput, userId);
   console.log(res);
 }
