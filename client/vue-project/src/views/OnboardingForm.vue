@@ -3,8 +3,10 @@ import TopNavbarVue from "../components/TopNavbar.vue";
 import { ref, toRaw } from "vue";
 import {Auth} from 'aws-amplify';
 import restaurantAPIService from '../services/restaurantAPI';
+import { useRouter } from "vue-router";
+import LoadingSpinner from './../components/LoadingSpinner.vue';
 
-
+const isLoading = ref(true);
 const restName = ref("");
 const bankName = ref("");
 const IBAN = ref("");
@@ -15,13 +17,20 @@ const country = ref("");
 const tables = ref("1");
 const staff = ref<string[]>([]);
 const userData: any = ref(null);
+const router = useRouter();
 
 Auth.currentAuthenticatedUser().then((u)=>{
   const email = u.attributes.email;
   const username = u.username;
   const user = {email, username}
   userData.value = user;
-})
+  (async () => {
+    const restaurant = await restaurantAPIService.getRestaurant(user.username);
+    console.log("result:",restaurant)
+    isLoading.value=false;
+    if (restaurant.length > 0) router.push('/dashboard/overview');
+})()
+});
 
 function addWaiter(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -42,20 +51,25 @@ async function submitForm() {
     tables: tables.value,
     staff: toRaw(staff.value),
   };
-  console.log(formInput);
   const res = await restaurantAPIService.newRestaurant(formInput, userData.value.username)
-  console.log(res)
+  console.log(res.body)
+  if(res.body.bankName){
+    router.push('/dashboard/overview')
+  } else {
+    alert(res)
+  }
 }
 
 
 </script>
 
 <template>
+    <div v-if="isLoading">
+    <LoadingSpinner/>
+  </div>
+  <div v-else>
   <div>
     <TopNavbarVue></TopNavbarVue>
-
-    <button @click="testGET">test GET</button>
-    <button> test POST</button>
     <div class="container mx-auto content-center max-w-5xl">
       <div class="shadow sm:overflow-hidden sm:rounded-md mb-4 mt-4">
         <div class="space-y-4 bg-gray-100 px-4 py-5 sm:p-6">
@@ -268,4 +282,5 @@ async function submitForm() {
   </div>
   <div>
   </div>
+</div>
 </template>

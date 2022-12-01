@@ -2,7 +2,7 @@
 const BE_URL = import.meta.env.VITE_AWS_CLOUD_LOGIC_ENDPOINT;
 const ticketAPIService = {
 
-  newDish : async (ticket: any, userID: string) => {
+  newTicket : async (ticket: any, userID: string) => {
     try {
       const res = await fetch(`${BE_URL}/dashboard/${userID}/newTicket`, {
         method: "POST",
@@ -57,7 +57,6 @@ const ticketAPIService = {
       return console.log("Error deleting the ticket: ", err);
     }
   }
-
 }
 
   export default ticketAPIService;

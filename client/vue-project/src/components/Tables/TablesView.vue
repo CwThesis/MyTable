@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SideNavbar from "../SideNavbar.vue";
 import TopNavbar from "../TopNavbar.vue";
-import TablesGrid from "./TablesGrid.vue";
+import TablesGrid from "./TablesSearch.vue";
 </script>
 
 <template>
