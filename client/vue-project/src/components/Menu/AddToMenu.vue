@@ -56,7 +56,7 @@ async function addDish(event: Event) {
       <button type="button" @click="openUploadModal">Upload image</button>
         </div>
       </div>
-      <img :src="dishImgUrl">
+      <img :src="dishImgUrl" class="h-20 rounded">
     </div>
     <!-- END DISH IMAGE UPLOAD -->
 

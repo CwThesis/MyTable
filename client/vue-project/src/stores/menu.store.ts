@@ -1,10 +1,15 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { DishIdWithAmount } from '../types'
+import menuAPIService from '../services/menuAPI'
 
-export const useOrderStore = defineStore('order', () => {
-  const dataFromStorage = localStorage.getItem('order')
+export const useMenuStore = defineStore('menu', () => {
+  const dataFromStorage = localStorage.getItem('menu')
   const parsedDataFromStorage = JSON.parse(dataFromStorage)
+
+  /*   let dishStatus = ref(props.dish?.menu);
+console.log("Initial state:", dishStatus.value); */
+
   const currentOrder = ref<DishIdWithAmount[] | null>(
     parsedDataFromStorage && parsedDataFromStorage.CO
       ? parsedDataFromStorage.CO
@@ -15,6 +20,11 @@ export const useOrderStore = defineStore('order', () => {
       ? parsedDataFromStorage.CT
       : 0,
   )
+
+  async function toggleBtn() {
+    const res = await menuAPIService.toggleDish(props.dish?.id, props.userId)
+    console.log('After change:', dishStatus.value)
+  }
 
   function addToOrder(dish: DishIdWithAmount, price: number) {
     if (currentOrder.value !== null) {
@@ -70,10 +80,6 @@ export const useOrderStore = defineStore('order', () => {
   }
 
   return {
-    currentOrder,
-    currentTotal,
-    addToOrder,
-    decrementAmountById,
-    amountById,
+    toggleBtn,
   }
 })
