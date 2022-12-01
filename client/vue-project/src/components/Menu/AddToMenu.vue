@@ -3,6 +3,7 @@ import { ref } from "vue";
 import  dishAPIService  from "../../services/dishAPI"
 import { Auth } from 'aws-amplify';
 
+
 const dishTitle = ref("");
 const dishDescription = ref("");
 const dishPrice = ref(0);
@@ -112,8 +113,7 @@ async function addDish(event: Event) {
 
 
         <div class="col-span-3 bg-gray-50 px-4 py-3 text-right sm:px-6">
-          <button type="submit"
-            class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+          <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
             Add
           </button>
 
