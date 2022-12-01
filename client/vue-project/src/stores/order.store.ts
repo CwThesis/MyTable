@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 import { defineStore } from "pinia";
 import type { DishIdWithAmount } from "../types";
 
