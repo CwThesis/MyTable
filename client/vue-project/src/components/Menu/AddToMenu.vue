@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import  dishAPIService  from "../../services/dishAPI"
+import { Auth } from 'aws-amplify';
 
 const dishTitle = ref("");
 const dishDescription = ref("");
@@ -7,6 +9,14 @@ const dishPrice = ref(0);
 const dishCurrency = ref("");
 const dishCategory = ref("");
 let dishImgUrl = "";
+let userId: string = "";
+
+Auth.currentAuthenticatedUser().then((u) => {
+  const email = u.attributes.email;
+  const username = u.username;
+  const user = { email, username }
+  userId = user.username;
+});
 
 function openUploadModal () {
   window.cloudinary.openUploadWidget(
@@ -21,8 +31,7 @@ function openUploadModal () {
         }).open();
 }
 
-function addDish(event: Event) {
-  //const target = event.target as HTMLInputElement;
+async function addDish(event: Event) {
   const formInput = {
     title: dishTitle.value,
     description: dishDescription.value,
@@ -31,7 +40,8 @@ function addDish(event: Event) {
     category: dishCategory.value,
     imgUrl: dishImgUrl,
   };
-  console.log(formInput);
+  const res = await dishAPIService.newDish(formInput, userId);
+  console.log(res);
 }
 </script>
 
@@ -74,7 +84,7 @@ function addDish(event: Event) {
 
           <div class="col-span-1 col-start-1">
             <label for="dish-description" class="block text-sm font-medium text-gray-700">Price</label>
-            <input type="text" name="dish-price" id="dish-price" v-model="dishPrice"
+            <input type="number" name="dish-price" id="dish-price" v-model="dishPrice"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
           </div>
 
