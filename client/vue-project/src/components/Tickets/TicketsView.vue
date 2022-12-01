@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SideNavbar from "../SideNavbar.vue";
 import TopNavbar from "../TopNavbar.vue";
-import TicketsGrid from "./TicketsGrid.vue";
+import TicketsSearch from "./TicketsSearch.vue";
 
 
 </script>
@@ -12,7 +12,7 @@ import TicketsGrid from "./TicketsGrid.vue";
     <div class="flex-1">
       <TopNavbar />
       <main class="flex-1 justify-center">
-        <TicketsGrid></TicketsGrid>
+        <TicketsSearch></TicketsSearch>
       </main>
     </div>
   </div>

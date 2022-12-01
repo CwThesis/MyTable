@@ -4,24 +4,42 @@ import TopNavbar from "../TopNavbar.vue";
 import { ref, toRaw } from "vue";
 import { Auth } from 'aws-amplify';
 import restaurantAPIService from '../../services/restaurantAPI';
+import { useRouter } from "vue-router";
+import LoadingSpinner from "../LoadingSpinner.vue";
 
-
-const restName = ref("test");
-const bankName = ref("test");
-const IBAN = ref("test");
-const street = ref("test");
-const city = ref("test");
-const zip = ref("test");
-const country = ref("test");
-const tables = ref("1");
+const isLoading = ref(true);
+const restName = ref("");
+const bankName = ref("");
+const IBAN = ref("");
+const street = ref("");
+const city = ref("");
+const zip = ref("");
+const country = ref("");
 const staff = ref<string[]>([]);
 const userData: any = ref(null);
+const router = useRouter();
 
 Auth.currentAuthenticatedUser().then((u) => {
   const email = u.attributes.email;
   const username = u.username;
   const user = { email, username }
   userData.value = user;
+  (async () => {
+    const restaurant = await restaurantAPIService.getRestaurant(user.username);
+    isLoading.value=false;
+    if (restaurant.length > 0) {
+      restName.value = restaurant[0].restName;
+      bankName.value = restaurant[0].bankName;
+      IBAN.value = restaurant[0].IBAN;
+      street.value = restaurant[0].street;
+      city.value = restaurant[0].city;
+      zip.value = restaurant[0].zip;
+      country.value = restaurant[0].country;
+      staff.value = restaurant[0].staff;
+    } else {
+      router.push('/onboarding')
+    }
+  })()
 })
 
 function addWaiter(event: Event) {
@@ -46,11 +64,13 @@ function addWaiter(event: Event) {
 //   const res = await restaurantAPIService.newRestaurant(formInput, userData.value.username)
 //   console.log(res)
 // }
-
-
 </script>
 
 <template>
+  <div v-if="isLoading">
+    <LoadingSpinner/>
+  </div>
+  <div v-else>
   <div class="flex min-h-screen">
     <SideNavbar />
     <div class="flex-1">
@@ -161,6 +181,7 @@ function addWaiter(event: Event) {
       </main>
     </div>
   </div>
+</div>
 </template>
 
 

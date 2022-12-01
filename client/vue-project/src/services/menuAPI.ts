@@ -29,7 +29,36 @@ const menuAPIService = {
     } catch (err) {
       return console.log("Error updating the menu: ", err);
     }
+  },
+
+
+addDishtoMenu : async (dish: any, userID: string) => {
+  try {
+    const res = await fetch(`${BE_URL}/dashboard/${userID}/addDishToMenu`, {
+      method: "POST",
+      mode: "cors",
+      headers:{"Content-Type": "application/json"},
+      body: JSON.stringify(dish),
+    });
+    return await res.json();
+  } catch (err) {
+    return console.log("Error adding the dish to the menu: ", err);
   }
+},
+
+removeDishfromMenu : async (dish: any, userID: string) => {
+  try {
+    const res = await fetch(`${BE_URL}/dashboard/${userID}/removeDishFromMenu`, {
+      method: "DELETE",
+      mode: "cors",
+      headers:{"Content-Type": "application/json"},
+      body: JSON.stringify(dish),
+    });
+    return await res.json();
+  } catch (err) {
+    return console.log("Error removing the dish from the menu: ", err);
+  }
+}
 }
 
   export default menuAPIService;

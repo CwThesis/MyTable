@@ -8,7 +8,7 @@ import "./style.css";
 <template>
   <div class="wrapper">
     <Authenticator>
-        <RouterView />
+      <RouterView />
     </Authenticator>
   </div>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import QRCode from 'qrcode-svg'
 
 const props = defineProps({
   data: Array,
@@ -9,7 +10,7 @@ const props = defineProps({
 
 const sortKey = ref("");
 const sortOrders = ref(
-  props.columns?.reduce((o, key) => ((o[key] = 1), o), {})
+  props.columns!.reduce((o, key) => ((o[key] = 1), o), {})
 );
 
 const filteredData = computed(() => {
@@ -34,7 +35,7 @@ const filteredData = computed(() => {
   return data;
 });
 
-function sortBy(key) {
+function sortBy(key: any) {
   sortKey.value = key;
   sortOrders.value[key] *= -1;
 }
@@ -42,11 +43,15 @@ function sortBy(key) {
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+const svg = new QRCode("Hello World!").svg();
+
+
 </script>
 
 <template>
   <div>
-    <t-table v-if="filteredData.length">
+    <table v-if="filteredData?.length">
       <thead>
         <tr>
           <th
@@ -54,7 +59,7 @@ function capitalize(str: string) {
             @click="sortBy(key)"
             :class="{ active: sortKey == key }"
           >
-            {{ capitalize(key) }}
+            {{ capitalize(key as any) }}
             <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
             </span>
           </th>
@@ -63,7 +68,15 @@ function capitalize(str: string) {
       <tbody>
         <tr v-for="entry in filteredData">
           <td v-for="key in columns">
-            <td v-if="key === 'actions'">
+            <td v-if="key === 'url'"> 
+            <div v-html="new QRCode({
+              content: entry[key],
+              width: 60,
+              height: 60,
+              padding: 0
+            }).svg()"></div>
+            </td>
+            <td v-else-if="key === 'actions'">
               <button>Edit</button>
               <button>Delete</button>
             </td>
@@ -71,13 +84,15 @@ function capitalize(str: string) {
           </td>
         </tr>
       </tbody>
-    </t-table>
+    </table>
     <p v-else>No entries found</p>
   </div>
 </template>
 
-<style>
 
+
+
+<style>
 th {
   background-color: #141a32d7;
   color: rgb(255, 255, 255);
