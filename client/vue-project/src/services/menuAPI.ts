@@ -28,31 +28,17 @@ const menuAPIService = {
     }
   },
 
-  addDishtoMenu: async (dish: any, userID: string) => {
+  toggleDish: async (dishId: string, userID: string) => {
     try {
-      const res = await fetch(`${BE_URL}/dishes/${userID}/addDishToMenu`, {
-        method: 'POST',
+      const res = await fetch(`${BE_URL}/dishes/${userID}/toggleMenuDish`, {
+        method: 'PUT',
         mode: 'cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dish),
+        body: JSON.stringify({ dishId }),
       })
-      return await res.json()
+      return await res.json() //this is undefined
     } catch (err) {
       return console.log('Error adding the dish to the menu: ', err)
-    }
-  },
-
-  removeDishfromMenu: async (dish: any, userID: string) => {
-    try {
-      const res = await fetch(`${BE_URL}/dishes/${userID}/removeDishFromMenu`, {
-        method: 'DELETE',
-        mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dish),
-      })
-      return await res.json()
-    } catch (err) {
-      return console.log('Error removing the dish from the menu: ', err)
     }
   },
 }
