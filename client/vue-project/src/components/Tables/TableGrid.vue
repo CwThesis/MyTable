@@ -68,7 +68,7 @@ const svg = new QRCode("Hello World!").svg();
       <tbody>
         <tr v-for="entry in filteredData">
           <td v-for="key in columns">
-            <td v-if="key === 'url'"> 
+            <td v-if="key === 'QR'"> 
             <div v-html="new QRCode({
               content: entry[key],
               width: 60,
