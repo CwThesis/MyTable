@@ -45,8 +45,8 @@ const router = createRouter({
       component: () => import("../views/OnboardingForm.vue"),
     },
     {
-      path: "/mobile",
-      name: "mobile",
+      path: "/customer/:restID/:tableID",
+      name: "customer",
       component: () => import("../views/MobileView.vue"),
     },
   ],
