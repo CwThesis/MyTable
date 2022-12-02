@@ -6,7 +6,7 @@ const profileAPIService = {
       const res = await fetch(`${BE_URL}/dashboard/${userID}/profile`, {
         method: "GET",
         mode: "cors",
-        headers:{"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
       });
       const resParsed =  await res.json();
       return JSON.parse(resParsed.body);
@@ -20,7 +20,7 @@ const profileAPIService = {
       const res = await fetch(`${BE_URL}/dashboard/${userID}/profile`, {
         method: "PUT",
         mode: "cors",
-        headers:{"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
         body: JSON.stringify(profile),
       });
       return await res.json();

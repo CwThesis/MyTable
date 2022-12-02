@@ -5,8 +5,9 @@ const orderAPIService = {
 
   newOrder : async (CO: DishIdWithAmount[], CT: number, restID: string, tableID: string) => {
     const order = {order:{CO, CT}};
+    console.log(order)
     try {
-      const res = await fetch(`${BE_URL}/dashboard/customer/${restID}/${tableID}/newOrder`, {
+      const res = await fetch(`${BE_URL}/menu/${restID}/${tableID}/newOrder`, {
         method: "POST",
         mode: "cors",
         headers:{"Content-Type": "application/json"},

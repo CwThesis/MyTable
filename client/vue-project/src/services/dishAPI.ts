@@ -5,7 +5,7 @@ const dishAPIService = {
       const res = await fetch(`${BE_URL}/dishes/${userID}/addDish`, {
         method: 'POST',
         mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
         body: JSON.stringify(dish),
       })
       return await res.json()
@@ -19,7 +19,7 @@ const dishAPIService = {
       const res = await fetch(`${BE_URL}/dishes/${userID}/getAllDishes`, {
         method: 'GET',
         mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
       })
 
       return await res.json()
@@ -33,7 +33,7 @@ const dishAPIService = {
       const res = await fetch(`${BE_URL}/dishes/${userID}/editDish/`, {
         method: 'PUT',
         mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
         body: JSON.stringify(dish),
       })
       return await res.json()
@@ -47,7 +47,7 @@ const dishAPIService = {
       const res = await fetch(`${BE_URL}/dishes/${userID}/deleteDish/`, {
         method: 'DELETE',
         mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
         body: JSON.stringify(dish),
       })
       return await res.json()

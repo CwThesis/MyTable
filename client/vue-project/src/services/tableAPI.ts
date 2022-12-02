@@ -7,7 +7,7 @@ const tableAPIService = {
       const res = await fetch(`${BE_URL}/dashboard/${userID}/newTable`, {
         method: "POST",
         mode: "cors",
-        headers:{"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
         body: JSON.stringify(table),
       });
       return await res.json();
@@ -21,7 +21,7 @@ const tableAPIService = {
       const res = await fetch(`${BE_URL}/dashboard/${userID}/getAllTables`, {
         method: "GET",
         mode: "cors",
-        headers:{"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
       });
       const resParsed =  await res.json();
       return JSON.parse(resParsed.body);
@@ -35,7 +35,7 @@ const tableAPIService = {
       const res = await fetch(`${BE_URL}/dashboard/${userID}/updateTable`, {
         method: "PUT",
         mode: "cors",
-        headers:{"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
         body: JSON.stringify(table),
       });
       return await res.json();
@@ -49,7 +49,7 @@ const tableAPIService = {
       const res = await fetch(`${BE_URL}/dashboard/${userID}/deleteTable`, {
         method: "DELETE",
         mode: "cors",
-        headers:{"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
         body: JSON.stringify(table),
       });
       return await res.json();
