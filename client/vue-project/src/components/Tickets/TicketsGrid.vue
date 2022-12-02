@@ -4,8 +4,6 @@ import { ref, computed } from "vue";
 const props = defineProps({
   data: Array,
   columns: Array,
-  filterKey: String,
-  url: String
 });
 
 const sortKey = ref("");
@@ -66,10 +64,14 @@ function capitalize(str: string) {
       <tbody>
         <tr v-for="entry in filteredData">
           <td v-for="key in columns">
-            <td v-if="key === 'actions'">
-              <button>Edit</button>
-              <button>Delete</button>
-              
+            <td v-if="key === 'orders'">
+              <div v-for="order in entry[key]">
+              <div>{{order.CO[0].id}}, {{order.CO[0].amount}}</div>
+            </div>
+
+            </td>
+            <td v-else-if="key === 'total'">
+                <div>{{entry[key][0].CT}}</div>
             </td>
 
             <td v-else> {{ entry[key] }}</td>

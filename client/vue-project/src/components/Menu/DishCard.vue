@@ -29,7 +29,7 @@ async function toggleBtn() {
     <div class="flex items-center">
       <img
         class="w-20 h-20 rounded-full"
-        :src="props.dish?.imgUrl"
+        :src="props.dish?.img"
         :alt="props.dish?.title"
       />
     </div>
