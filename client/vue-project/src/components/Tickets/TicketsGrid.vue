@@ -67,7 +67,7 @@ function capitalize(str: string) {
             <td v-if="key === 'orders'">
               <div class ="shadow" v-for="order in entry[key]">
                 <div v-for="dish in order.CO">
-              <div>{{dish.id}}, {{dish.amount}}</div>
+              <div>{{dish.name}}, {{dish.amount}}</div>
                 </div>
             </div>
 

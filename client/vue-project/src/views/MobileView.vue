@@ -25,7 +25,7 @@ if (route.params.restID && route.params.tableID) {
     if (result !== null) {
       dishes.value = result.dishes;
       restaurantName.value = result.name;
-      banner.value = result.banner;
+      banner.value = result.banner.url
     }
     loading.value = false;
   } 
@@ -56,16 +56,18 @@ async function sendOrder () {
           :key="dish.title"
           class="bg-gray-50 px-4 py-3"
         >
-          <DishCardMobile :dish="dish"></DishCardMobile>
+          <DishCardMobile :dish="dish"/>
         </div>
       </div>
   
       <div v-if="(orderStore.currentOrder)" class="flex bg-gray-300 z-40 fixed bottom-0 w-full h-20 bg-amber-200 flex justify-center">
         <button @click="sendOrder">ORDER</button>
+        <ul class="flex flex-col items-center p-4">
         <div v-for="dish in orderStore.currentOrder">
-          <div>{{dish.id}}, {{dish.amount}} - </div>
+          <li>{{dish.name}}, {{dish.amount}} u's</li>
         </div>
-        <div>TOTAL: {{orderStore.currentTotal}}</div>
+      </ul>
+        <div class="flex items-center">TOTAL: {{orderStore.currentTotal}}</div>
       </div>
     </div>
   </div>

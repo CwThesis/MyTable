@@ -7,7 +7,7 @@ const orderAPIService = {
     const order = {order:{CO, CT}};
     console.log(order)
     try {
-      const res = await fetch(`${BE_URL}/menu/${restID}/${tableID}/newOrder`, {
+      const res = await fetch(`${BE_URL}/customer/${restID}/${tableID}/newOrder`, {
         method: "POST",
         mode: "cors",
         headers:{"Content-Type": "application/json"},
@@ -21,7 +21,7 @@ const orderAPIService = {
 
   getRestaurantData : async (restID: string, tableID: string) => {
     try {
-      const res = await fetch(`${BE_URL}/menu/${restID}/${tableID}/getMenu`, {
+      const res = await fetch(`${BE_URL}/customer/${restID}/${tableID}/getMenu`, {
         method: "GET",
         mode: "cors",
         headers:{"Content-Type": "application/json"},
