@@ -14,20 +14,6 @@ const menuAPIService = {
     }
   },
 
-  updateMenu: async (menu: any, userID: string) => {
-    try {
-      const res = await fetch(`${BE_URL}/dashboard/${userID}/updateMenu`, {
-        method: 'PUT',
-        mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(menu),
-      })
-      return await res.json()
-    } catch (err) {
-      return console.log('Error updating the menu: ', err)
-    }
-  },
-
   toggleDish: async (dishId: string, userID: string) => {
     try {
       const res = await fetch(`${BE_URL}/dishes/${userID}/toggleMenuDish`, {
@@ -39,6 +25,45 @@ const menuAPIService = {
       return await res.json() //this is undefined
     } catch (err) {
       return console.log('Error adding the dish to the menu: ', err)
+    }
+  },
+  addBanner: async (banner: any, userID: string) => {
+    try {
+      const res = await fetch(`${BE_URL}/menu/${userID}/addBanner`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(banner),
+      })
+      return await res.json()
+    } catch (err) {
+      return console.log('Error adding banner to the menu: ', err)
+    }
+  },
+  getBanner: async (userID: string) => {
+    try {
+      const res = await fetch(`${BE_URL}/menu/${userID}/getBanner`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+      })
+      return await res.json()
+    } catch (err) {
+      return console.log('Error adding banner to the menu: ', err)
+    }
+  },
+
+  updateBanner: async (banner: any, userID: string) => {
+    try {
+      const res = await fetch(`${BE_URL}/menu/${userID}/updateBanner`, {
+        method: 'PUT',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(banner),
+      })
+      return await res.json()
+    } catch (err) {
+      return console.log('Error updating the banner: ', err)
     }
   },
 }

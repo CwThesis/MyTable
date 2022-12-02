@@ -18,22 +18,25 @@ async function toggleBtn() {
   console.log ("After change:", props.dish);
 }
 
-
 </script>
 
 <template>
  <div>
   <li
-    class="relative p-4 mb-3 flex justify-between items-center bg-white shadow rounded-lg cursor-move border border-white"
+    class="relative mb-3 flex flex-row justify-start items-center bg-white shadow rounded-lg cursor-move border border-white"
   >
-    <div class="flex items-center">
+
+  <div class="rounded-full p-2">
       <img
-        class="w-20 h-20 rounded-full"
-        :src="props.dish?.img"
+        class="rounded-md object-cover h-40 w-40"
+        :src="props.dish?.imgUrl"
         :alt="props.dish?.title"
       />
     </div>
-    <p class="ml-5 text-gray-700 font-semibold font-sans tracking-wide">
+    
+
+   <div class="p-4">
+    <p class="ml-5 text-gray-700 text-lg font-semibold font-sans tracking-wide">
       {{ props.dish?.title }}
     </p>
     <div class="flex items-center">
@@ -59,6 +62,7 @@ async function toggleBtn() {
         class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
       >{{dishStatus}}</span>
     </label>
+  </div>
   </li>
 </div>
 </template>
