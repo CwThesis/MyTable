@@ -69,11 +69,21 @@ export const useOrderStore = defineStore('order', () => {
     return 0
   }
 
+  function emptyOrder() {
+    currentOrder.value = null
+    currentTotal.value = 0
+    localStorage.setItem(
+      'order',
+      JSON.stringify({ CO: currentOrder.value, CT: currentTotal.value }),
+    )
+  }
+
   return {
     currentOrder,
     currentTotal,
     addToOrder,
     decrementAmountById,
     amountById,
+    emptyOrder,
   }
 })

@@ -71,7 +71,9 @@ function capitalize(str: string) {
 
             </td>
             <td v-else-if="key === 'total'">
-                <div>{{entry[key][0].CT}}</div>
+              <div v-for="order in entry[key]">
+                <div>{{order.CT}}€</div>
+              </div>
             </td>
 
             <td v-else> {{ entry[key] }}</td>

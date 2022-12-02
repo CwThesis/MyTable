@@ -5,9 +5,6 @@ const orderAPIService = {
 
   newOrder : async (CO: DishIdWithAmount[], CT: number, restID: string, tableID: string) => {
     const order = {order:{CO, CT}};
-    console.log("restID: ",restID)
-    console.log("tableID: ",tableID)
-    console.log("order: ",order)
     try {
       const res = await fetch(`${BE_URL}/dashboard/customer/${restID}/${tableID}/newOrder`, {
         method: "POST",
@@ -23,7 +20,7 @@ const orderAPIService = {
 
   getRestaurantData : async (restID: string, tableID: string) => {
     try {
-      const res = await fetch(`${BE_URL}/menu/${restID}/${tableID}`, {
+      const res = await fetch(`${BE_URL}/menu/${restID}/${tableID}/getMenu`, {
         method: "GET",
         mode: "cors",
         headers:{"Content-Type": "application/json"},

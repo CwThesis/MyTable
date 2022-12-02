@@ -14,6 +14,8 @@ const route = useRoute();
 const dishes: Ref<Dish[]> = ref([]);
 const restaurantName: Ref<string> = ref("");
 const loading: Ref<boolean> = ref(true);
+const menuName: Ref<string> = ref("");
+const banner: Ref<string> = ref("");
 
 // If both params exist -> fetch restaurantDATA ---->
 if (route.params.restID && route.params.tableID) {
@@ -23,9 +25,17 @@ if (route.params.restID && route.params.tableID) {
     if (result !== null) {
       dishes.value = result.dishes;
       restaurantName.value = result.name;
-    }loading.value = false;
+      banner.value = result.banner;
+    }
+    loading.value = false;
   } 
   )()
+}
+
+async function sendOrder () {
+  const res = await orderAPIService.newOrder(toRaw(orderStore.currentOrder) as any, orderStore.currentTotal, route.params.restID, route.params.tableID)
+  //handle response
+  orderStore.emptyOrder();
 }
 </script>
 
@@ -33,7 +43,7 @@ if (route.params.restID && route.params.tableID) {
   <div v-if="loading">
     <LoadingSpinner />
   </div>
-
+  <img :src="banner" >
   <div v-if="dishes.length">
     <div class="py-2">
       <div class="bg-gray-300">
@@ -51,7 +61,7 @@ if (route.params.restID && route.params.tableID) {
       </div>
   
       <div v-if="(orderStore.currentOrder)" class="flex bg-gray-300 z-40 fixed bottom-0 w-full h-20 bg-amber-200 flex justify-center">
-        <button @click="orderAPIService.newOrder(toRaw(orderStore.currentOrder) as any, orderStore.currentTotal, route.params.restID, route.params.tableID)">ORDER</button>
+        <button @click="sendOrder">ORDER</button>
         <div v-for="dish in orderStore.currentOrder">
           <div>{{dish.id}}, {{dish.amount}} - </div>
         </div>

@@ -22,4 +22,6 @@ export type Dish = {
 export type DishIdWithAmount = {
   id: string
   amount: number
+  name: string
+  img: string
 }
