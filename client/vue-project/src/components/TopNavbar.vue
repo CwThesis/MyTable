@@ -25,7 +25,7 @@ async function signOut() {
 </script>
 
 <template>
-  <nav class="bg-gray-800">
+  <nav class="bg-gray-100 border-b border-gray-200">
     <div class="mx-auto px-2 sm:px-6 lg:px-8">
       <div class="relative flex h-16 items-center justify-between">
         <div
@@ -42,7 +42,7 @@ async function signOut() {
           <a
             @mouseover="show = true"
             href="#"
-            class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+            class="bg-gray-100 border-gray-200 text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
             aria-current="page"
             ><div v-if="(userData && userData.email)">{{userData.email}}</div></a
           >
@@ -50,7 +50,7 @@ async function signOut() {
             <div>
               <button
                 type="button"
-                class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                class="flex rounded-full bg-gray-50 border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 id="user-menu-button"
                 aria-expanded="false"
                 aria-haspopup="true"

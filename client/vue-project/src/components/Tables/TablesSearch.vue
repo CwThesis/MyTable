@@ -45,30 +45,33 @@ async function handleTableCreation() {
 </script>
 
 <template>
-  <form class="flex items-center justify-center" id="search">
-    Search: <input class="shadow appearance-none border rounded" name="query" v-model="searchQuery" />
-  </form>
-  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="show-modal" @click="showModal = true">New Table</button>
-  <div
-    class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+  <div id="top-container" class="flex flex-row gap-5 items-center px-4 mt-10 justify-between px-4 sm:px-6 lg:px-8">
+    <form id="search" class="w-2/3">
+      <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="pr-1 text-gray-700" /> <input class="shadow appearance-none border rounded-full w-5/6" name="query" v-model="searchQuery" />
+    </form>
+    <button class="bg-violet-700 hover:bg-violet-500 text-white font-semibold py-2 px-4 rounded-full" id="show-modal" @click="showModal = true">New Table</button>
+  </div>
+  
+  <div id="table"
+    class="py-12 px-4 sm:px-6 lg:px-8"
   >
 
-<Teleport to="body">
-  <!-- use the modal component, pass in the prop -->
-  <ModalView :show="showModal" @submit="handleTableCreation" @close="showModal = false">
-    <template #header>
-      <p>Insert the new table name:</p>
-    </template>
-    <template #body>
-      <input v-model="newTableName" type="text" placeholder="Table Name" required/>
-    </template>
-  </ModalView>
-</Teleport>
-  <div v-if="gridData.length">
-    <TableGrid :userData="userData" :data="gridData" :columns="gridColumns" :filter-key="searchQuery"/>
-  </div>
-  <div v-else>
-    Loading :)
-  </div>
+      <Teleport to="body">
+        <!-- use the modal component, pass in the prop -->
+        <ModalView :show="showModal" @submit="handleTableCreation" @close="showModal = false">
+          <template #header>
+            <p>Insert the new table name:</p>
+          </template>
+          <template #body>
+            <input v-model="newTableName" type="text" placeholder="Table Name" required/>
+          </template>
+        </ModalView>
+      </Teleport>
+        <div v-if="gridData.length">
+          <TableGrid :userData="userData" :data="gridData" :columns="gridColumns" :filter-key="searchQuery"/>
+        </div>
+        <div v-else>
+          <font-awesome-icon icon="fa-solid fa-spinner" spin-pulse />
+        </div>
   </div>
 </template>

@@ -11,8 +11,10 @@ import TicketsSearch from "./TicketsSearch.vue";
     <SideNavbar />
     <div class="flex-1">
       <TopNavbar />
-      <main class="flex-1 justify-center">
-        <TicketsSearch></TicketsSearch>
+      <main class="flex h-full flex-col items-center">
+        <div class="min-w-750 w-max">
+        <TicketsSearch />
+        </div>
       </main>
     </div>
   </div>

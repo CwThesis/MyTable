@@ -15,7 +15,7 @@ const city = ref("");
 const zip = ref("");
 const country = ref("");
 const tables = ref("1");
-const staff = ref<string[]>([]);
+const staff = ref(1);
 const userData: any = ref(null);
 const router = useRouter();
 
@@ -32,14 +32,12 @@ Auth.currentAuthenticatedUser().then((u)=>{
 })()
 });
 
-function addWaiter(event: Event) {
-  const target = event.target as HTMLInputElement;
-  staff.value.push(target.value);
-  target.value = "";
-}
-
 async function submitForm() {
   console.log("Form submitted!");
+  if(staff.value > 50 || Number(tables.value) > 50) {
+    alert("You can't have more than 50 tables or staff members!");
+    return;
+  }
   const formInput = {
     restName: restName.value,
     bankName: bankName.value,
@@ -49,7 +47,7 @@ async function submitForm() {
     zip: zip.value,
     country: country.value,
     tables: tables.value,
-    staff: toRaw(staff.value),
+    staff: staff.value
   };
   const res = await restaurantAPIService.newRestaurant(formInput, userData.value.username)
   console.log(res.body)
@@ -241,25 +239,18 @@ async function submitForm() {
                         >Your staff</label
                       >
                       <input
-                        @keyup.enter="addWaiter"
-                        type="text"
+                        v-model="staff"
+                        type="number"
                         name="waiter-name"
                         id="waiter-name"
                         autocomplete="waiter-name"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       />
                       <p class="mt-2 text-sm text-gray-500">
-                        Add your waiters' names here. You will be able to edit
+                        How many waiters are there in your team? You will be able to edit
                         this later.
                       </p>
                       <div class="flex flex-row flex-wrap">
-                        <li
-                          class="mt-2 text-sm text-gray-500 list-none bg-gray-100 rounded-md m-1 py-1 px-1"
-                          v-for="item in staff"
-                          :key="item"
-                        >
-                          {{ item }}
-                        </li>
                       </div>
                     </div>
                   </div>

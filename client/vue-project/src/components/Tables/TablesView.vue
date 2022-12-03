@@ -9,7 +9,11 @@ import TablesGrid from "./TablesSearch.vue";
     <SideNavbar />
     <div class="flex-1">
       <TopNavbar />
-      <main class="flex-1 justify-center"><TablesGrid></TablesGrid></main>
+      <main class="flex h-full flex-col items-center">
+        <div class="w-max">
+          <TablesGrid />
+        </div>
+      </main>
     </div>
   </div>
 </template>
