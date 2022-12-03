@@ -28,7 +28,7 @@ async function toggleBtn() {
 
   <div class="rounded-full p-2">
       <img
-        class="rounded-md object-cover h-40 w-40"
+        class="rounded-md object-cover h-20 w-20"
         :src="props.dish?.imgUrl"
         :alt="props.dish?.title"
       />

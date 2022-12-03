@@ -67,6 +67,7 @@ async function handleTableCreation() {
           </template>
         </ModalView>
       </Teleport>
+      
         <div v-if="gridData.length">
           <TableGrid :userData="userData" :data="gridData" :columns="gridColumns" :filter-key="searchQuery"/>
         </div>

@@ -4,6 +4,7 @@ import type { Ref } from 'vue'
 import SideNavbar from "../SideNavbar.vue";
 import TopNavbar from "../TopNavbar.vue";
 import DishCard from "./DishCard.vue";
+import DishCardSlim from "./DishCardSlim.vue";
 import AddToMenu from "./AddToMenu.vue";
 import AddMenuHeader from "./AddMenuHeader.vue";
 import  dishAPIService  from "../../services/dishAPI"
@@ -38,7 +39,7 @@ Auth.currentAuthenticatedUser().then((u) => {
 });
 
 const searchedDishes = computed(()=> {
-  return dishes.value.filter((dish)=> {
+  return dishes.value.filter((dish: { title: string; })=> {
     return (
       dish.title
       .toLowerCase()
@@ -56,7 +57,7 @@ watch(currentList, async () => {
     }
   })
 
-
+  
 </script>
 
 <template>
@@ -68,6 +69,7 @@ watch(currentList, async () => {
         <div class="flex flex-row">
           <div id="menu" class="w-1/2 p-7">
 
+            <!-- BANNER -->
             <div v-if="banner.url" class="relative">
               <img :src="banner?.url" class="rounded-md object-cover "/>
               <h1 class="absolute text-8xl text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-josefin">{{banner?.title}}</h1>
@@ -77,13 +79,8 @@ watch(currentList, async () => {
               <img :src="banner?.url" class="rounded-md object-cover "/>
               <h1 class="absolute text-8xl text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-josefin">Our Menu</h1>
             </div>
-
-            <!-- SEARCH BAR -->
-            <div id="top-container" class="flex flex-row gap-5 items-center px-4 mt-2 justify-between px-4 sm:px-6 lg:px-8">
-              <form id="search" class="w-2/3">
-                <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="pr-1 text-gray-700" /> <input class="shadow appearance-none border rounded-full w-5/6" name="query" v-model="searchQuery" />
-              </form>
-            </div>
+            <!-- BANNER ends -->
+            
 
             <!-- RADIO BUTTON for ACTIVE MENU and ALL DISHES -->
             <template v-for="list in lists">
@@ -95,10 +92,7 @@ watch(currentList, async () => {
              <label :for="list">{{ list }}</label>
               </template>
             <!-- RADIO ENDS HERE -->
-           <!--  <div v-show="currentList === 'Active Menu'">
-              <img :scr="banner.url" />
-            </div> -->
-            <!-- <h1 class="space-y-4 py-5 sm:py-6 text-xl">Active Menu</h1> -->
+           
             <div
               v-for="dish in searchedDishes"
               :key="dish.title"
@@ -108,14 +102,24 @@ watch(currentList, async () => {
             </div>
           </div>
           <div id="dishes" class="w-1/2 p-7 gap-6">
-            <AddToMenu />
 
+            
+            <!-- SEARCH BAR -->
+            <div id="top-container" class="flex flex-row gap-5 items-center mt-2 mb-2 py-2 px-2 justify-between">
+              <h1 class="font-josefin font">ALL DISHES</h1>
+              <form id="search" class="w-1/2">
+                <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="pr-1 text-gray-700" /> <input class="shadow appearance-none border rounded-full w-5/6" name="query" v-model="searchQuery" />
+              </form>
+              <AddToMenu />
+            </div>
+
+            
             <div
               v-for="dish in searchedDishes"
               :key="dish.title"
-              class="bg-gray-50 px-4 py-3"
+              class="bg-gray-50 px-4 py-2"
             >
-              <DishCard :dish="dish" :userId="userId"></DishCard>
+              <DishCardSlim :dish="dish" :userId="userId"></DishCardSlim>
             </div>
 
             
