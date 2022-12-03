@@ -39,7 +39,7 @@ Auth.currentAuthenticatedUser().then((u) => {
 </script>
 
 <template>
-  <h4>Tickets</h4>
+  
   <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <TicketsGrid :data="gridData" :columns="gridColumns"> </TicketsGrid>
   </div>

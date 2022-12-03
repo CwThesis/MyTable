@@ -20,6 +20,7 @@ import {
   faQrcode,
   faUtensils,
   faMagnifyingGlass,
+  faClock,
 } from '@fortawesome/free-solid-svg-icons'
 library.add(
   faArrowsRotate,
@@ -32,6 +33,7 @@ library.add(
   faQrcode,
   faUtensils,
   faMagnifyingGlass,
+  faClock,
 )
 
 Amplify.configure(awsExports)

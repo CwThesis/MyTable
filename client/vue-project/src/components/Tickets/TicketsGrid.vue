@@ -47,9 +47,9 @@ function capitalize(str: string) {
 <template>
   <div>
 
-    <table v-if="filteredData?.length">
+    <table v-if="filteredData?.length" class="sm:rounded-lg">
       <thead>
-        <tr>
+        <tr class="overflow-hidden bg-white shadow sm:rounded-lg">
           <th
             v-for="key in columns"
             @click="sortBy(key)"
@@ -63,7 +63,7 @@ function capitalize(str: string) {
       </thead>
       <tbody>
         <tr v-for="entry in filteredData">
-          <td v-for="key in columns">
+          <td v-for="key in columns" class="border-y">
             <td v-if="key === 'orders'">
               <div class ="shadow" v-for="order in entry[key]">
                 <div v-for="dish in order.CO">
@@ -83,7 +83,7 @@ function capitalize(str: string) {
         </tr>
       </tbody>
     </table>
-    <p v-else>No entries found</p>
+    <p v-else> <font-awesome-icon icon="fa-solid fa-clock" pull="top" shake/>No entries found</p>
   </div>
 </template>
 
@@ -92,8 +92,6 @@ function capitalize(str: string) {
 
 <style>
 th {
-  background-color: #141a32d7;
-  color: rgb(255, 255, 255);
   cursor: pointer;
   user-select: none;
 }
@@ -109,7 +107,7 @@ td {
 }
 
 th.active {
-  color: #fff;
+  color: rgb(59, 59, 59);
 }
 
 th.active .arrow {

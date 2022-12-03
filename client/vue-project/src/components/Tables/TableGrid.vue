@@ -113,7 +113,7 @@ function downloadDocument() {
     <table v-if="filteredData?.length" class="sm:rounded-lg">
       <thead >
         <tr class="overflow-hidden bg-white shadow sm:rounded-lg">
-          <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }" class="">
+          <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }" >
             {{ capitalize(key as any) }}
             <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
             </span>
