@@ -1,68 +1,32 @@
 <script setup lang="ts"></script>
 
 <template>
-<div class="spinnerContainer">
-  <div class="spinner">
-    <div class="shape1"></div>
-    <div class="shape2"></div>
-    <div class="shape3"></div>
-    <div class="shape4"></div>
-    <div class="shape5"></div>
-  </div>
+<div class="loader-container">
+<div class="loader">
+<img src="https://cdn.dribbble.com/users/2140642/screenshots/4301537/media/c0336297531a44070650a44bbb0961b9.gif">
+</div>
 </div>
 </template>
 
 <style>
-.spinnerContainer {
-  display: grid;
-  place-items: center;
-  background-color: #1b1b49;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
 
-.spinner {
+.loader-container {
   display: flex;
-  gap: 0.275rem;
-  width: 3rem;
-  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 70vh;
 }
 
-.spinner div {
-  background: #f9f9f9;
-  width: 0.375rem;
-  animation: bounce 1.1s infinite ease-in-out;
+.loader {
+  position: fixed;
+	width: 80vw;
+	height: 80vh;
+	
+	z-index: 999;
 }
 
-@keyframes bounce {
-
-  0%,
-  40%,
-  100% {
-    transform: scaleY(0.4);
-  }
-
-  20% {
-    transform: scaleY(1);
-  }
-}
-
-.spinner .shape2 {
-  animation-delay: -1s;
-}
-
-.spinner .shape3 {
-  animation-delay: -0.9s;
-}
-
-.spinner .shape4 {
-  animation-delay: -0.8s;
-}
-
-.spinner .shape5 {
-  animation-delay: -0.7s;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
