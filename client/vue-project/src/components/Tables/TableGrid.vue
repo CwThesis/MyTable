@@ -1,17 +1,31 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import QRCode from 'qrcode-svg'
+import ModalView from "../ModalView.vue";
+import tableAPIService from '../../services/tableAPI';
+import pdfMake from "pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+import htmlToPdfmake from "html-to-pdfmake";
+import QRModal from '../QRModal.vue'
+
 
 const props = defineProps({
   data: Array,
   columns: Array,
   filterKey: String,
+  userData: Object
 });
 
 const sortKey = ref("");
 const sortOrders = ref(
-  props.columns!.reduce((o, key) => ((o[key] = 1), o), {})
+  props.columns.reduce((o, key) => ((o[key] = 1), o), {})
 );
+const showModal = ref(false)
+const showQRModal = ref(false)
+const buttonToDeleteID = ref("");
+const targetQRUrl = ref("");
+const QRToDownload = ref(null);
+const targetQRTableName = ref("");
 
 const filteredData = computed(() => {
   let { data, filterKey } = props;
@@ -44,8 +58,51 @@ function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-const svg = new QRCode("Hello World!").svg();
+async function handleTableDeletion() {
+  const res = await tableAPIService.deleteTable(buttonToDeleteID.value, props.userData.username);
+  if (res && res.success) {
+    showModal.value = false;
+    window.location.reload();
+  } else alert('Could not delete table');
+}
 
+async function handlePinRefresh(tableID: string){
+  console.log("tableID: ",tableID)
+  const res = await tableAPIService.refreshPin(tableID, props.userData.username);
+  if (res && res.success) {
+    window.location.reload();
+  } else alert('Could not refresh pin');
+}
+
+function tableToDelete(id: string) {
+  showModal.value = true;
+  buttonToDeleteID.value = id;
+}
+
+function handleQRDownload (tablename: string, QRUrl: string) {
+  targetQRTableName.value = tablename;
+  targetQRUrl.value = QRUrl
+  QRToDownload.value = new QRCode({
+    content: QRUrl,
+    padding: 0,
+    width: 160,
+    height: 160,
+    color: "#000000",
+    background: "#ffffff",
+    ecl: "M",
+  }).svg();
+  showQRModal.value = true;
+}
+
+function downloadDocument() {
+  //get table html
+  const pdfTable = document.getElementById(targetQRTableName.value);
+  //html to pdf format
+  let html = htmlToPdfmake(pdfTable?.innerHTML);
+  const documentDefinition = { content: html };
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  pdfMake.createPdf(documentDefinition).download();
+}
 
 </script>
 
@@ -54,11 +111,7 @@ const svg = new QRCode("Hello World!").svg();
     <table v-if="filteredData?.length">
       <thead>
         <tr>
-          <th
-            v-for="key in columns"
-            @click="sortBy(key)"
-            :class="{ active: sortKey == key }"
-          >
+          <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }">
             {{ capitalize(key as any) }}
             <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
             </span>
@@ -68,28 +121,56 @@ const svg = new QRCode("Hello World!").svg();
       <tbody>
         <tr v-for="entry in filteredData">
           <td v-for="key in columns">
-            <td v-if="key === 'QR'"> 
-            <div v-html="new QRCode({
-              content: entry[key],
-              width: 60,
-              height: 60,
-              padding: 0
-            }).svg()"></div>
-            </td>
-            <td v-else-if="key === 'actions'">
-              <button>Edit</button>
-              <button>Delete</button>
-            </td>
-            <td v-else> {{ entry[key] }}</td>
+          <td v-if="key === 'QR'">
+            <div class="flex direction-row">
+              <div v-html="new QRCode({
+                content: entry[key],
+                width: 60,
+                height: 60,
+                padding: 0
+              }).svg()">
+              </div>
+              <button @click="handleQRDownload(entry.table, entry[key])" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">D</button>
+            </div>
+          </td>
+          <td v-else-if="key === 'actions'">
+            <button @click="tableToDelete(entry[key])"
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">X</button>
+          </td>
+          <td v-else-if="key === 'pincode'">
+          {{ entry[key] }}
+          <button @click="handlePinRefresh(entry['actions'])" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">R</button>
+          </td>
+          <td v-else> {{ entry[key] }}</td>
           </td>
         </tr>
       </tbody>
     </table>
     <p v-else>No entries found</p>
   </div>
+  <Teleport to="body">
+    <!-- use the modal component, pass in the prop -->
+    <ModalView :show="showModal" @submit="handleTableDeletion" @close="showModal = false">
+      <template #header>
+        <p>Are you sure you want to delete the table?</p>
+      </template>
+    </ModalView>
+  </Teleport>
+  <Teleport to="body">
+    <!-- use the modal component, pass in the prop -->
+    <QRModal :show="showQRModal" @submit="downloadDocument" @close="showQRModal = false">
+      <template #header>
+      </template>
+      <template #body>
+        <div :id="targetQRTableName">
+          <div v-html="QRToDownload">
+          </div>
+          <p>{{targetQRTableName}}</p>
+        </div>
+      </template>
+    </QRModal>
+  </Teleport>
 </template>
-
-
 
 
 <style>

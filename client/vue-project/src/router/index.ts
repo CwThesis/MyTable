@@ -46,7 +46,7 @@ const router = createRouter({
     },
     {
       path: "/customer/:restID/:tableID",
-      name: "customer",
+      name: "mobile",
       component: () => import("../views/MobileView.vue"),
     },
   ],
