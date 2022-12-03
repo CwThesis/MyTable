@@ -71,5 +71,5 @@ async function sendOrder () {
       </div>
     </div>
   </div>
-  <div v-else>Couldn't load the menu :(</div>
+
 </template>
