@@ -9,6 +9,7 @@ import htmlToPdfmake from "html-to-pdfmake";
 import QRModal from '../QRModal.vue'
 
 
+
 const props = defineProps({
   data: Array,
   columns: Array,
@@ -18,7 +19,7 @@ const props = defineProps({
 
 const sortKey = ref("");
 const sortOrders = ref(
-  props.columns.reduce((o, key) => ((o[key] = 1), o), {})
+  props.columns?.reduce((o, key) => ((o[key] = 1), o), {})
 );
 const showModal = ref(false)
 const showQRModal = ref(false)
@@ -107,11 +108,12 @@ function downloadDocument() {
 </script>
 
 <template>
-  <div>
-    <table v-if="filteredData?.length">
-      <thead>
-        <tr>
-          <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }">
+  <div >
+   
+    <table v-if="filteredData?.length" class="sm:rounded-lg">
+      <thead >
+        <tr class="overflow-hidden bg-white shadow sm:rounded-lg">
+          <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }" class="">
             {{ capitalize(key as any) }}
             <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
             </span>
@@ -120,26 +122,33 @@ function downloadDocument() {
       </thead>
       <tbody>
         <tr v-for="entry in filteredData">
-          <td v-for="key in columns">
+          <td v-for="key in columns" class="border-y">
           <td v-if="key === 'QR'">
             <div class="flex direction-row">
-              <div v-html="new QRCode({
+              <!-- <div v-html="new QRCode({
                 content: entry[key],
                 width: 60,
                 height: 60,
                 padding: 0
               }).svg()">
-              </div>
-              <button @click="handleQRDownload(entry.table, entry[key])" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">D</button>
+              </div> -->
+              <button @click="handleQRDownload(entry.table, entry[key])" class="bg-transparent p-4 text-zinc-500 hover:text-black font-bold py-1 px-3 rounded-lg">
+                <font-awesome-icon icon="fa-solid fa-file-arrow-down fa-lg" />
+              </button>
             </div>
           </td>
           <td v-else-if="key === 'actions'">
             <button @click="tableToDelete(entry[key])"
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">X</button>
+              class="text-zinc-500 hover:text-black  font-bold py-4 px-4 rounded-full">
+              <font-awesome-icon icon="fa-solid fa-trash fa-lg" />
+            </button>
           </td>
           <td v-else-if="key === 'pincode'">
           {{ entry[key] }}
-          <button @click="handlePinRefresh(entry['actions'])" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">R</button>
+         
+          <button @click="handlePinRefresh(entry['actions'])" class="bg-transparent p-4 text-zinc-500 hover:text-black">
+            <font-awesome-icon icon="fa-solid fa-arrows-rotate fa-lg" class="text-violet-700" />
+          </button>
           </td>
           <td v-else> {{ entry[key] }}</td>
           </td>
@@ -175,8 +184,6 @@ function downloadDocument() {
 
 <style>
 th {
-  background-color: #141a32d7;
-  color: rgb(255, 255, 255);
   cursor: pointer;
   user-select: none;
 }
@@ -192,7 +199,7 @@ td {
 }
 
 th.active {
-  color: #fff;
+  color: rgb(59, 59, 59);
 }
 
 th.active .arrow {
