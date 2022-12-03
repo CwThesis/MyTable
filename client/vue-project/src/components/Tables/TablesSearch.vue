@@ -47,7 +47,7 @@ async function handleTableCreation() {
 <template>
   <div id="top-container" class="flex flex-row gap-5 items-center px-4 mt-10 justify-between px-4 sm:px-6 lg:px-8">
     <form id="search" class="w-2/3">
-      <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="pr-1 text-gray-700" /> <input class="shadow appearance-none border rounded-full w-5/6" name="query" v-model="searchQuery" />
+      <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="pr-1 text-gray-700" /> <input class="shadow appearance-none border rounded-full" name="query" v-model="searchQuery" />
     </form>
     <button class="bg-violet-700 hover:bg-violet-500 text-white font-semibold py-2 px-4 rounded-full" id="show-modal" @click="showModal = true">New Table</button>
   </div>
