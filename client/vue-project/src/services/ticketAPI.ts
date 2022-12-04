@@ -36,7 +36,7 @@ const ticketAPIService = {
         method: "PUT",
         mode: "cors",
         headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
-        body: JSON.stringify(ticket),
+        body: JSON.stringify({ticket: ticket}),
       });
       return await res.json();
     } catch (err) {

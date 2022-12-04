@@ -4,6 +4,7 @@ import { ref, computed } from "vue";
 const props = defineProps({
   data: Array,
   columns: Array,
+  waiters: Array,
 });
 
 const sortKey = ref("");
@@ -65,7 +66,7 @@ function capitalize(str: string) {
         <tr v-for="entry in filteredData">
           <td v-for="key in columns" class="border-y">
             <td v-if="key === 'orders'">
-              <div class ="shadow" v-for="order in entry[key]">
+              <div class ="shadow p-2" v-for="order in entry[key]">
                 <div v-for="dish in order.CO">
               <div>{{dish.name}}, {{dish.amount}}</div>
                 </div>
@@ -74,7 +75,17 @@ function capitalize(str: string) {
             </td>
             <td v-else-if="key === 'total'">
               <div v-for="order in entry[key]">
-                <div>{{order.CT}}€</div>
+                <div>{{order.CT}}</div>
+              </div>
+            </td>
+
+            <td v-else-if="key === 'waiter'">
+              <div>
+                <select :placeholder="entry['waiter']">
+                  <option v-for="waiter in waiters" :key="waiter" :value="waiter">
+                    {{ waiter }}
+                  </option>
+                </select>
               </div>
             </td>
 
