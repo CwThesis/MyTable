@@ -17,5 +17,6 @@ import "./style.css";
 .wrapper {
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
 }
 </style>

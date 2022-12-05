@@ -9,13 +9,10 @@ const props = defineProps({
 });
 
 let dishStatus = ref(props.dish?.menu);
-console.log("Initial state:", props.dish?.menu);
 
 async function toggleBtn() {
-  //dishStatus.value = !dishStatus.value;
-  console.log(dishStatus.value);
   const res = await menuAPIService.toggleDish(props.dish?.id, props.userId);
-  console.log ("After change:", props.dish);
+  console.log(res);
 }
 
 </script>

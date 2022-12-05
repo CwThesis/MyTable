@@ -15,8 +15,12 @@ export type Dish = {
   description: string
   price: number
   currency: string
-  category: 'mains' | 'starters' | 'desserts' | 'drinks'
+  category: 'mains' | 'starters' | 'soups' | 'desserts' | 'drinks'
   id: string
+}
+export type Banner = {
+  url: string
+  title: string
 }
 
 export type DishIdWithAmount = {

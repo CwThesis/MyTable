@@ -6,16 +6,20 @@ import TopNavbar from "../TopNavbar.vue";
 import DishCard from "./DishCard.vue";
 import DishCardSlim from "./DishCardSlim.vue";
 import AddToMenu from "./AddToMenu.vue";
-import AddMenuHeader from "./AddMenuHeader.vue";
+import type {Banner} from "../../types"
+//import AddMenuHeader from "./AddMenuHeader.vue";
 import  dishAPIService  from "../../services/dishAPI"
 import { Auth } from 'aws-amplify';
 import menuAPIService from "../../services/menuAPI"
+import { useMenuStore } from "../../stores/menu.store"
 
+//const store = useMenuStore();
 let userId = "";
 let dishes: Ref<any> = ref([]);
-let lists = ["Active Menu", "All Dishes"]
-let currentList = ref(lists[0]);
-let banner = ref(); // some initial value needed here!
+//let newDish = ref({});
+//let lists = ["Active Menu", "All Dishes"]
+//let currentList = ref(lists[0]);
+let banner: Ref<Banner> = ref({url: "http://res.cloudinary.com/dvyn9lzkf/image/upload/v1669984775/vfk6kogi0wbbbeu5eroc.jpg", title: "Enjoy!"}); // some initial value needed here! (placeholder before it is loaded)
 const searchQuery = ref("");
 
 Auth.currentAuthenticatedUser().then((u) => {
@@ -26,19 +30,23 @@ Auth.currentAuthenticatedUser().then((u) => {
   (async () => {
     console.log("User id", userId);
     const res = await dishAPIService.getAllDishes(userId);
-    if (currentList.value === "Active Menu"){
+    dishes.value = res.body;
+    /* if (currentList.value === "Active Menu"){
       dishes.value = res.body.filter((dish: { menu: boolean; }) => dish.menu === true)
     } else {
       dishes.value = res.body;
-    }
+    } */
     const res2 = await menuAPIService.getBanner(userId);
     banner.value = res2.body;
-    console.log("Banner", banner.value);
-
   })()
 });
 
+const activeMenu = computed(()=> {
+  return dishes.value.filter((dish: { menu: boolean; }) => dish.menu === true)
+})
+
 const searchedDishes = computed(()=> {
+  
   return dishes.value.filter((dish: { title: string; })=> {
     return (
       dish.title
@@ -48,14 +56,23 @@ const searchedDishes = computed(()=> {
   })
 })
 
-watch(currentList, async () => {
+const defaultBanner = 0;
+
+
+
+/* watch(newDish, async () => {
     const res = await dishAPIService.getAllDishes(userId);
     if (currentList.value === "Active Menu"){
       dishes.value = res.body.filter((dish: { menu: boolean; }) => dish.menu === true)
     } else {
       dishes.value = res.body;
     }
-  })
+  }) */
+
+  // watch for changes in newDish and add every new dish to dishes array
+ /*  watch(newDish, async () => {
+    dishes.value = [store.currentNewDish, ...dishes.value];
+  }) */
 
   
 </script>
@@ -65,13 +82,20 @@ watch(currentList, async () => {
     <SideNavbar />
     <div class="flex-1">
       <TopNavbar />
-      <main class="flex-1 justify-center">
-        <div class="flex flex-row">
-          <div id="menu" class="w-1/2 p-7">
+      <main class="flex flex-1 justify-center w-full xl:w-11/12">
+        
+          <div id="menu" class="w-1/2 p-7 flex justify-center">
+            <div id="active-menu" class="max-w-xl">
+
+            <div id="top-container" class="flex flex-row gap-5 items-center mt-2 mb-2 py-2 px-2 justify-start">
+              <h1 class="font-josefin">ACTIVE MENU</h1>
+            </div>
+
+            <div class="overflow-y-scroll rounded-xl bg-gray-50 h-[80vh] max-w-screen-sm">
 
             <!-- BANNER -->
-            <div v-if="banner.url" class="relative">
-              <img :src="banner?.url" class="rounded-md object-cover "/>
+            <div v-if="banner.url" class="relative px-4 py-3">
+              <img :src="banner?.url" class="rounded-md object-cover max-h-72"/>
               <h1 class="absolute text-8xl text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-josefin">{{banner?.title}}</h1>
             </div>
             
@@ -83,48 +107,51 @@ watch(currentList, async () => {
             
 
             <!-- RADIO BUTTON for ACTIVE MENU and ALL DISHES -->
-            <template v-for="list in lists">
+           <!--  <template v-for="list in lists">
               <input type="radio"
                 :id="list"
                 :value="list"
                  name="list"
                 v-model="currentList">
              <label :for="list">{{ list }}</label>
-              </template>
+              </template> -->
             <!-- RADIO ENDS HERE -->
            
             <div
-              v-for="dish in searchedDishes"
+              v-for="dish in activeMenu"
               :key="dish.title"
-              class="bg-gray-50 px-4 py-3"
+              class="px-4 py-3"
             >
               <DishCard :dish="dish" :userId="userId"></DishCard>
             </div>
           </div>
-          <div id="dishes" class="w-1/2 p-7 gap-6">
+        </div>
+        </div>
 
-            
+
+          <div id="dishes" class="w-1/2 p-7 gap-6">
             <!-- SEARCH BAR -->
-            <div id="top-container" class="flex flex-row gap-5 items-center mt-2 mb-2 py-2 px-2 justify-between">
-              <h1 class="font-josefin font">ALL DISHES</h1>
+            <div id="top-container" class="flex flex-row gap-2 items-center mt-2 mb-2 py-2 px-2 justify-between">
+              <h1 class="font-josefin">ALL DISHES</h1>
               <form id="search" class="w-1/2">
-                <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="pr-1 text-gray-700" /> <input class="shadow appearance-none border rounded-full w-5/6" name="query" v-model="searchQuery" />
+                <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="pr-1 text-gray-700" /> 
+                <input class="shadow appearance-none border rounded-full w-5/6" name="query" v-model="searchQuery" />
               </form>
               <AddToMenu />
             </div>
 
-            
+            <div class="overflow-y-scroll h-[80vh] rounded-xl bg-gray-50">
             <div
               v-for="dish in searchedDishes"
               :key="dish.title"
-              class="bg-gray-50 px-4 py-2"
+              class="px-4 pt-2"
             >
               <DishCardSlim :dish="dish" :userId="userId"></DishCardSlim>
             </div>
-
+            </div>
             
           </div>
-        </div>
+      
       </main>
     </div>
   </div>
