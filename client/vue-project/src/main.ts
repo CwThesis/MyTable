@@ -11,6 +11,7 @@ import {
   faTrash,
   faFileArrowDown,
   faSpinner,
+  faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faArrowsRotate,
@@ -21,6 +22,7 @@ import {
   faUtensils,
   faMagnifyingGlass,
   faClock,
+  faCloudArrowUp,
 } from '@fortawesome/free-solid-svg-icons'
 library.add(
   faArrowsRotate,
@@ -34,6 +36,8 @@ library.add(
   faUtensils,
   faMagnifyingGlass,
   faClock,
+  faXmark,
+  faCloudArrowUp,
 )
 
 Amplify.configure(awsExports)

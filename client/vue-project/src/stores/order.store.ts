@@ -5,6 +5,7 @@ import type { DishIdWithAmount } from '../types'
 export const useOrderStore = defineStore('order', () => {
   const dataFromStorage = localStorage.getItem('order')
   const parsedDataFromStorage = JSON.parse(dataFromStorage)
+
   const currentOrder = ref<DishIdWithAmount[] | null>(
     parsedDataFromStorage && parsedDataFromStorage.CO
       ? parsedDataFromStorage.CO

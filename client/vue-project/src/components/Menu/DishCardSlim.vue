@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import  menuAPIService  from "../../services/menuAPI"
-//import useMenuStore from "../../stores/menu.store"
+import { useMenuStore } from "../../stores/menu.store"
 
 const props = defineProps({
   dish: Object,
@@ -11,8 +11,8 @@ const props = defineProps({
 let dishStatus = ref(props.dish?.menu);
 
 async function toggleBtn() {
-  const res = await menuAPIService.toggleDish(props.dish?.id, props.userId);
-  console.log(res);
+ const res = await menuAPIService.toggleDish(props.dish?.id, props.userId); 
+ console.log(res)
 }
 
 </script>
@@ -25,7 +25,7 @@ async function toggleBtn() {
 
   <div class="rounded-full p-2">
       <img
-        class="rounded-md object-cover h-40 w-40"
+        class="rounded-md object-cover h-20 w-20"
         :src="props.dish?.imgUrl"
         :alt="props.dish?.title"
       />
