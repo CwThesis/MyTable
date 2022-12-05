@@ -30,13 +30,27 @@ const ticketAPIService = {
     }
   },
 
+  getAllWaiters : async (userID: string) => {
+    try {
+      const res = await fetch(`${BE_URL}/dashboard/${userID}/AllStaff`, {
+        method: "GET",
+        mode: "cors",
+        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`},
+      });
+      const resParsed =  await res.json();
+      return JSON.parse(resParsed.body);
+    } catch (err) {
+      return console.log("Error getting the waiters: ", err);
+    }
+  },
+
   updateTicket : async (ticket: any, userID: string) => {
     try {
       const res = await fetch(`${BE_URL}/dashboard/${userID}/updateTicket`, {
         method: "PUT",
         mode: "cors",
         headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
-        body: JSON.stringify(ticket),
+        body: JSON.stringify({ticket: ticket}),
       });
       return await res.json();
     } catch (err) {
