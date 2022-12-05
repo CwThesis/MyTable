@@ -12,8 +12,8 @@ const orderStore = useOrderStore();
 
 <template>
   <div
-    class="flex flex-row relative p-0 mb-3 justify-between items-center bg-white shadow rounded-lg cursor-move border border-white" style="width: 100%; height:10rem">
-    <div class="flex flex-col" style="width: 180%">
+    class="overflow-y flex flex-row relative p-0 mb-3 justify-between items-center bg-white shadow rounded-lg cursor-move border border-white" style="width: 100%; height:10rem">
+    <div class="flex flex-col" style="width: 120%">
       <p class="ml-5 text-gray-700 font-semibold font-sans tracking-wide">
         {{ props.dish?.title }}
       </p>
@@ -23,19 +23,23 @@ const orderStore = useOrderStore();
       <p class="ml-8 text-gray-700 font-sans tracking-wide">
         {{ props.dish?.price }} {{ props.dish.currency }}
       </p>
-      <div>
-        <button class="p-2 bg-gray-200 rounded-sm" v-show="orderStore.amountById(props.dish.id)"
-        @click="orderStore.decrementAmountById(props.dish.id, props.dish.price)">➖</button>
-        <label class="inline-flex absolute items-center cursor-pointer bottom-3 right-3">
-          <button class="p-2 bg-gray-200 rounded-sm"
-          @click="orderStore.addToOrder({ id: props.dish.id, name: props.dish.title, img: props.dish.imgUrl, amount: 1 }, props.dish.price)">➕</button>
-        </label>
-      </div>
     </div>
       
     
     <div :style="{ backgroundImage: `url(${props.dish?.imgUrl})`}" style="background-size: cover; background-position: center;" class="w-full h-full rounded-r-lg">
         <!-- <img class="w-full rounded-r-lg" :src="props.dish?.imgUrl" :alt="props.dish?.title" style="object-fit: cover"/> -->
+        <div class="flex flex-col content-end mt-4 ml-16 p-2" style="width: 3.4rem">
+          <div>
+            <div>
+              <button class="p-2 mb-8 bg-gray-200 rounded-full"
+                @click="orderStore.addToOrder({ id: props.dish.id, name: props.dish.title, img: props.dish.imgUrl, amount: 1 }, props.dish.price)">➕</button>
+            </div>
+            <button class="p-2 bg-gray-200 rounded-full" v-show="orderStore.amountById(props.dish.id)"
+            @click="orderStore.decrementAmountById(props.dish.id, props.dish.price)">➖</button>
+          </div>
+        <!-- <label class="inline-flex absolute items-center cursor-pointer bottom-3 right-3"> -->
+        <!-- </label> -->
+        </div>
     </div>
 
   </div>

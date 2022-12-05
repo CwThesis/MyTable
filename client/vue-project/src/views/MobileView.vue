@@ -5,12 +5,13 @@ import type { Ref } from 'vue';
 import { ref, toRaw, watch } from "vue";
 import { useOrderStore } from "../stores/order.store";
 import orderAPIService from "../services/orderAPI";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import LoadingSpinner from '../components/LoadingSpinner.vue';
 
 
 const orderStore = useOrderStore();
 const route = useRoute();
+const router= useRouter();
 const dishes: Ref<Dish[]> = ref([]);
 const restaurantName: Ref<string> = ref("");
 const loading: Ref<boolean> = ref(true);
@@ -33,27 +34,31 @@ if (route.params.restID && route.params.tableID) {
 }
 
 async function sendOrder() {
-  const res = await orderAPIService.newOrder(toRaw(orderStore.currentOrder) as any, orderStore.currentTotal, route.params.restID, route.params.tableID)
+  // const res = await orderAPIService.newOrder(toRaw(orderStore.currentOrder) as any, orderStore.currentTotal, route.params.restID, route.params.tableID)
   //handle response
-  orderStore.emptyOrder();
+
+  router.push(route.path+'/order');
+
+  //orderStore.emptyOrder();
 }
 </script>
 
 <template>
-  <div v-if="loading">
-    <LoadingSpinner />
+  <div class="p-2 bg-gray-200 overflow-y-scroll h-full rounded-lg">
+    <div v-if="loading">
+      <LoadingSpinner />
+    </div>
+    <div :style="{backgroundImage: `url(${banner})`}" class= "w-full h-40 rounded-r-lg" style="background-size: cover; background-position: center;">
+    
   </div>
-  <div class= "w-20 h-20 rounded-r-lg">
-    <img :src="banner">
-  </div>
-  <div v-if="dishes.length">
+  <div  v-if="dishes.length">
     <div class="py-2 bg-gray-200">
       <div class="flex justify-center bg-gray-200">
         <h1 class="space-y-4 py-5 sm:py-6 text-xl">Menu - {{ restaurantName }}</h1>
       </div>
-      <div>
+      <div >
         <h2></h2>
-        <div v-for="dish in dishes" :key="dish.title" class="flex bg-gray-200 px-4 p-0">
+        <div v-for="dish in dishes" :key="dish.title" class=" flex bg-gray-200 px-4 p-0">
           <DishCardMobile :dish="dish" />
         </div>
       </div>
@@ -68,5 +73,6 @@ async function sendOrder() {
         <div class="flex items-center">TOTAL: {{ orderStore.currentTotal }}</div>
       </div>
   </div>
+</div>
 
 </template>
