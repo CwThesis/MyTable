@@ -71,6 +71,18 @@ async function handleEditStaff(staff: Object, newName: string) {
   }
 };
 
+async function handleStripeRegistration(userID: string) {
+  const res = await restaurantAPIService.registerStripe(userID);
+  if(res && res.success) {
+    window.location.assign(res.data.url);
+  }
+  else {
+    console.log("error")
+  }
+  console.log("res", res)
+  //
+
+}
 
 </script>
 
@@ -167,8 +179,10 @@ async function handleEditStaff(staff: Object, newName: string) {
                                 <ul
                                   class="flex flex-col w-60 mt-2 text-sm text-gray-500 list-none bg-gray-100 rounded-md m-1 py-1 px-1">
                                   <li v-for="item in staff" :key="item" class="flex items-center">
-                                    <div :contenteditable="editMode" @blur="((e) => handleEditStaff(item, e.target.innerText))"
-                                      class="self-start">{{ item.name || "Name is empty" }}</div>
+                                    <div :contenteditable="editMode"
+                                      @blur="((e) => handleEditStaff(item, e.target.innerText))" class="self-start">{{
+                                          item.name || "Name is empty"
+                                      }}</div>
                                     <div>
                                       <button @click="handleDeleteStaffMember(item.id)" v-if="editMode"
                                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded">D</button>
@@ -182,6 +196,13 @@ async function handleEditStaff(staff: Object, newName: string) {
                                 <button @click="handleNewStaffMemberSubmit"
                                   class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded">Submit</button>
                               </div>
+                            </div>
+
+                            <div>
+                              <button
+                                class="rounded-full border border-transparent bg-violet-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+                                v-if="true" @click="handleStripeRegistration(userData.username)">Connect to
+                                Stripe</button>
                             </div>
                           </div>
                         </div>
