@@ -32,7 +32,8 @@ Auth.currentAuthenticatedUser().then((u) => {
     }
     //create endpoint to get all waiters
   }); 
-    //const waiters = await ticketAPIService.getAllWaiters('t');
+    const waiters2 = await ticketAPIService.getAllWaiters(username);
+    console.log("w2",waiters2)
     waiters.value = ['test1', 'test2', 'test3'];
     gridData.value = gridData.value.filter((el) => el !== undefined)
     console.log(gridData.value)
