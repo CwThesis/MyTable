@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import { Authenticator } from '@aws-amplify/ui-vue';
 import "@aws-amplify/ui-vue/styles.css";
 import "./style.css";
+import { Authenticator } from "@aws-amplify/ui-vue";
+
 </script>
 
 <template>
   <div class="wrapper">
-    <Authenticator>
-      <router-view/>
-    </Authenticator>
+    <RouterView/>
   </div>
 </template>
 
