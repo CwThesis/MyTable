@@ -57,6 +57,12 @@ const router = createRouter({
       meta: { requiresAuth: false },
       component: () => import("../views/MobileView.vue"),
     },
+    {
+      path: "/customer/:restID/:tableID/order",
+      name: "order",
+      meta: { requiresAuth: false },
+      component: () => import("../views/MobileViewOrder.vue"),
+    },
   ],
 });
 

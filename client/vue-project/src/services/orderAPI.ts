@@ -31,7 +31,25 @@ const orderAPIService = {
     } catch (err) {
       return console.log("Error getting restaurant data: ", err);
     }
-  }
+  },
+
+  getTicket : async (restID: string, tableID: string) => {
+    try {
+     
+      const res = await fetch(`${BE_URL}/customer/${restID}/${tableID}/getTicket`, {
+        method: "GET",
+        mode: "cors",
+        headers: {"Content-Type": "application/json"},
+      });
+      console.log('parsed::::0', res);
+      const resParsed =  await res.json();
+      return JSON.parse(resParsed.body);
+    } catch (err) {
+      return console.log("Error getting the ticket: ", err);
+    }
+  },
+
+
 }
 
 
