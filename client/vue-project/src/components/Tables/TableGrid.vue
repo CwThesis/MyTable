@@ -95,20 +95,16 @@ function handleQRDownload (tablename: string, QRUrl: string) {
 }
 
 function downloadDocument() {
-  //get table html
   const pdfTable = document.getElementById(targetQRTableName.value);
-  //html to pdf format
   let html = htmlToPdfmake(pdfTable?.innerHTML);
   const documentDefinition = { content: html };
   pdfMake.vfs = pdfFonts.pdfMake.vfs;
   pdfMake.createPdf(documentDefinition).download();
 }
-
 </script>
 
 <template>
   <div >
-   
     <table v-if="filteredData?.length" class="sm:rounded-lg">
       <thead >
         <tr class="overflow-hidden bg-white shadow sm:rounded-lg">
@@ -124,13 +120,6 @@ function downloadDocument() {
           <td v-for="key in columns" class="border-y">
           <td v-if="key === 'QR'">
             <div class="flex direction-row">
-              <!-- <div v-html="new QRCode({
-                content: entry[key],
-                width: 60,
-                height: 60,
-                padding: 0
-              }).svg()">
-              </div> -->
               <button @click="handleQRDownload(entry.table, entry[key])" class="bg-transparent p-4 text-zinc-500 hover:text-black font-bold py-1 px-3 rounded-lg">
                 <font-awesome-icon icon="fa-solid fa-file-arrow-down fa-lg" />
               </button>
@@ -144,7 +133,6 @@ function downloadDocument() {
           </td>
           <td v-else-if="key === 'pincode'">
           {{ entry[key] }}
-         
           <button @click="handlePinRefresh(entry['actions'])" class="bg-transparent p-4 text-zinc-500 hover:text-black">
             <font-awesome-icon icon="fa-solid fa-arrows-rotate fa-lg" class="text-violet-700" />
           </button>
