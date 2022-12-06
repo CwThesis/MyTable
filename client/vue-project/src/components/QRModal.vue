@@ -19,11 +19,14 @@ const props = defineProps({
 
           <div class="flex justify-between p-4 modal-footer">
             <button
+            id="submit-button"
                 class="modal-default-button"
                 @click="$emit('submit')"
               >Download</button>
 
               <button
+              id="close-button"
+
                 class="modal-default-button"
                 @click="$emit('close')"
               >Close</button>
