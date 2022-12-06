@@ -9,23 +9,24 @@ import { useRouter } from "vue-router";
 import LoadingSpinner from "../LoadingSpinner.vue";
 
 const isLoading = ref(true);
-const restName = ref("");
+let restName = ref("");
 const bankName = ref("");
 const IBAN = ref("");
-const street = ref("");
-const city = ref("");
-const zip = ref("");
-const country = ref("");
+let street = ref("");
+let city = ref("");
+let zip = ref("");
+let country = ref("");
 const staff = ref<Object[]>([]);
 const userData: any = ref(null);
 const router = useRouter();
 const editMode = ref(false);
+const editRestInfo = ref(false);
 const newStaffMember = ref("");
 const staffMemberToEdit = ref("");
 const stripeId = ref("");
-const connectedToStripe = ref(false);
+let staffMembers = ref([]);
 
-stripeId
+const connectedToStripe = ref(false);
 
 
 Auth.currentAuthenticatedUser().then((u) => {
@@ -45,11 +46,13 @@ Auth.currentAuthenticatedUser().then((u) => {
       zip.value = restaurant[0].zip;
       country.value = restaurant[0].country;
       staff.value = restaurant[0].staff;
+      if (restaurant[0].stripeId) stripeId.value = restaurant[0].stripeId;
     } else {
       router.push('/onboarding')
     }
   })()
 })
+
 
 async function handleDeleteStaffMember(staffID: string) {
   const res = await staffAPIService.deleteStaff(staffID, userData.value.username);
@@ -86,8 +89,18 @@ async function handleStripeRegistration(userID: string) {
   }
   console.log("res", res)
   //
-
 }
+
+async function handleEditRestaurantInfo(item: string, event: string) {
+  const updatedInfo = {}
+  updatedInfo[item] = event;
+  console.log(updatedInfo);
+  const res = await restaurantAPIService.updateRestaurant(updatedInfo, userData.value.username);
+  if (res && res.success) {
+    console.log(res)
+    console.log("restaurant info edited");
+  }
+};
 
 </script>
 
@@ -107,29 +120,37 @@ async function handleStripeRegistration(userID: string) {
               <div class="px-4 py-5 sm:px-6 relative">
                 <h3 class="font-semibold font-josefin text-xl leading-6 text-gray-900">{{ restName }}</h3>
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">Basic information</p>
-                <font-awesome-icon icon="fa-solid fa-pen fa-lg" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700"/>
+                <button @click="(editRestInfo = !editRestInfo)">
+                  <font-awesome-icon icon="fa-solid fa-pen fa-lg" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700"/>
+                </button>
               </div>
-              <div class="border-t border-gray-200">
+              <div class="border-t border-gray-200" >
                 <dl>
                   <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">Business name</dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{restName}}</dd>
+                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0" id="restName" :contenteditable="editRestInfo"
+                    @blur="((e) => handleEditRestaurantInfo(e.target.id, e.target.innerText))">{{restName}}</dd>
                   </div>
                   <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">Street address</dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{street}}</dd>
+                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0" id="street" :contenteditable="editRestInfo"
+                    @blur="((e) => handleEditRestaurantInfo(e.target.id, e.target.innerText))">{{street}}</dd>
                   </div>
                   <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">City</dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{city}}</dd>
+                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0" id="city"
+                    :contenteditable="editRestInfo"
+                    @blur="((e) => handleEditRestaurantInfo(e.target.id, e.target.innerText))">{{city}}</dd>
                   </div>
                   <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">ZIP code</dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{zip}}</dd>
+                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0" id="zip" :contenteditable="editRestInfo"
+                    @blur="((e) => handleEditRestaurantInfo(e.target.id, e.target.innerText))">{{zip}}</dd>
                   </div>
                   <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">Country</dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{country}}</dd>
+                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0" id="country" :contenteditable="editRestInfo"
+                    @blur="((e) => handleEditRestaurantInfo(e.target.id, e.target.innerText))">{{country}}</dd>
                   </div>
                 </dl>
               </div>
@@ -173,19 +194,18 @@ async function handleStripeRegistration(userID: string) {
       <div id="right" class="flex flex-col gap-3 w-1/3 mt-4 p-4">
         <div class="overflow-hidden bg-white shadow sm:rounded-lg">
           <div class="bg-white shadow sm:rounded-lg px-4 py-5 sm:px-6">
-          <dt class="text-sm font-josefin font-medium text-gray-700 mb-5">STRIPE DASHBOARD</dt>
+          <dt class="text-sm font-josefin font-medium text-gray-700 mb-5">
+            STRIPE DASHBOARD</dt>
 
           <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:col-start-2 sm:mt-0">
             
             <ul role="list">
-              <li class="flex gap-4 flex-col">
-                
-              
+              <li class="flex gap-4 flex-col" v-if="stripeId.length === 0">
+                {{stripeId}}
                  <button
                    class="rounded-full border border-transparent bg-violet-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
-                    v-if="true" @click="handleStripeRegistration(userData.username)"> 
+                    @click="handleStripeRegistration(userData.username)"> 
                     Connect to Stripe</button>
-
                     <p class="mt-1 max-w-2xl text-sm text-gray-500 text-center">To receive payments configure your STRIPE account.</p>
               </li>
             </ul>

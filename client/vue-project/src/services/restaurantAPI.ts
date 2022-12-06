@@ -42,7 +42,7 @@ const restaurantAPIService = {
     }
   },
 
-  updateRestaurant: async (restaurant: any, userID: string) => {
+  updateRestaurant: async (updatedInfo: any, userID: string) => {
     try {
       const res = await fetch(`${BE_URL}/onboarding/${userID}`, {
         method: 'PUT',
@@ -55,7 +55,7 @@ const restaurantAPIService = {
             }.${userID}.idToken`,
           )}`,
         },
-        body: JSON.stringify(restaurant),
+        body: JSON.stringify(updatedInfo),
       })
       return await res.json()
     } catch (err) {
