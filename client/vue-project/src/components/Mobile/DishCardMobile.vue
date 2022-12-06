@@ -32,7 +32,7 @@ const orderStore = useOrderStore();
           <div>
             <div>
               <button class="p-2 mb-8 bg-gray-200 rounded-full"
-                @click="orderStore.addToOrder({ id: props.dish.id, name: props.dish.title, img: props.dish.imgUrl, amount: 1 }, props.dish.price)">➕</button>
+                @click="orderStore.addToOrder({ id: props.dish.id, name: props.dish.title, img: props.dish.imgUrl, amount: 1, price: props.dish.price }, props.dish.price)">➕</button>
             </div>
             <button class="p-2 bg-gray-200 rounded-full" v-show="orderStore.amountById(props.dish.id)"
             @click="orderStore.decrementAmountById(props.dish.id, props.dish.price)">➖</button>

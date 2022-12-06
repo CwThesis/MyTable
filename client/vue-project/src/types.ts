@@ -28,4 +28,5 @@ export type DishIdWithAmount = {
   amount: number
   name: string
   img: string
+  price: number
 }

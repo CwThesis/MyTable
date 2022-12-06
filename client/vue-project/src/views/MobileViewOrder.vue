@@ -29,6 +29,7 @@ if (route.params.restID && route.params.tableID) {
       waiter.value = result.waiter;
       restName.value = result.restName;
     }
+    console.log(toRaw(orders.value))
     loading.value = false;
   }
   )()
@@ -37,10 +38,10 @@ if (route.params.restID && route.params.tableID) {
 async function sendOrder() {
   const res = await orderAPIService.newOrder(toRaw(orderStore.currentOrder) as any, orderStore.currentTotal, route.params.restID, route.params.tableID)
   //handle response
+  orderStore.emptyOrder();
+  
+  router.push(route.path+'/served');
 
-  router.push(route.path+'/order');
-
-  //orderStore.emptyOrder();
 }
 </script>
 
@@ -49,35 +50,62 @@ async function sendOrder() {
     <div v-if="loading">
       <LoadingSpinner />
     </div>
-    <div :style="{backgroundImage: `url(${banner})`}" class= "w-full h-40 rounded-r-lg" style="background-size: cover; background-position: center;">
-    
-  </div>
-  <div  v-if="orders.length">
-    <div class="py-2 bg-gray-200">
-      <div class="flex justify-center bg-gray-200">
-        <h1 class="space-y-4 py-5 sm:py-6 text-xl">Ticket - {{ restName }}</h1>
-      </div>
-      <div class="flex z-40 fixed bottom-0 w-full bg-white h-20 flex p-2 justify-center">
-        <button v-if="(orderStore.currentOrder)" class=" bg-violet-700 hover:bg-violet-500 text-white font-semibold w-full rounded" @click="sendOrder">ORDER</button>
-      </div>
-      Ticket:
-        <ul class="flex flex-col items-center p-4">
-          <div v-for="order in orders">
-            <div v-for="curr in order.CO">
-              <li>{{ curr.name }} , {{ curr.amount }} </li> 
+    <div class="flex flex-col h-full content-center self-center " v-if="orderStore.currentOrder.length">
+      <div class="flex flex-col h-full py-2 bg-gray-200 items-center">
+        
+        <div class="flex z-40 fixed bottom-0 w-full bg-transparent h-20 flex p-2 justify-center ">
+          <button v-if="(orderStore.currentOrder)"
+            class=" bg-violet-700 hover:bg-violet-500 text-white font-semibold w-full rounded"
+            @click="sendOrder">CONFIRM YOUR ORDER</button>
+        </div>
+
+
+
+        <div class="flex h-screen w-80 flex-col items-center">
+          <div class="flex flex-row h-full px-8 bg-white rounded-md">
+            <h1 class="flex space-y-4 py-5 sm:py-6 text-xl content-center">{{ restName }} - Your Order</h1>
+
+            <ul class="flex w-full items-center p-4 bg-white content-center">
+              <div v-for="order in orders">
+                <div v-for="curr in order.CO">
+                  <li>{{ curr.name }} , {{ curr.amount }} </li>
+                </div>
+                {{ order.CT }} EUR
+              </div>
+            </ul>
+
+            <div class="mt-10">
+              New Order:
+              <ul class="flex items-center p-4">
+                <div v-for="dish in orderStore.currentOrder">
+                  <li>{{ dish.name }}, {{ dish.amount }} u's</li>
+                </div>
+              </ul>
+              <div class="flex items-center">new order TOTAL: {{ orderStore.currentTotal }}</div>
             </div>
-              {{ order.CT}} EUR
           </div>
-        </ul>
-      New Order:
-        <ul class="flex flex-col items-center p-4">
-          <div v-for="dish in orderStore.currentOrder">
-            <li>{{ dish.name }}, {{ dish.amount }} u's</li>
-          </div>
-        </ul>
-        <div class="flex items-center">new order TOTAL: {{ orderStore.currentTotal }}</div>
+        </div>
       </div>
+    </div>
   </div>
-</div>
 
 </template>
+
+<style>
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid white;
+} 
+
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  
+  border-top: 8px solid white;
+}
+</style>

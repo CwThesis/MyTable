@@ -41,11 +41,28 @@ const orderAPIService = {
         mode: "cors",
         headers: {"Content-Type": "application/json"},
       });
-      console.log('parsed::::0', res);
       const resParsed =  await res.json();
       return JSON.parse(resParsed.body);
     } catch (err) {
       return console.log("Error getting the ticket: ", err);
+    }
+  },
+  
+  payTicket : async (order: any[], restID: string, tableID: string) => {
+    
+    try {
+      const res = await fetch(`${BE_URL}/customer/${restID}/${tableID}/payOrder`, {
+        method: "POST",
+        mode: "cors",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(order),
+      });
+      console.log("respuesta em APi", res.body);
+      const resParsed =  await res.json();
+      console.log('resParsed: ', resParsed);
+      return resParsed;
+    } catch (err) {
+      return console.log("Error paying the ticket: ", err);
     }
   },
 

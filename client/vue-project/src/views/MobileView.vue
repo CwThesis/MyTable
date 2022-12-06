@@ -62,8 +62,8 @@ async function sendOrder() {
           <DishCardMobile :dish="dish" />
         </div>
       </div>
-      <div class="flex z-40 fixed bottom-0 w-full bg-white h-20 flex p-2 justify-center">
-        <button v-if="(orderStore.currentOrder)" class="bg-violet-700 hover:bg-violet-500 text-white font-semibold w-full rounded" @click="sendOrder">See your Order</button>
+      <div v-if="(orderStore.currentOrder)" class="flex z-40 fixed bottom-0 w-full bg-transparent h-20 flex p-4 justify-center">
+        <button v-if="(orderStore.currentOrder)" class="bg-violet-700 hover:bg-violet-500 text-white font-semibold w-full rounded" @click="sendOrder">ORDER for EUR {{orderStore.currentTotal}}</button>
       </div>
         <!-- <ul class="flex flex-col items-center p-4">
           <div v-for="dish in orderStore.currentOrder">
