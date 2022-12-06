@@ -69,7 +69,7 @@ async function handleTableDeletion() {
 
 async function handlePinRefresh(tableID: string){
   console.log("tableID: ",tableID)
-  const res = await tableAPIService.refreshPin(tableID, props.userData.username);
+  const res = await tableAPIService.refreshPin(tableID, props.userData?.username);
   if (res && res.success) {
     window.location.reload();
   } else alert('Could not refresh pin');

@@ -5,7 +5,14 @@ const dishAPIService = {
       const res = await fetch(`${BE_URL}/dishes/${userID}/addDish`, {
         method: 'POST',
         mode: 'cors',
-        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${localStorage.getItem(
+            `CognitoIdentityServiceProvider.${
+              import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID
+            }.${userID}.idToken`,
+          )}`,
+        },
         body: JSON.stringify(dish),
       })
       return await res.json()
@@ -19,7 +26,14 @@ const dishAPIService = {
       const res = await fetch(`${BE_URL}/dishes/${userID}/getAllDishes`, {
         method: 'GET',
         mode: 'cors',
-        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${localStorage.getItem(
+            `CognitoIdentityServiceProvider.${
+              import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID
+            }.${userID}.idToken`,
+          )}`,
+        },
       })
 
       return await res.json()
@@ -30,10 +44,17 @@ const dishAPIService = {
 
   updateDish: async (dish: any, userID: string) => {
     try {
-      const res = await fetch(`${BE_URL}/dishes/${userID}/editDish/`, {
+      const res = await fetch(`${BE_URL}/dishes/${userID}/editDish`, {
         method: 'PUT',
         mode: 'cors',
-        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${localStorage.getItem(
+            `CognitoIdentityServiceProvider.${
+              import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID
+            }.${userID}.idToken`,
+          )}`,
+        },
         body: JSON.stringify(dish),
       })
       return await res.json()
@@ -42,13 +63,20 @@ const dishAPIService = {
     }
   },
 
-  deleteDish: async (dish: any, userID: string) => {
+  deleteDish: async (dishId: string, userID: string) => {
     try {
-      const res = await fetch(`${BE_URL}/dishes/${userID}/deleteDish/`, {
+      const res = await fetch(`${BE_URL}/dishes/${userID}/deleteDish`, {
         method: 'DELETE',
         mode: 'cors',
-        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
-        body: JSON.stringify(dish),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${localStorage.getItem(
+            `CognitoIdentityServiceProvider.${
+              import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID
+            }.${userID}.idToken`,
+          )}`,
+        },
+        body: JSON.stringify({ id: dishId }),
       })
       return await res.json()
     } catch (err) {
