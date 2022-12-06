@@ -20,31 +20,26 @@ Auth.currentAuthenticatedUser().then((u) => {
   (async () => {
     const result = await ticketAPIService.getAllTickets(username)
     fetchData.value = result;
-    console.log("result:", fetchData.value)
     gridData.value = fetchData.value.map((el) => {
       if(el.ticket.length) {
       return {
-        table: el.tableName,
+        table: {name: el.tableName, id: el.tableId},
         orders: el.ticket[0].orders,
         total: el.ticket[0].orders,
         waiter: el.waiter
       }
     }
-    //create endpoint to get all waiters
   }); 
-    const waiters2 = await ticketAPIService.getAllWaiters(username);
-    console.log("w2",waiters2)
-    waiters.value = ['test1', 'test2', 'test3'];
     gridData.value = gridData.value.filter((el) => el !== undefined)
-    console.log(gridData.value)
+    const result2 = await ticketAPIService.getAllWaiters(userData.value.username);
+    waiters.value = result2;
   }
   )()
 })
 </script>
 
 <template>
-  
   <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <TicketsGrid :waiters="waiters" :data="gridData" :columns="gridColumns"> </TicketsGrid>
+    <TicketsGrid :userData="userData" :waiters="waiters" :data="gridData" :columns="gridColumns"> </TicketsGrid>
   </div>
 </template>

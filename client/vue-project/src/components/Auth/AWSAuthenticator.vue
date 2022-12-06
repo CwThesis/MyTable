@@ -14,6 +14,9 @@ Hub.listen('auth', (data) => {
   if (payload.event === 'signOut') {
     router.push('/login');
   }
+  if (payload.event === 'signIn') {
+    router.push('/onboarding');
+  }
 });
 </script>
 

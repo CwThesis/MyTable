@@ -42,8 +42,21 @@ const restaurantAPIService = {
     } catch (err) {
       return console.log("Error updating the restaurant: ", err);
     }
-  }
+  },
 
+  registerStripe : async (userID: string) => {
+    try {
+      const res = await fetch(`${BE_URL}/dashboard/${userID}/stripe`, {
+        method: "POST",
+        mode: "cors",
+        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
+        body: JSON.stringify({}),
+      });
+      return await res.json();
+    } catch (err) {
+      return console.log("Couldn't save stripe registration: ", err);
+    }
+  },
 }
 
   export default restaurantAPIService;
