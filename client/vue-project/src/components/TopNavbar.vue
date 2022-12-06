@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { Auth } from 'aws-amplify';
 
 const show = ref(false);
-const props = defineProps(["user"]);
 const userData: any = ref(null)
 
 Auth.currentAuthenticatedUser().then((u)=>{
@@ -16,7 +15,7 @@ Auth.currentAuthenticatedUser().then((u)=>{
 async function signOut() {
     try {
         await Auth.signOut();
-
+        window.location.href = "/";
     } catch (error) {
         console.log('error signing out: ', error);
     }
@@ -44,7 +43,7 @@ async function signOut() {
             href="#"
             class="bg-gray-100 border-gray-200 text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
             aria-current="page"
-            ><div v-if="(userData && userData.email)">{{userData.email}}</div></a
+            ><div id="email" v-if="(userData && userData.email)">{{userData.email}}</div></a
           >
           <div class="relative ml-3">
             <div>
@@ -72,16 +71,6 @@ async function signOut() {
               aria-labelledby="user-menu-button"
               tabindex="-1"
             >
-              <RouterLink to="/dashboard/profile">
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="user-menu-item-0"
-                  >My Profile</a
-                >
-              </RouterLink>
               <slot>
                 <a
                   @click="signOut"
@@ -98,11 +87,8 @@ async function signOut() {
         </div>
       </div>
     </div>
-
-    <!-- Mobile menu, show/hide based on menu state. -->
     <div class="sm:hidden" id="mobile-menu">
       <div class="space-y-1 px-2 pt-2 pb-3">
-        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
         <a
           href="#"
           class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"

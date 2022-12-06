@@ -42,11 +42,6 @@ const router = createRouter({
       component: () => import("../components/Menu/MenuView.vue"),
     },
     {
-      path: "/dashboard/profile",
-      meta: { requiresAuth: true },
-      component: () => import("../components/Profile/ProfileView.vue"),
-    },
-    {
       path: "/onboarding",
       meta: { requiresAuth: true },
       component: () => import("../views/OnboardingForm.vue"),
@@ -75,7 +70,6 @@ router.beforeEach(async (to, from, next) => {
     catch (e) {
       console.log(e);
     }
-    console.log("TO: ",to.path)
     if (!res && to.path !== "/login") {
       next('/login');
     } else {
