@@ -23,6 +23,7 @@ import {
   faMagnifyingGlass,
   faClock,
   faCloudArrowUp,
+  faPen,
 } from '@fortawesome/free-solid-svg-icons'
 library.add(
   faArrowsRotate,
@@ -38,6 +39,7 @@ library.add(
   faClock,
   faXmark,
   faCloudArrowUp,
+  faPen,
 )
 
 Amplify.configure(awsExports)

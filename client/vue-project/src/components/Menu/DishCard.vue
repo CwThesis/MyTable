@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import  menuAPIService  from "../../services/menuAPI"
-//import useMenuStore from "../../stores/menu.store"
+import dishAPIService from "../../services/dishAPI";
+import { useMenuStore } from "../../stores/menu.store"
+
+const store = useMenuStore();
 
 const props = defineProps({
   dish: Object,
@@ -12,7 +15,9 @@ let dishStatus = ref(props.dish?.menu);
 
 async function toggleBtn() {
   const res = await menuAPIService.toggleDish(props.dish?.id, props.userId);
-  console.log(res);
+  const dishes = await dishAPIService.getAllDishes(props.userId as string)
+  store.dishes = dishes.body;
+  console.log(dishes.body)
 }
 
 </script>

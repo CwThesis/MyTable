@@ -10,11 +10,12 @@ declare global {
 }
 
 export type Dish = {
-  img: string
+  imgUrl: string
   title: string
   description: string
   price: number
   currency: string
+  menu: boolean
   category: 'mains' | 'starters' | 'soups' | 'desserts' | 'drinks'
   id: string
 }

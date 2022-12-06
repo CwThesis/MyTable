@@ -1,26 +1,29 @@
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, toRaw } from "vue";
 import type { Ref } from 'vue'
 import SideNavbar from "../SideNavbar.vue";
 import TopNavbar from "../TopNavbar.vue";
 import DishCard from "./DishCard.vue";
 import DishCardSlim from "./DishCardSlim.vue";
 import AddToMenu from "./AddToMenu.vue";
-import type {Banner} from "../../types"
+import type {Banner, Dish} from "../../types"
 //import AddMenuHeader from "./AddMenuHeader.vue";
 import  dishAPIService  from "../../services/dishAPI"
 import { Auth } from 'aws-amplify';
 import menuAPIService from "../../services/menuAPI"
 import { useMenuStore } from "../../stores/menu.store"
 
-//const store = useMenuStore();
+const store = useMenuStore();
 let userId = "";
-let dishes: Ref<any> = ref([]);
+const editMode = ref(false);
+const activeMenu: Ref<Dish[]> = ref([]);
+//let dishes: Ref<any> = ref([]);
 //let newDish = ref({});
 //let lists = ["Active Menu", "All Dishes"]
 //let currentList = ref(lists[0]);
-let banner: Ref<Banner> = ref({url: "http://res.cloudinary.com/dvyn9lzkf/image/upload/v1669984775/vfk6kogi0wbbbeu5eroc.jpg", title: "Enjoy!"}); // some initial value needed here! (placeholder before it is loaded)
+let banner: Ref<Banner> = ref({url: "http://res.cloudinary.com/dvyn9lzkf/image/upload/v1669984775/vfk6kogi0wbbbeu5eroc.jpg", title:"Title"}); // some initial value needed here! (placeholder before it is loaded)
 const searchQuery = ref("");
+
 
 Auth.currentAuthenticatedUser().then((u) => {
   const email = u.attributes.email;
@@ -28,26 +31,23 @@ Auth.currentAuthenticatedUser().then((u) => {
   const user = { email, username }
   userId = user.username;
   (async () => {
-    console.log("User id", userId);
     const res = await dishAPIService.getAllDishes(userId);
-    dishes.value = res.body;
-    /* if (currentList.value === "Active Menu"){
-      dishes.value = res.body.filter((dish: { menu: boolean; }) => dish.menu === true)
-    } else {
-      dishes.value = res.body;
-    } */
+    store.dishes = res.body;
+    const dishesArray = toRaw(store.dishes)
+    activeMenu.value = dishesArray.filter((dish: { menu: boolean; }) => dish.menu === true)
+   
     const res2 = await menuAPIService.getBanner(userId);
     banner.value = res2.body;
+    console.log(banner.value)
   })()
 });
 
-const activeMenu = computed(()=> {
-  return dishes.value.filter((dish: { menu: boolean; }) => dish.menu === true)
-})
+
 
 const searchedDishes = computed(()=> {
-  
-  return dishes.value.filter((dish: { title: string; })=> {
+  const dishesArray = toRaw(store.dishes)
+  console.log("Dishes list from searchedDishes:", dishesArray)
+  return dishesArray.filter((dish: { title: string; })=> {
     return (
       dish.title
       .toLowerCase()
@@ -56,23 +56,47 @@ const searchedDishes = computed(()=> {
   })
 })
 
-const defaultBanner = 0;
-
-
-
-/* watch(newDish, async () => {
-    const res = await dishAPIService.getAllDishes(userId);
-    if (currentList.value === "Active Menu"){
-      dishes.value = res.body.filter((dish: { menu: boolean; }) => dish.menu === true)
-    } else {
-      dishes.value = res.body;
+const allDishes = computed({
+  get: () => {
+    return toRaw(store.dishes).filter((dish) => {
+      return (
+        dish.title
+        .toLowerCase()
+        .indexOf(searchQuery.value.toLowerCase()) != -1
+      )
     }
-  }) */
+)},
+  set: (newValue) => {
+    newValue = toRaw(store.dishes)
+    store.addToDishes(toRaw(store.currentNewDish));
+    console.log("set computed:", newValue)
+    return newValue.filter((dish)=>{
+      return (
+        dish.title
+        .toLowerCase()
+        .indexOf(searchQuery.value.toLowerCase()) != -1
+      )
+    })
+  }
+})
 
-  // watch for changes in newDish and add every new dish to dishes array
- /*  watch(newDish, async () => {
-    dishes.value = [store.currentNewDish, ...dishes.value];
-  }) */
+
+// watch for changes in dishes and updates active menu
+watch(()=> store.dishes, () => {
+    console.log("hello");
+    const dishesArray = toRaw(store.dishes)
+    activeMenu.value = dishesArray.filter((dish: { menu: boolean; }) => dish.menu === true)
+  })
+
+  async function handleEditBanner (banner: Banner, newValue: string) {
+    banner = toRaw(banner);
+    banner.title = newValue;
+    //banner.url = bannerNewUrl;
+    const res = await menuAPIService.updateBanner(banner, userId)
+    if (res && res.success) {
+    console.log("banner was edited");
+  }
+  }
 
   
 </script>
@@ -95,8 +119,10 @@ const defaultBanner = 0;
 
             <!-- BANNER -->
             <div v-if="banner.url" class="relative px-4 py-3">
-              <img :src="banner?.url" class="rounded-md object-cover max-h-72"/>
-              <h1 class="absolute text-8xl text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-josefin">{{banner?.title}}</h1>
+              <img :src="banner?.url" class="rounded-md object-cover"/>
+              <h1 :contenteditable="editMode" @blur="((e) => handleEditBanner(banner, e.target.innerText))" class="absolute text-8xl text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-josefin">{{banner?.title}}</h1>
+              <button class="absolute text-gray-600 top-4 right-6 bg-white px-3 py-2 rounded-full " @click="(editMode = !editMode)"> 
+                <font-awesome-icon icon="fa-solid fa-pen fa-lg" /></button>
             </div>
             
             <div v-else class="relative w-full bg-gradient-to-b from-violet-600">
@@ -142,7 +168,7 @@ const defaultBanner = 0;
 
             <div class="overflow-y-scroll h-[80vh] rounded-xl bg-gray-50">
             <div
-              v-for="dish in searchedDishes"
+              v-for="dish in store.dishes"
               :key="dish.title"
               class="px-4 pt-2"
             >
