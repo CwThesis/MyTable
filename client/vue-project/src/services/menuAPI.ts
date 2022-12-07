@@ -1,3 +1,5 @@
+import type { Banner } from '@/types'
+
 const BE_URL = import.meta.env.VITE_AWS_CLOUD_LOGIC_ENDPOINT
 const menuAPIService = {
   getMenu: async (userID: string) => {
@@ -5,7 +7,14 @@ const menuAPIService = {
       const res = await fetch(`${BE_URL}/dashboard/${userID}/getMenu`, {
         method: 'GET',
         mode: 'cors',
-        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${localStorage.getItem(
+            `CognitoIdentityServiceProvider.${
+              import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID
+            }.${userID}.idToken`,
+          )}`,
+        },
       })
       const resParsed = await res.json()
       return JSON.parse(resParsed.body)
@@ -19,7 +28,14 @@ const menuAPIService = {
       const res = await fetch(`${BE_URL}/dishes/${userID}/toggleMenuDish`, {
         method: 'PUT',
         mode: 'cors',
-        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${localStorage.getItem(
+            `CognitoIdentityServiceProvider.${
+              import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID
+            }.${userID}.idToken`,
+          )}`,
+        },
         body: JSON.stringify({ dishId }),
       })
       return await res.json() //this is undefined
@@ -27,12 +43,19 @@ const menuAPIService = {
       return console.log('Error adding the dish to the menu: ', err)
     }
   },
-  addBanner: async (banner: any, userID: string) => {
+  addBanner: async (banner: Banner, userID: string) => {
     try {
       const res = await fetch(`${BE_URL}/menu/${userID}/addBanner`, {
         method: 'POST',
         mode: 'cors',
-        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${localStorage.getItem(
+            `CognitoIdentityServiceProvider.${
+              import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID
+            }.${userID}.idToken`,
+          )}`,
+        },
         body: JSON.stringify(banner),
       })
       return await res.json()
@@ -45,7 +68,14 @@ const menuAPIService = {
       const res = await fetch(`${BE_URL}/menu/${userID}/getBanner`, {
         method: 'GET',
         mode: 'cors',
-        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${localStorage.getItem(
+            `CognitoIdentityServiceProvider.${
+              import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID
+            }.${userID}.idToken`,
+          )}`,
+        },
       })
       return await res.json()
     } catch (err) {
@@ -53,12 +83,19 @@ const menuAPIService = {
     }
   },
 
-  updateBanner: async (banner: any, userID: string) => {
+  updateBanner: async (banner: Banner, userID: string) => {
     try {
       const res = await fetch(`${BE_URL}/menu/${userID}/updateBanner`, {
         method: 'PUT',
         mode: 'cors',
-        headers: {"Content-Type": "application/json", "Authorization": `${localStorage.getItem(`CognitoIdentityServiceProvider.${import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID}.${userID}.idToken`)}`}, 
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${localStorage.getItem(
+            `CognitoIdentityServiceProvider.${
+              import.meta.env.VITE_USER_POOLS_WEB_CLIENT_ID
+            }.${userID}.idToken`,
+          )}`,
+        },
         body: JSON.stringify(banner),
       })
       return await res.json()

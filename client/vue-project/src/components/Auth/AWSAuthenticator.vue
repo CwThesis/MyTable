@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import "@aws-amplify/ui-vue/styles.css";
 import { Authenticator } from "@aws-amplify/ui-vue";
 import { Hub } from 'aws-amplify';
 
@@ -21,5 +20,38 @@ Hub.listen('auth', (data) => {
 </script>
 
 <template>
-<Authenticator />
+  <div class="authenticator">
+<Authenticator/>
+  </div>
 </template>
+
+<style>
+.authenticator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.amplify-button[data-variation='primary'] {
+  background: linear-gradient(
+    to right,
+    #6b46c1,
+    #6b46c1dd);
+}
+.amplify-tabs-item{
+  color: #6b46c1;
+  border-color: #6b46c1;
+}
+.amplify-tabs-item[data-state='active']{
+  color: #6b46c1;
+  border-color: #6b46c1;
+}
+.amplify-button--link{
+  color: #6b46c1;
+}
+
+:root, [data-amplify-theme] {
+  --amplify-components-authenticator-router-border-style: none;
+}
+</style>

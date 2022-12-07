@@ -1,20 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 import  dishAPIService  from "../../services/dishAPI"
 import { Auth } from 'aws-amplify';
 import AddDishModal from "../AddDishModal.vue";
 import { useMenuStore } from "../../stores/menu.store"
 
 const store = useMenuStore();
-
-/* const props = defineProps({
-  modelValue: Object
-}); */
-
-/* //const emits = defineEmits(['update:modelValue']);
-const emit = defineEmits<{
-(e: 'submit', modelValue: Object): any
-}>() */
 
 const dishTitle = ref("");
 const dishDescription = ref("");
@@ -45,7 +36,6 @@ function openUploadModal () {
         }).open();
 }
 
-
 async function addDish(event: Event) {
   const formInput = {
     title: dishTitle.value,
@@ -59,8 +49,10 @@ async function addDish(event: Event) {
   if (res && res.success) {
     showModal.value = false;
     store.currentNewDish = res.body;
+    store.addToDishes(store.currentNewDish);
   } else alert('Could not add a new dish');
 }
+
 </script>
 
 <template>

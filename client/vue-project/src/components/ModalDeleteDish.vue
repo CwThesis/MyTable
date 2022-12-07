@@ -7,25 +7,23 @@ const props = defineProps({
 <template>
   <Transition name="modal">
     <div v-if="show" class="modal-mask">
-      <div class="modal-wrapper ">
+      <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
             <slot name="header"></slot>
           </div>
+
           <div class="modal-body">
             <slot name="body"></slot>
           </div>
 
           <div class="flex justify-between p-4 modal-footer">
             <button
-            id="submit-button"
                 class="modal-default-button"
                 @click="$emit('submit')"
-              >Download</button>
+              >Confirm</button>
 
               <button
-              id="close-button"
-
                 class="modal-default-button"
                 @click="$emit('close')"
               >Close</button>
@@ -52,11 +50,10 @@ const props = defineProps({
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
-
 }
 
 .modal-container {
-  width: 40vw;
+  width: 300px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;

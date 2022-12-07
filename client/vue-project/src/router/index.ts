@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import {Auth} from 'aws-amplify';
 import  AWSAuthenticator from '../components/Auth/AWSAuthenticator.vue';
-//import Login from "../views/LoginView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,11 +41,6 @@ const router = createRouter({
       component: () => import("../components/Menu/MenuView.vue"),
     },
     {
-      path: "/dashboard/profile",
-      meta: { requiresAuth: true },
-      component: () => import("../components/Profile/ProfileView.vue"),
-    },
-    {
       path: "/onboarding",
       meta: { requiresAuth: true },
       component: () => import("../views/OnboardingForm.vue"),
@@ -81,7 +75,6 @@ router.beforeEach(async (to, from, next) => {
     catch (e) {
       console.log(e);
     }
-    console.log("TO: ",to.path)
     if (!res && to.path !== "/login") {
       next('/login');
     } else {

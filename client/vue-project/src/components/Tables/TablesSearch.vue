@@ -20,7 +20,6 @@ Auth.currentAuthenticatedUser().then((u)=>{
   (async ()=>{
     const result = await tableAPIService.getAllTables(username)
     fetchData.value = result;
-    console.log("result:" , fetchData)
     gridData.value = fetchData.value.map((el)=>{
     return {
     table: el.name,
@@ -67,9 +66,8 @@ async function handleTableCreation() {
           </template>
         </ModalView>
       </Teleport>
-      
-        <div v-if="gridData.length">
-          <TableGrid :userData="userData" :data="gridData" :columns="gridColumns" :filter-key="searchQuery"/>
+        <div id="TableGrid" v-if="gridData.length">
+          <TableGrid  :userData="userData" :data="gridData" :columns="gridColumns" :filter-key="searchQuery"/>
         </div>
         <div v-else>
           <font-awesome-icon icon="fa-solid fa-spinner" spin-pulse />

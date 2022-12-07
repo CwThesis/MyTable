@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { waiterServiceDefaults } from "@aws-sdk/util-waiter";
 import { ref, computed, toRaw } from "vue";
 import EditWaiterModal from "../EditWaiterModal.vue";
 import ticketAPIService from '../../services/ticketAPI';
@@ -139,9 +138,6 @@ async function handleWaiterEdit(waiter: string) {
     </EditWaiterModal>
   </Teleport>
 </template>
-
-
-
 
 <style>
 th {
