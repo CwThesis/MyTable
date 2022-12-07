@@ -117,17 +117,21 @@ async function handleEditRestaurantInfo(item: string, event: string) {
 </script>
 
 <template>
-  <div v-if="isLoading">
-    <LoadingSpinner class="loading-spinner"/>
-  </div>
-  <div v-else>
+  <!-- <div v-if="isLoading">
+    <LoadingSpinner />
+  </div> -->
+  <div>
     <div class="flex min-h-screen">
       <SideNavbar />
       <div class="flex-1">
         <TopNavbar />
-        <main class="flex-1 flex justify-center">
         
-
+        <div v-if="isLoading" class="h-full"> 
+          <LoadingSpinner />
+        </div>
+        
+        
+        <main v-else class="flex-1 flex justify-center">
           
           <div id="left" class="flex flex-col gap-3 w-1/3 mt-4 p-4">
 
@@ -254,8 +258,9 @@ async function handleEditRestaurantInfo(item: string, event: string) {
     
         </main>
       </div>
+      </div>
     </div>
-  </div>
+
 </template>
 
 <!-- <div>
