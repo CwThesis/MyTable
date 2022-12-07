@@ -308,7 +308,7 @@ async function handleStripeRedirect() {
                   <div v-if="banner.url" class="relative">
                     <img :src="banner?.url" class="rounded-md object-cover" />
                     <h1
-                      class="absolute text-8xl text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-josefin">
+                      class="absolute text-6xl text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-josefin">
                       {{ banner?.title }}</h1>
                   </div>
                   <div v-else class="relative w-full bg-gradient-to-b from-violet-600">
