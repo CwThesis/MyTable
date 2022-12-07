@@ -25,7 +25,6 @@ Auth.currentAuthenticatedUser().then((u) => {
     console.log(result);
     gridData.value = fetchData.value.map((el) => {
       if(el.ticket.length) {
-
         function orderTotal (ticket){
         let orderTotal = 0
         for (let i = 0; i < ticket.orders.length; i++) {
