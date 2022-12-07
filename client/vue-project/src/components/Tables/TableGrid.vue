@@ -142,7 +142,8 @@ function downloadDocument() {
     <table v-if="filteredData?.length" class="sm:rounded-lg">
       <thead>
         <tr class="overflow-hidden bg-white shadow sm:rounded-lg">
-          <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }">
+          <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }"
+          class="text-sm font-medium text-gray-500">
             {{ capitalize(key as any) }}
             <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
             </span>
@@ -150,12 +151,12 @@ function downloadDocument() {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="entry in filteredData">
+        <tr v-for="entry in filteredData" >
           <td v-for="key in columns" class="border-y">
           <td v-if="key === 'QR'">
             <div class="flex direction-row">
               <button @click="handleQRDownload(entry.table, entry[key])"
-                class="bg-transparent p-4 text-zinc-500 hover:text-black font-bold py-1 px-3 rounded-lg">
+                class="bg-transparent text-zinc-500 hover:text-black font-bold py-1 px-3 rounded-lg">
                 <font-awesome-icon icon="fa-solid fa-file-arrow-down fa-lg" />
               </button>
             </div>
@@ -166,14 +167,14 @@ function downloadDocument() {
               <font-awesome-icon icon="fa-solid fa-trash fa-lg" />
             </button>
           </td>
-          <td v-else-if="key === 'pincode'">
+          <td v-else-if="key === 'pincode'" class="text-sm text-gray-900">
             {{ entry[key] }}
             <button @click="handlePinRefresh(entry['actions'])"
               class="bg-transparent p-4 text-zinc-500 hover:text-black">
               <font-awesome-icon icon="fa-solid fa-arrows-rotate fa-lg" class="text-violet-700" />
             </button>
           </td>
-          <td v-else> {{ entry[key] }}</td>
+          <td v-else class="text-sm text-gray-900"> {{ entry[key] }}</td>
           </td>
         </tr>
       </tbody>
