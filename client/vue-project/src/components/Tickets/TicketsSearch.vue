@@ -3,6 +3,7 @@ import TicketsGrid from "./TicketsGrid.vue";
 import { ref } from "vue";
 import ticketAPIService from '../..//services/ticketAPI';
 import { Auth } from 'aws-amplify';
+import LoadingSpinner from "../LoadingSpinner.vue";
 
 //const searchQuery = ref("");
 const userData: any = ref(null)
@@ -10,7 +11,7 @@ const fetchData = ref<any[]>([]);
 const gridData = ref<any[]>([]);
 const gridColumns = ["table", "orders", "total", "waiter"];
 const waiters = ref<string[]>([]);
-
+let isLoading = ref(true);
 
 Auth.currentAuthenticatedUser().then((u) => {
   const email = u.attributes.email;
@@ -19,6 +20,7 @@ Auth.currentAuthenticatedUser().then((u) => {
   userData.value = user;
   (async () => {
     const result = await ticketAPIService.getAllTickets(username)
+    isLoading.value = false
     fetchData.value = result;
     gridData.value = fetchData.value.map((el) => {
       if(el.ticket.length) {
@@ -39,7 +41,10 @@ Auth.currentAuthenticatedUser().then((u) => {
 </script>
 
 <template>
-  <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <TicketsGrid :userData="userData" :waiters="waiters" :data="gridData" :columns="gridColumns"> </TicketsGrid>
+  <div id="tickets-search-container" class="flex h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div v-if="isLoading">
+    <LoadingSpinner />
+    </div>
+    <TicketsGrid v-else :userData="userData" :waiters="waiters" :data="gridData" :columns="gridColumns"> </TicketsGrid>
   </div>
 </template>

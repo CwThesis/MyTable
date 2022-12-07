@@ -28,6 +28,7 @@ const filteredData = computed(() => {
       });
     });
   }
+
   const key = sortKey.value;
   if (key) {
     const order = sortOrders.value[key];
@@ -39,6 +40,8 @@ const filteredData = computed(() => {
   }
   return data;
 });
+
+
 
 function sortBy(key: any) {
   sortKey.value = key;
@@ -118,7 +121,7 @@ async function handleWaiterEdit(waiter: string) {
         </tr>
       </tbody>
     </table>
-    <p v-else> <font-awesome-icon icon="fa-solid fa-clock" pull="top" shake />No entries found</p>
+    <p v-else> <font-awesome-icon icon="fa-solid fa-clock" pull="top" shake class="pr-4"/>No entries found</p>
   </div>
 
   <Teleport to="body">
