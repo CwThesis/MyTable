@@ -26,7 +26,7 @@ const props = defineProps({
               <button
                 class="modal-default-button"
                 @click="$emit('close')"
-              >Close</button>
+              ><font-awesome-icon icon="fa-solid fa-xmark" /></button>
           </div>
         </div>
       </div>

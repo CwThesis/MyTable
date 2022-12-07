@@ -3,7 +3,7 @@
 <template>
 <div class="loader-container">
 <div class="flex items-center justify-center">
-<img src="https://cdn.dribbble.com/users/2140642/screenshots/4301537/media/c0336297531a44070650a44bbb0961b9.gif">
+<img class="h-50 w-50" src="https://cdn.dribbble.com/users/2140642/screenshots/4301537/media/c0336297531a44070650a44bbb0961b9.gif">
 </div>
 </div>
 </template>

@@ -22,13 +22,27 @@ Auth.currentAuthenticatedUser().then((u) => {
     const result = await ticketAPIService.getAllTickets(username)
     isLoading.value = false
     fetchData.value = result;
+    console.log(result);
     gridData.value = fetchData.value.map((el) => {
       if(el.ticket.length) {
+
+        function orderTotal (ticket){
+        let orderTotal = 0
+        for (let i = 0; i < ticket.orders.length; i++) {
+          orderTotal += ticket.orders[i].CT
+        }
+        console.log(orderTotal)
+        return orderTotal
+      }
+  
       return {
         table: {name: el.tableName, id: el.tableId},
         orders: el.ticket[0].orders,
-        total: el.ticket[0].orders,
-        waiter: el.waiter
+        //total: el.ticket[0].orders,
+        waiter: el.waiter,
+        total: orderTotal(el.ticket[0]),
+        /* totalPayed: el.ticket[0].payments[0].CT,
+        leftToPay: (ticketAPIService.orderTotal(el.ticket[0])) - (el.ticket[0].payments[0].CT) */
       }
     }
   }); 
