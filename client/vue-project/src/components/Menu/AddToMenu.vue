@@ -50,6 +50,7 @@ async function addDish(event: Event) {
     showModal.value = false;
     store.currentNewDish = res.body;
     store.addToDishes(store.currentNewDish);
+
   } else alert('Could not add a new dish');
 }
 

@@ -106,19 +106,18 @@ async function handleEditRestaurantInfo(item: string, event: string) {
 
 <template>
   <div v-if="isLoading">
-    <LoadingSpinner />
+    <LoadingSpinner class="loading-spinner"/>
   </div>
   <div v-else>
     <div class="flex min-h-screen">
       <SideNavbar />
       <div class="flex-1">
         <TopNavbar />
-
         <main class="flex-1 flex justify-center">
           <div id="left" class="flex flex-col gap-3 w-1/3 mt-4 p-4">
           <div class="overflow-hidden bg-white shadow sm:rounded-lg">
               <div class="px-4 py-5 sm:px-6 relative">
-                <h3 class="font-semibold font-josefin text-xl leading-6 text-gray-900">{{ restName }}</h3>
+                <h3 class="restaurant-name font-semibold font-josefin text-xl leading-6 text-gray-900">{{ restName }}</h3>
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">Basic information</p>
                 <button @click="(editRestInfo = !editRestInfo)">
                   <font-awesome-icon icon="fa-solid fa-pen fa-lg" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700"/>
@@ -159,16 +158,16 @@ async function handleEditRestaurantInfo(item: string, event: string) {
       <div class="bg-white shadow sm:rounded-lg px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
           <dt class="text-sm font-josefin font-medium text-gray-700">YOUR STAFF</dt>
           <div class="sm:col-span-2 sm:col-start-2 flex flex-row space-between">
-              <input v-model="newStaffMember" class="border-1 border-gray-200 flex items-center justify-between py-3 pl-3 pr-4 text-sm" type="text" placeholder="Add new staff member" />
-              <button @click="handleNewStaffMemberSubmit" class="font-medium text-violet-600 hover:text-violet-500">
-                Add
-              </button>
+            <button @click="handleNewStaffMemberSubmit" class="addstaff-button font-medium text-violet-600 hover:text-violet-500">
+              Add
+            </button>
+              <input v-model="newStaffMember" name="addstaff" class="addstaff-input border-1 border-gray-200 flex items-center justify-between py-3 pl-3 pr-4 text-sm" type="text" placeholder="Add staff member" />
           </div>
 
           <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:col-start-2 sm:mt-0">
             <ul role="list" class="divide-y divide-gray-200 rounded-md border border-gray-200">
               <!-- here starts STAFF MEMBER  -->
-              <li v-for="item in staff" :key="item" class="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
+              <li v-for="item in staff" :key="item" class="staff-members flex items-center justify-between py-3 pl-3 pr-4 text-sm">
                 <div class="flex w-0 flex-1 items-center" :contenteditable="editMode" @blur="((e) => handleEditStaff(item, e.target.innerText))">
                   <font-awesome-icon icon="fa-solid fa-user fa-lg" class="text-gray-400"/>
                   <span class="ml-2 w-0 flex-1 truncate">{{item.name || "No staff members yet."}}</span>

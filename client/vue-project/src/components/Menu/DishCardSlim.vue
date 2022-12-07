@@ -8,6 +8,8 @@ import ModalEditDish from "../ModalEditDish.vue";
 import { useMenuStore } from "../../stores/menu.store"
 import type { Dish } from "../../types";
 import type {Ref} from "vue";
+import { createToast } from 'mosha-vue-toastify';
+
 
 const store = useMenuStore();
 
@@ -61,6 +63,7 @@ function dishToDelete (id: string) {
 function handleDishToEdit (dish: Dish) {
   showModal.value = true;
   dishToEdit.value = dish;
+  
 }
 
 async function deleteOneDish() {
