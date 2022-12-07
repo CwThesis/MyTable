@@ -2,6 +2,7 @@
 import { ref, computed, toRaw } from "vue";
 import EditWaiterModal from "../EditWaiterModal.vue";
 import ticketAPIService from '../../services/ticketAPI';
+import Toast from "../Toasts/Toast.vue";
 
 const props = defineProps({
   data: Array,
@@ -10,6 +11,9 @@ const props = defineProps({
   userData: Object
 });
 
+const showToast = ref(false);
+const toastTitle = ref("");
+const toastType = ref("success");
 const showModal = ref(false)
 const selectedWaiter = ref("");
 const selectedTable = ref("");
@@ -41,8 +45,6 @@ const filteredData = computed(() => {
   return data;
 });
 
-
-
 function sortBy(key: any) {
   sortKey.value = key;
   sortOrders.value[key] *= -1;
@@ -64,19 +66,30 @@ async function handleWaiterEdit(waiter: string) {
     showModal.value = false;
     selectedWaiter.value = "";
     selectedTable.value = "";
-    //window.location.reload();
-  }
-  else {
-    alert('Something went wrong')
-  }
+    toastTitle.value = "Assigned a new waiter successfully!";
+    toastType.value = "success";
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+    }, 2000);
+    window.location.reload();
+  } else {
+    toastTitle.value = "Oops, something went wrong :(";
+    toastType.value = "danger";
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+    }, 2000);
+  };
 }
-
 </script>
 
 <template>
   <div>
     <h1 class="text-sm font-josefin font-medium text-gray-700 mb-6">OPEN TABLES</h1>
-
+    <div v-if="showToast">
+    <Toast :title="toastTitle" :type="toastType" />
+  </div>
     <table v-if="filteredData?.length" class="sm:rounded-lg">
       <thead>
         <tr class="overflow-hidden bg-white shadow sm:rounded-lg">
@@ -96,23 +109,10 @@ async function handleWaiterEdit(waiter: string) {
                 <div class="mt-1 text-sm text-gray-900 flex flex-row"><p class="pr-2">{{ dish.amount }}</p>{{ dish.name }}</div>
               </div>
             </div>
-
           </td>
-       <!--  <td v-else-if="key === 'total'">
-            <div v-for="order in entry[key]">
-              <div>{{ order.CT }}</div>
-            </div>
-          </td> -->
-        
           <td v-else-if="key === 'total'" >
             <div class="flex flex-row mt-1 text-sm text-gray-900">{{entry[key]}}<p class="pl-2">EUR</p></div>
-            
-            <!-- <div v-for="order in entry[key]" class="mt-1 text-sm text-gray-900 ">
-              <div>{{ order }}</div>
-            </div> -->
           </td>
-
-
           <td v-else-if="key === 'waiter'" class="mt-1 text-sm text-gray-900">
             <div>
               {{ entry[key] || "Assign" }}
@@ -123,7 +123,6 @@ async function handleWaiterEdit(waiter: string) {
               </button>
             </div>
           </td>
-
           <td v-else-if="key === 'table'" class="mt-1 text-sm text-gray-900">
             {{ entry[key].name }}
           </td>
@@ -135,7 +134,6 @@ async function handleWaiterEdit(waiter: string) {
   </div>
 
   <Teleport to="body">
-    <!-- use the modal component, pass in the prop -->
     <EditWaiterModal :waiters="waiters" :show="showModal" @submit="handleWaiterEdit(selectedWaiter)"
       @close="showModal = false">
       <template #header>

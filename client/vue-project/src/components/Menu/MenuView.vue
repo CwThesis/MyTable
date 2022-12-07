@@ -40,9 +40,14 @@ Auth.currentAuthenticatedUser().then((u) => {
     banner.title = newValue;
     const res = await menuAPIService.updateBanner(banner, userId)
     if (res && res.success) {
-    console.log("banner was edited");
     }
   }
+
+watch(() => store.dishes, () => {
+  const dishesArray = toRaw(store.dishes)
+  activeMenu.value = dishesArray.filter((dish: { menu: boolean; }) => dish.menu === true)
+})
+
 </script>
 
 <template>
