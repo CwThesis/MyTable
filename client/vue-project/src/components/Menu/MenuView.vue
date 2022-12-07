@@ -7,7 +7,6 @@ import DishCard from "./DishCard.vue";
 import DishCardSlim from "./DishCardSlim.vue";
 import AddToMenu from "./AddToMenu.vue";
 import type {Banner, Dish} from "../../types"
-//import AddMenuHeader from "./AddMenuHeader.vue";
 import  dishAPIService  from "../../services/dishAPI"
 import { Auth } from 'aws-amplify';
 import menuAPIService from "../../services/menuAPI"
@@ -17,10 +16,6 @@ const store = useMenuStore();
 let userId = "";
 const editMode = ref(false);
 const activeMenu: Ref<Dish[]> = ref([]);
-//let dishes: Ref<any> = ref([]);
-//let newDish = ref({});
-//let lists = ["Active Menu", "All Dishes"]
-//let currentList = ref(lists[0]);
 let banner: Ref<Banner> = ref({url: "http://res.cloudinary.com/dvyn9lzkf/image/upload/v1669984775/vfk6kogi0wbbbeu5eroc.jpg", title:"Title"}); // some initial value needed here! (placeholder before it is loaded)
 const searchQuery = ref("");
 
