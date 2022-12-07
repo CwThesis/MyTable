@@ -53,8 +53,10 @@ Auth.currentAuthenticatedUser().then((u) => {
       country.value = restaurant[0].country;
       staff.value = restaurant[0].staff;
       staffMembers.value = staff.value;
-      banner.value.url = restaurant[0].banner.url;
-      banner.value.title = restaurant[0].banner.title;
+      if (restaurant[0].banner) {
+        banner.value.url = restaurant[0].banner.url;
+        banner.value.title = restaurant[0].banner.title;
+      }
       if (restaurant[0].stripeId) stripeId.value = restaurant[0].stripeId;
     } else {
       router.push('/onboarding')
@@ -169,6 +171,14 @@ async function handleEditRestaurantInfo(item: string, event: string) {
     }, 1000);
   }
 };
+
+async function handleStripeRedirect() {
+  const stripeUrl = await restaurantAPIService.stripeDashboard(userData.value.username);
+  if(stripeUrl.success) {
+    window.open(stripeUrl.url.url, '_blank');
+  }
+}
+
 </script>
 
 <template>
@@ -236,7 +246,7 @@ async function handleEditRestaurantInfo(item: string, event: string) {
                   STRIPE DASHBOARD</dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:col-start-2 sm:mt-0">
                   <ul role="list">
-                    <li class="flex gap-4 flex-col" v-if="stripeId.length === 0">
+                    <div class="flex gap-4 flex-col" v-if="(stripeId.length === 0)">
                       {{ stripeId }}
                       <button
                         class="rounded-full border border-transparent bg-violet-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
@@ -244,7 +254,13 @@ async function handleEditRestaurantInfo(item: string, event: string) {
                         Connect to Stripe</button>
                       <p class="mt-1 max-w-2xl text-sm text-gray-500 text-center">To receive payments configure your
                         STRIPE account.</p>
-                    </li>
+                    </div>
+                    <div class="" v-else>
+                      <p class="p-4 mt-1 max-w-2xl text-sm text-gray-500 text-center">Looks like you already have a Stripe
+                        account connected. Click this button to access your Stripe Dashboard:</p>
+                        <button class="rounded-full border border-transparent bg-violet-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+                        @click="handleStripeRedirect">Dashboard</button>
+                    </div>
                   </ul>
                 </dd>
               </div>

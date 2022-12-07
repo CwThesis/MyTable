@@ -111,7 +111,7 @@ async function handleWaiterEdit(waiter: string) {
   <div>
     <h1 class="text-sm font-josefin font-medium text-gray-700 mb-6">OPEN TABLES</h1>
     <div class="flex justify-end p-2">
-    <button @click="toggleView = !toggleView"
+    <button v-if="filteredData?.length" @click="toggleView = !toggleView"
       class="inline-flex justify-center rounded-full border border-transparent bg-violet-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-500 focus:ring-offset-2">
       {{ !toggleView ? 'Simplified' : 'Normal' }} View</button>
     </div>
