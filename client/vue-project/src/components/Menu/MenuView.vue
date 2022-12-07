@@ -7,7 +7,6 @@ import DishCard from "./DishCard.vue";
 import DishCardSlim from "./DishCardSlim.vue";
 import AddToMenu from "./AddToMenu.vue";
 import type {Banner, Dish} from "../../types"
-//import AddMenuHeader from "./AddMenuHeader.vue";
 import  dishAPIService  from "../../services/dishAPI"
 import { Auth } from 'aws-amplify';
 import menuAPIService from "../../services/menuAPI"

@@ -25,6 +25,7 @@ import {
   faCloudArrowUp,
   faPen,
   faUser,
+  faCheckDouble,
 } from '@fortawesome/free-solid-svg-icons'
 library.add(
   faArrowsRotate,
@@ -42,6 +43,7 @@ library.add(
   faCloudArrowUp,
   faPen,
   faUser,
+  faCheckDouble,
 )
 
 Amplify.configure(awsExports)
