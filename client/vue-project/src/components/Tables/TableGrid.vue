@@ -80,6 +80,7 @@ function tableToDelete(id: string) {
 }
 
 function handleQRDownload (tablename: string, QRUrl: string) {
+  console.log(QRUrl);
   targetQRTableName.value = tablename;
   targetQRUrl.value = QRUrl
   QRToDownload.value = new QRCode({
