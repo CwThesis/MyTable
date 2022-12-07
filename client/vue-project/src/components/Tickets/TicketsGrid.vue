@@ -2,6 +2,7 @@
 import { ref, computed, toRaw } from "vue";
 import EditWaiterModal from "../EditWaiterModal.vue";
 import ticketAPIService from '../../services/ticketAPI';
+import Toast from "../Toasts/Toast.vue";
 
 const props = defineProps({
   data: Array,
@@ -10,6 +11,9 @@ const props = defineProps({
   userData: Object
 });
 
+const showToast = ref(false);
+const toastTitle = ref("");
+const toastType = ref("success");
 const showModal = ref(false)
 const selectedWaiter = ref("");
 const selectedTable = ref("");
@@ -61,18 +65,30 @@ async function handleWaiterEdit(waiter: string) {
     showModal.value = false;
     selectedWaiter.value = "";
     selectedTable.value = "";
+    toastTitle.value = "Assigned a new waiter successfully!";
+    toastType.value = "success";
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+    }, 2000);
     window.location.reload();
-  }
-  else {
-    alert('Something went wrong')
-  }
+  } else {
+    toastTitle.value = "Oops, something went wrong :(";
+    toastType.value = "danger";
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+    }, 2000);
+  };
 }
 
 </script>
 
 <template>
   <div>
-
+    <div v-if="showToast">
+    <Toast :title="toastTitle" :type="toastType" />
+  </div>
     <table v-if="filteredData?.length" class="sm:rounded-lg">
       <thead>
         <tr class="overflow-hidden bg-white shadow sm:rounded-lg">
