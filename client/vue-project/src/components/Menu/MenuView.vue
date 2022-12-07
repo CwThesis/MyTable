@@ -12,13 +12,13 @@ import { Auth } from 'aws-amplify';
 import menuAPIService from "../../services/menuAPI"
 import { useMenuStore } from "../../stores/menu.store"
 
+
 const store = useMenuStore();
 let userId = "";
 const editMode = ref(false);
 const activeMenu: Ref<Dish[]> = ref([]);
 let banner: Ref<Banner> = ref({url: "http://res.cloudinary.com/dvyn9lzkf/image/upload/v1669984775/vfk6kogi0wbbbeu5eroc.jpg", title:""}); // some initial value needed here! (placeholder before it is loaded)
 const searchQuery = ref("");
-const filteredDishesRef = ref([]);
 
 Auth.currentAuthenticatedUser().then((u) => {
   const email = u.attributes.email;
@@ -59,7 +59,7 @@ Auth.currentAuthenticatedUser().then((u) => {
             <div class="overflow-y-scroll rounded-xl bg-gray-50 h-[80vh] max-w-screen-sm">
             <!-- BANNER -->
             <div v-if="banner.url" class="relative px-4 py-3">
-              <img :src="banner?.url" class="rounded-md object-cover"/>
+              <img id="banner" :src="banner?.url" class="rounded-md object-cover"/>
               <h1 :contenteditable="editMode" @blur="((e) => handleEditBanner(banner, e.target.innerText))" class="absolute text-8xl text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-josefin">{{banner?.title}}</h1>
               <button class="absolute text-gray-600 top-4 right-6 bg-white px-3 py-2 rounded-full " @click="(editMode = !editMode)"> 
                 <font-awesome-icon icon="fa-solid fa-pen fa-lg" /></button>

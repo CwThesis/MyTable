@@ -118,14 +118,13 @@ async function handleEditRestaurantInfo(item: string, event: string) {
 
 <template>
   <div v-if="isLoading">
-    <LoadingSpinner />
+    <LoadingSpinner class="loading-spinner"/>
   </div>
   <div v-else>
     <div class="flex min-h-screen">
       <SideNavbar />
       <div class="flex-1">
         <TopNavbar />
-
         <main class="flex-1 flex justify-center">
         
 
@@ -134,8 +133,8 @@ async function handleEditRestaurantInfo(item: string, event: string) {
 
           <div class="overflow-hidden bg-white shadow sm:rounded-lg">
               <div class="px-4 py-5 sm:px-6 relative">
-                <h3 class="font-semibold font-josefin text-2xl leading-6 text-gray-900 py-2">{{ restName }}</h3>
-                <p class="text-sm font-josefin font-medium text-gray-700">BASIC INFORMATION</p>
+                <h3 class="restaurant-name font-semibold font-josefin text-xl leading-6 text-gray-900">{{ restName }}</h3>
+                <p class="mt-1 max-w-2xl text-sm text-gray-500">Basic information</p>
                 <button @click="(editRestInfo = !editRestInfo)">
                   <font-awesome-icon icon="fa-solid fa-pen fa-lg" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700"/>
                 </button>
@@ -171,7 +170,6 @@ async function handleEditRestaurantInfo(item: string, event: string) {
                 </dl>
               </div>
         </div>
-
         <div class="overflow-hidden bg-white shadow sm:rounded-lg">
           <div class="bg-white shadow sm:rounded-lg px-4 py-5 sm:px-6">
           <dt class="text-sm font-josefin font-medium text-gray-700 mb-5">
@@ -182,8 +180,8 @@ async function handleEditRestaurantInfo(item: string, event: string) {
             <ul role="list">
               <li class="flex gap-4 flex-col" v-if="stripeId.length === 0">
                 {{stripeId}}
-                 <button
-                   class="rounded-full border border-transparent bg-violet-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+                <button
+                  class="rounded-full border border-transparent bg-violet-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
                     @click="handleStripeRegistration(userData.username)"> 
                     Connect to Stripe</button>
                     <p class="mt-1 max-w-2xl text-sm text-gray-500 text-center">To receive payments configure your STRIPE account.</p>

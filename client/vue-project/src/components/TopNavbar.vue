@@ -24,6 +24,7 @@ async function signOut() {
 </script>
 
 <template>
+  <div class="top-navbar">
   <nav class="bg-gray-100 border-b border-gray-200">
     <div class="mx-auto px-2 sm:px-6 lg:px-8">
       <div class="relative flex h-16 items-center justify-between">
@@ -98,4 +99,5 @@ async function signOut() {
       </div>
     </div>
   </nav>
+</div>
 </template>
