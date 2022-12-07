@@ -47,25 +47,69 @@ const orderAPIService = {
       return console.log("Error getting the ticket: ", err);
     }
   },
-  
+   
   payTicket : async (order: any[], restID: string, tableID: string) => {
     
     try {
-      const res = await fetch(`${BE_URL}/customer/${restID}/${tableID}/payOrder`, {
+      const res = await fetch(`${BE_URL}/customer/${restID}/${tableID}/payOrder/fullBill`, {
         method: "POST",
         mode: "cors",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(order),
       });
-      console.log("respuesta em APi", res.body);
       const resParsed =  await res.json();
-      console.log('resParsed: ', resParsed);
+      return resParsed;
+    } catch (err) {
+      return console.log("Error paying the ticket: ", err);
+    }
+  },
+  
+  paySplitEqual : async (orders: any[], split:number, restID: string, tableID: string) => {
+    
+    try {
+      const res = await fetch(`${BE_URL}/customer/${restID}/${tableID}/payOrder/splitEqual`, {
+        method: "POST",
+        mode: "cors",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({array: orders, split: split}),
+      });
+      const resParsed =  await res.json();
+      return resParsed;
+    } catch (err) {
+      return console.log("Error paying the ticket: ", err);
+    }
+  },
+  
+  paySetAmount : async (amount: number, restID: string, tableID: string) => {
+    
+    try {
+      const res = await fetch(`${BE_URL}/customer/${restID}/${tableID}/payOrder/setAmount`, {
+        method: "POST",
+        mode: "cors",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(amount),
+      });
+      const resParsed =  await res.json();
       return resParsed;
     } catch (err) {
       return console.log("Error paying the ticket: ", err);
     }
   },
 
+  getAccount : async (restID: string, tableID: string) => {
+    try {
+     
+      const res = await fetch(`${BE_URL}/customer/${restID}/${tableID}/getAccount`, {
+        method: "GET",
+        mode: "cors",
+        headers: {"Content-Type": "application/json"},
+      });
+      const resParsed =  await res.json();
+      return resParsed;
+    } catch (err) {
+      return console.log("Error getting the account: ", err);
+    }
+  },
 
 }
 

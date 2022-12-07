@@ -24,12 +24,13 @@ if (route.params.restID && route.params.tableID) {
   (async () => {
     const result = await orderAPIService.getTicket(String(route.params.restID), String(route.params.tableID))
     console.log("result:", result);
-    if (result !== null) {
-      orders.value = result.ticket[0].orders;
+    if (result) {
+      orders.value=[0];
+      if (result.ticket.length> 0)  orders.value=result.ticket[0].orders;
       waiter.value = result.waiter;
       restName.value = result.restName;
     }
-    console.log(toRaw(orders.value))
+    console.log('dsada', toRaw(orders.value))
     loading.value = false;
   }
   )()
@@ -39,9 +40,16 @@ async function sendOrder() {
   const res = await orderAPIService.newOrder(toRaw(orderStore.currentOrder) as any, orderStore.currentTotal, route.params.restID, route.params.tableID)
   //handle response
   orderStore.emptyOrder();
-  
   router.push(route.path+'/served');
 
+}
+
+function backToMenu() {
+  router.push("/customer/"+route.params.restID+'/'+route.params.tableID);
+}
+
+async function seeTicket() {
+  router.push(route.path+'/served');
 }
 </script>
 
@@ -50,7 +58,7 @@ async function sendOrder() {
     <div v-if="loading">
       <LoadingSpinner />
     </div>
-    <div class="flex flex-col h-full content-center self-center " v-if="orderStore.currentOrder.length">
+    <div class="flex flex-col h-full content-center self-center " v-if="(orderStore.currentOrder.length>0)">
       <div class="flex flex-col h-full py-2 bg-gray-200 items-center">
         
         <div class="flex z-40 fixed bottom-0 w-full bg-transparent h-20 flex p-2 justify-center ">
@@ -62,28 +70,26 @@ async function sendOrder() {
 
 
         <div class="flex h-screen w-80 flex-col items-center">
-          <div class="flex flex-row h-full px-8 bg-white rounded-md">
-            <h1 class="flex space-y-4 py-5 sm:py-6 text-xl content-center">{{ restName }} - Your Order</h1>
-
-            <ul class="flex w-full items-center p-4 bg-white content-center">
-              <div v-for="order in orders">
-                <div v-for="curr in order.CO">
-                  <li>{{ curr.name }} , {{ curr.amount }} </li>
-                </div>
-                {{ order.CT }} EUR
-              </div>
-            </ul>
+          <div class="flex flex-col h-full px-8 bg-white rounded-md">
+            
+            <h1 class="space-y-4 py-5 sm:py-6 text-xl content-center">{{ restName }} - Your Order</h1>
 
             <div class="mt-10">
-              New Order:
-              <ul class="flex items-center p-4">
+              Your Order:
+              <ul class="flex items-center">
                 <div v-for="dish in orderStore.currentOrder">
                   <li>{{ dish.name }}, {{ dish.amount }} u's</li>
                 </div>
               </ul>
-              <div class="flex items-center">new order TOTAL: {{ orderStore.currentTotal }}</div>
+              <div class="flex items-center">new order total: {{ orderStore.currentTotal }}</div>
             </div>
-          </div>
+            </div>
+            <div class="flex mb-20 w-full bg-transparent h-20 flex p-2 justify-center ">
+              <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded" @click="backToMenu">Back
+                to Menu</button>
+              <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded" @click="seeTicket">See
+                your ticket</button>
+            </div>
         </div>
       </div>
     </div>

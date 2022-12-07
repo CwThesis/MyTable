@@ -63,6 +63,12 @@ const router = createRouter({
       meta: { requiresAuth: false },
       component: () => import("../views/MobilePay.vue"),
     },
+    {
+      path: "/customer/:restID/:tableID/afterPay",
+      name: "payed",
+      meta: { requiresAuth: false },
+      component: () => import("../views/AfterPayment.vue"),
+    },
   ],
 });
 
