@@ -52,7 +52,7 @@ async function seeTicket() {
 </script>
 
 <template>
-  <div class="bg-gray-200 overflow-y-scroll h-full rounded-lg">
+  <div class="bg-white overflow-y-scroll h-full rounded-lg">
     <div v-if="loading">
       <LoadingSpinner />
     </div>
@@ -68,31 +68,40 @@ async function seeTicket() {
 
 
         <div v-if="! loading" class="flex h-screen w-80 flex-col items-center">
-          <div class="mt-4 flex flex-col h-screen px-14 bg-white rounded-md">
+          <div class="mt-24 flex flex-col h-screen px-14 bg-white rounded-md">
             
             <h1 class="space-y-4 pt-12 sm:py- text-l content-center">{{ restName }}</h1>
             
             <div class="mt-4">
               <h1 class="space-y-4 pt-4 sm:py-6 text-xl content-center">Your Order:</h1>
               
-              <ul class="pt-4 flex flex-col">
-                <div class="w-full flex align-items justify-center" v-for="dish in orderStore.currentOrder">
-                  <div class="flex w-52 flex-row justify-between" ><p>{{ dish.name }} ,</p> <p>{{ dish.amount }} u's,</p>  <p>{{ dish.price }}</p> </div>
+              <ul class="pt-4 ">
+                <div class="w-full grid grid-cols-4 font-semibold gap-4 justify-items-start">
+                  <div class="col-span-2" >Item </div> <div >Units</div>  <div >Price</div>
+                </div>
+                <div class="w-full grid grid-cols-4 gap-4 justify-items-center" style="border-top-style: solid; border-color: black; border-top-width: 1px;" v-for="dish in orderStore.currentOrder">
+                  <div class="col-span-2 justify-self-start" >{{ dish.name }}</div > <div  >{{ dish.amount }}</div>  <div >{{ dish.price }}</div>
                 </div>
               </ul>
-              <div class="flex w-full pt-4 justify-end font-bold">new order total: EUR {{ orderStore.currentTotal }}</div>
+              <div class="flex w-full pt-4 justify-end font-bold">Total: EUR {{ orderStore.currentTotal }}</div>
             </div>
             <div class="flex mb-20 w-full bg-transparent h-20 flex p-2 justify-center ">
-              <div class="bg-violet-transparent pt-4 m-1 hover:font-bold text-violet-700 font-semibold rounded" @click="backToMenu"> <font-awesome-icon icon="fa-solid fa-utensils" pull="left" class="pt-1 pr-1" /> Menu</div>
-              <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded" @click="seeTicket"> <font-awesome-icon icon="fa-solid fa-receipt" pull="left" class="pt-1 pl-4"/> See
-                your bill </button>
+              
+              
             </div>
             </div>
             
-        </div>
-      </div>
-    </div>
-  </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            <div
+              class="flex fixed h-20 top-0 bg-white pt-2 hover:font-bold text-violet-700 font-semibold w-full items-center justify-between rounded pl-4"
+              @click="backToMenu"> {{ "<" }} Back to Menu <button
+                class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-1/5 rounded p-2 mr-5" @click="seeTicket">
+                <font-awesome-icon icon="fa-solid fa-receipt" pull="left" class="pt-1 pl-4" /> Bill </button>
+            
+            </div>
 
 </template>
 

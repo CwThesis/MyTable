@@ -19,14 +19,15 @@ const props = defineProps({
 
           <div class="flex justify-between p-4 modal-footer">
             <button
-                class="modal-default-button"
+              class="modal-default-button"
+              @click="$emit('close')"
+            > <font-awesome-icon icon="fa-solid fa-xmark"/> </button>
+            
+            <button
+                class="inline-flex justify-center rounded-full border border-violet-700 bg-transparent py-2 px-4 text-sm font-medium text-violet-700 shadow-sm hover:bg-violet-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2" 
                 @click="$emit('submit')"
-              >Submit</button>
+              >Confirm</button>
 
-              <button
-                class="modal-default-button"
-                @click="$emit('close')"
-              >Close</button>
           </div>
         </div>
       </div>

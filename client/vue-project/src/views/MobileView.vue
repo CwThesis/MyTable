@@ -35,6 +35,10 @@ if (route.params.restID && route.params.tableID) {
   )()
 }
 
+async function seeTicket() {
+  router.push(route.path+'/served');
+}
+
 async function sendOrder() {
   // const res = await orderAPIService.newOrder(toRaw(orderStore.currentOrder) as any, orderStore.currentTotal, route.params.restID, route.params.tableID)
   //handle response
@@ -85,10 +89,23 @@ async function sendOrder() {
 
       <Transition>
   <div v-if="(orderStore.currentOrder)" class="z-10 flex fixed bottom-0 w-full bg-transparent h-20 p-2 justify-center items-center">
-    <button v-if="(orderStore.currentOrder)" class="bg-gray-900 text-white font-semibold w-5/6 h-5/6 rounded-lg flex flex-row items-center justify-center"
+    <button v-if="(orderStore.currentOrder)" class="bg-violet-700 text-white font-semibold w-5/6 h-5/6 rounded-lg flex flex-row items-center justify-center"
      @click="sendOrder"> <p class="font-normal text-lg"> ORDER for {{ orderStore.currentTotal }} EUR</p></button>
   </div>
+
+  
+
 </Transition>
+
+<div
+              class="flex flex-col fixed h-20 top-0 bg-transparent pt-2 hover:font-bold text-violet-700  font-semibold w-full items-center justify-between rounded pl-4"> <button
+                class="bg-violet-700 m-4 hover:bg-violet-500 text-white font-semibold self-end w-1/5 rounded p-2 mr-5" @click="seeTicket">
+                <font-awesome-icon icon="fa-solid fa-receipt" pull="left" class="pt-1 pl-4" /> Bill </button>
+            
+            </div>
+
+
+
 
 
 </div>

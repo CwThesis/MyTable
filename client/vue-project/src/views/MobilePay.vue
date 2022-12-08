@@ -113,73 +113,97 @@ function backToMenu() {
       <template #header>
         <p>Choose how you want to split your bill:</p>
       </template>
-      <template  #body>
+      <template #body>
 
-        <div class="flex flex-crow">
+        <div class="flex flex-col">
 
           <!-- SPLIT EQUALLY -->
-          <div class="flex">
+          <div
+            class="BUTTONS flex flex-row inline-flex justify-center rounded-xl border border-violet-700 bg-transparent py-1 px-1 text-sm font-medium text-violet-700 shadow-sm">
+            <div class="object-fill flex">
 
-            <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold rounded" @click="(() => {
-              modeSplit.item = false;
-              modeSplit.set = false;
-              splitType = payEqualSplit;
-              return splitType;
-            
-            })"> = Split Equally</button>
-            <p v-if="(splitType == payEqualSplit)">
-              Total bill: EUR {{ orderTotal }}
-            </p>
-            <p v-if="(splitType == payEqualSplit)">
-              Split by:
-            </p>
-            <input min=1 class="mt-1 shadow appearance-none border rounded-lg w-full"
-              v-if="(splitType == payEqualSplit)" v-model="splitNum" type="number" placeholder="0-9" required />
-            <p v-if="(splitType == payEqualSplit)">
-              You will be paying: EUR {{ (orderTotal / splitNum) }}
-            </p>
-          </div>
-          <div class="flex">
-            <!-- SET AMOUNT -->
-            <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold rounded" @click="(() => {
-              modeSplit.equal = false;
-              modeSplit.set = false;
-              return splitType = paySetAmount;
-            })">$ Set exact Amount</button>
-            <p v-if="(splitType == paySetAmount)">
-              Total bill: EUR {{ orderTotal }}
-            </p>
-            <p v-if="(splitType == paySetAmount)">
-              Split by:
-            </p>
-            <input class="mt-1 shadow appearance-none border rounded-lg w-full" v-if="(splitType == paySetAmount)"
-              v-model="splitSet" type="number" placeholder="100" required />
-          </div>
-          <div class="flex">
 
-            <!-- SELECT ITEMS -->
-            <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold rounded"
-              @click="(() => splitType = payByItems)">... Split by item</button>
+              <button
+                class="p-2 text-black font-semibold rounded-l-lg focus:bg-violet-700 focus:text-white focus:outline-none"
+                @click="(() => {
+                  modeSplit.item = false;
+                  modeSplit.set = false;
+                  splitType = payEqualSplit;
+                  return splitType;
+                
+                })">Split Equally</button>
+
+            </div>
+            <div class="flex">
+              <!-- SET AMOUNT -->
+              <button class="p-2 text-black font-semibold focus:bg-violet-700 focus:text-white focus:outline-none"
+                @click="(() => {
+                  modeSplit.equal = false;
+                  modeSplit.set = false;
+                  return splitType = paySetAmount;
+                })">Set Exact Amount</button>
+
+
+            </div>
+            <div class="flex">
+
+              <!-- SELECT ITEMS -->
+              <button
+                class="p-2 text-black font-semibold rounded-r-lg focus:bg-violet-700 focus:text-white focus:outline-none"
+                @click="(() => splitType = payByItems)">Split by Item</button>
+            </div>
+          </div>
+          <div style="height: 15vh">
+
+
+
+            <div>
+              <p class="font-semibold mt-2" v-if="(splitType == payEqualSplit)">
+                Total bill: € {{ orderTotal }}
+              </p>
+              <div class="flex flex-row justify-start items-center">
+                <p class="w-20" v-if="(splitType == payEqualSplit)">
+                  Split by:
+                </p>
+                <input min=1 class="mt-1 shadow appearance-none border py-1 rounded-lg w-40" style="text-align: center"
+                  v-if="(splitType == payEqualSplit)" v-model="splitNum" type="number" placeholder="0-9" required />
+              </div>
+
+              <p class="font-semibold text-lg pt-2" v-if="(splitType == payEqualSplit)">
+                You will be paying: € {{ (orderTotal / splitNum) }}
+              </p>
+
+              <p class="font-semibold mt-2" v-if="(splitType == paySetAmount)">
+                Total bill: € {{ orderTotal }}
+              </p>
+              <div class="flex flex-row justify-start items-center gap-4" v-if="(splitType == paySetAmount)">
+                Amount:
+                <input class="mt-1 shadow appearance-none border py-1 rounded-lg w-40" style="text-align: center"
+                  v-if="(splitType == paySetAmount)" v-model="splitSet" type="number" placeholder="100" required />
+
+              </div>
+            </div>
+
           </div>
         </div>
       </template>
     </MobileModal>
   </Teleport>
-  <div class="bg-gray-200 overflow-y-scroll h-full rounded-lg">
+  <div class="bg-white overflow-y-scroll h-full rounded-lg">
     <div v-if="loading">
       <LoadingSpinner />
     </div>
     <div v-if="!loading" class="flex flex-col content-center self-center py-10 ">
-      <div class="flex flex-col py-2 bg-gray-200 items-center">
+      <div class="flex flex-col py-2 bg-white items-center">
         <div class="flex z-40 fixed bottom-0 w-full bg-transparent h-20 flex p-2 justify-center ">
           <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded"
             @click="payFullOrder">Pay full bill</button>
           <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded"
             @click="paySplitOrder">Split the bill</button>
         </div>
-        <h1 class="space-y-4 py-5 sm:py-6 text-xl">Your order is being served!</h1>
+        <h1 class="space-y-4 py-10 sm:py-6 text-xl font-semibold">Your order is being served!</h1>
         <h1 class="space-y-4 py-5 text-l">{{ restName }}</h1>
-        <div class="bg-gray-100 rounded-md p-4" style="height: 130vw;">
+        <div class="bg-gray-200 rounded-md p-4" style="height: 130vw;">
 
           <div class=" TICKET flex w-80 mt-4 flex-col items-center">
             <div class="flex w-full flex-row overflow-hidden content-center">
@@ -216,15 +240,18 @@ function backToMenu() {
             <div class="flex px-8 w-full justify-center bg-white content-center">
               <h1 class="space-y-4 w-full py-5 sm:py-6 text-xl content-center">Ticket - {{ restName }}</h1>
             </div>
-            <ul class="flex pl-8 flex-col w-full items-start p-3 bg-white content-center">
-              <div v-for="order in orders">
-                <div v-for="curr in order.CO">
-                  <li>{{ curr.name }} , {{ curr.amount }}, EUR {{ curr.price }} </li>
+            <ul class="flex pl-6 flex-col w-full items-start p-3 bg-white content-center">
+              <div class="w-full px-2" v-for="order in orders">
+                <div class="w-full" v-for="curr in order.CO">
+                  <li class="flex flex-row justify-between w-full">
+                    <div>{{ curr.name }} </div>
+                    <div>{{ curr.amount }}x € {{ curr.price }}</div>
+                  </li>
                 </div>
               </div>
               <div class="pt-4">
-                <h1>
-                  Total : EUR {{ orderTotal }}
+                <h1 class="flex w-full font-semibold pl-44">
+                  Total : € {{ orderTotal }}
                 </h1>
               </div>
             </ul>
@@ -258,12 +285,11 @@ function backToMenu() {
               <div class="arrow-down"></div>
             </div>
           </div>
-          <div class="flex mb-20 w-full bg-transparent h-20 flex p-2 justify-center ">
-            <div class="bg-violet-transparent pt-2 m-1 hover:font-bold text-violet-700 font-semibold w-full rounded"
-              @click="backToMenu"> {{ "<" }} Back to Menu</div>
-            </div>
 
+          <div class="fixed h-15 top-0 bg-white pt-6 hover:font-bold text-violet-700 font-semibold w-full rounded"
+            @click="backToMenu"> {{ "<" }} Back to Menu</div>
           </div>
+
         </div>
       </div>
     </div>
