@@ -85,7 +85,7 @@ const restaurantAPIService = {
 
   stripeDashboard: async (userID: string) => {
     try {
-      const res = await fetch(`${BE_URL}/dashboard/${userID}/stripe`, {
+      const res = await fetch(`${BE_URL}/dashboard/${userID}/stripeDashboard`, {
         method: 'GET',
         mode: 'cors',
         headers: {

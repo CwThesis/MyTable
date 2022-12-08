@@ -17,9 +17,9 @@ const props = defineProps({
           </div>
 
           <div class="flex justify-between p-4 modal-footer">
-            <button
+            <button 
             id="submit-button"
-                class="modal-default-button"
+            class="inline-flex justify-center rounded-full border border-transparent bg-violet-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
                 @click="$emit('submit')"
               >Download</button>
 
@@ -28,7 +28,7 @@ const props = defineProps({
 
                 class="modal-default-button"
                 @click="$emit('close')"
-              >Close</button>
+              ><font-awesome-icon icon="fa-solid fa-xmark" /></button>
           </div>
         </div>
       </div>
@@ -56,11 +56,11 @@ const props = defineProps({
 }
 
 .modal-container {
-  width: 40vw;
+  width: 30vw;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
-  border-radius: 2px;
+  border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
 }

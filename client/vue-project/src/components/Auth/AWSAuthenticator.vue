@@ -20,7 +20,10 @@ Hub.listen('auth', (data) => {
 </script>
 
 <template>
-  <div class="authenticator">
+  <div class="authenticator flex flex-col">
+    <div class="p-14">
+        <a href="/"><h1 class="font-josefin font-semibold text-7xl text-violet-700 ">mytable<font-awesome-icon icon="fa-solid fa-qrcode" pull="left" class="pr-1"/></h1></a>
+      </div>
 <Authenticator/>
   </div>
 </template>
@@ -53,5 +56,5 @@ Hub.listen('auth', (data) => {
 
 :root, [data-amplify-theme] {
   --amplify-components-authenticator-router-border-style: none;
-}
+  }
 </style>

@@ -6,9 +6,12 @@ import tableAPIService from '../../services/tableAPI';
 import pdfMake from "pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import htmlToPdfmake from "html-to-pdfmake";
-import QRModal from '../QRModal.vue'
+import QRModal from '../QRModal.vue';
+import Toast from "../Toasts/Toast.vue";
 
-
+const showToast = ref(false);
+const toastTitle = ref("");
+const toastType = ref("success");
 
 const props = defineProps({
   data: Array,
@@ -63,15 +66,43 @@ async function handleTableDeletion() {
   const res = await tableAPIService.deleteTable(buttonToDeleteID.value, props.userData.username);
   if (res && res.success) {
     showModal.value = false;
-    window.location.reload();
-  } else alert('Could not delete table');
+    toastTitle.value = "Table deleted!";
+    toastType.value = "success";
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+      window.location.reload();
+    }, 2000);
+
+  } else {
+    toastTitle.value = "Couldn't delete the table :(";
+    toastType.value = "danger";
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+    }, 2000);
+  };
 }
 
-async function handlePinRefresh(tableID: string){
+async function handlePinRefresh(tableID: string) {
   const res = await tableAPIService.refreshPin(tableID, props.userData.username);
   if (res && res.success) {
-    window.location.reload();
-  } else alert('Could not refresh pin');
+    toastTitle.value = "Pin refreshed!";
+    toastType.value = "success";
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+      window.location.reload();
+    }, 2000);
+
+  } else {
+    toastTitle.value = "Couldn't refresh the pin :(";
+    toastType.value = "danger";
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+    }, 2000);
+  };
 }
 
 function tableToDelete(id: string) {
@@ -79,7 +110,7 @@ function tableToDelete(id: string) {
   buttonToDeleteID.value = id;
 }
 
-function handleQRDownload (tablename: string, QRUrl: string) {
+function handleQRDownload(tablename: string, QRUrl: string) {
   targetQRTableName.value = tablename;
   targetQRUrl.value = QRUrl
   QRToDownload.value = new QRCode({
@@ -104,11 +135,15 @@ function downloadDocument() {
 </script>
 
 <template>
-  <div >
+  <div v-if="showToast">
+    <Toast :title="toastTitle" :type="toastType" />
+  </div>
+  <div>
     <table v-if="filteredData?.length" class="sm:rounded-lg">
-      <thead >
+      <thead>
         <tr class="overflow-hidden bg-white shadow sm:rounded-lg">
-          <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }" >
+          <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }"
+          class="text-sm font-medium text-gray-500">
             {{ capitalize(key as any) }}
             <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
             </span>
@@ -116,11 +151,12 @@ function downloadDocument() {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="entry in filteredData">
+        <tr v-for="entry in filteredData" >
           <td v-for="key in columns" class="border-y">
           <td v-if="key === 'QR'">
             <div class="flex direction-row">
-              <button @click="handleQRDownload(entry.table, entry[key])" class="bg-transparent p-4 text-zinc-500 hover:text-black font-bold py-1 px-3 rounded-lg">
+              <button @click="handleQRDownload(entry.table, entry[key])"
+                class="bg-transparent text-zinc-500 hover:text-black font-bold py-1 px-3 rounded-lg">
                 <font-awesome-icon icon="fa-solid fa-file-arrow-down fa-lg" />
               </button>
             </div>
@@ -131,13 +167,14 @@ function downloadDocument() {
               <font-awesome-icon icon="fa-solid fa-trash fa-lg" />
             </button>
           </td>
-          <td v-else-if="key === 'pincode'">
-          {{ entry[key] }}
-          <button @click="handlePinRefresh(entry['actions'])" class="bg-transparent p-4 text-zinc-500 hover:text-black">
-            <font-awesome-icon icon="fa-solid fa-arrows-rotate fa-lg" class="text-violet-700" />
-          </button>
+          <td v-else-if="key === 'pincode'" class="text-sm text-gray-900">
+            {{ entry[key] }}
+            <button @click="handlePinRefresh(entry['actions'])"
+              class="bg-transparent p-4 text-zinc-500 hover:text-black">
+              <font-awesome-icon icon="fa-solid fa-arrows-rotate fa-lg" class="text-violet-700" />
+            </button>
           </td>
-          <td v-else> {{ entry[key] }}</td>
+          <td v-else class="text-sm text-gray-900"> {{ entry[key] }}</td>
           </td>
         </tr>
       </tbody>
@@ -145,7 +182,6 @@ function downloadDocument() {
     <p v-else>No entries found</p>
   </div>
   <Teleport to="body">
-    <!-- use the modal component, pass in the prop -->
     <ModalView :show="showModal" @submit="handleTableDeletion" @close="showModal = false">
       <template #header>
         <p>Are you sure you want to delete the table?</p>
@@ -153,7 +189,6 @@ function downloadDocument() {
     </ModalView>
   </Teleport>
   <Teleport to="body">
-    <!-- use the modal component, pass in the prop -->
     <QRModal :show="showQRModal" @submit="downloadDocument" @close="showQRModal = false">
       <template #header>
       </template>
@@ -161,7 +196,7 @@ function downloadDocument() {
         <div :id="targetQRTableName">
           <div v-html="QRToDownload">
           </div>
-          <p>{{targetQRTableName}}</p>
+          <p>{{ targetQRTableName }}</p>
         </div>
       </template>
     </QRModal>

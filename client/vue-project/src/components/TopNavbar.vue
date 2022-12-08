@@ -24,6 +24,7 @@ async function signOut() {
 </script>
 
 <template>
+  <div class="top-navbar">
   <nav class="bg-gray-100 border-b border-gray-200">
     <div class="mx-auto px-2 sm:px-6 lg:px-8">
       <div class="relative flex h-16 items-center justify-between">
@@ -46,21 +47,6 @@ async function signOut() {
             ><div id="email" v-if="(userData && userData.email)">{{userData.email}}</div></a
           >
           <div class="relative ml-3">
-            <div>
-              <button
-                type="button"
-                class="flex rounded-full bg-gray-50 border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                id="user-menu-button"
-                aria-expanded="false"
-                aria-haspopup="true"
-              >
-                <img
-                  class="h-8 w-8 rounded-full"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt=""
-                />
-              </button>
-            </div>
             <div
               @mouseover="show = true"
               @mouseleave="show = false"
@@ -98,4 +84,5 @@ async function signOut() {
       </div>
     </div>
   </nav>
+</div>
 </template>

@@ -7,14 +7,14 @@ describe('SideNav', () => {
   it('renders the correct logo', () => {
     const wrapper = shallowMount(SideNavbar);
     const logo = wrapper.find('h1');
-    expect(logo.text()).toBe('my table');
+    expect(logo.text()).toBe('mytable');
   });
 
   it('renders the correct navigation links', () => {
     const wrapper = shallowMount(SideNavbar);
     const links = wrapper.findAll('a');
     expect(links.length).toBe(5);
-    expect(links.at(0).text()).toBe('my table');
+    expect(links.at(0).text()).toBe('mytable');
     expect(links.at(1).text()).toBe('Overview');
     expect(links.at(2).text()).toBe('Tickets');
     expect(links.at(3).text()).toBe('Tables');
@@ -24,7 +24,7 @@ describe('SideNav', () => {
   it('renders the correct header text', () => {
     const wrapper = shallowMount(SideNavbar);
     const header = wrapper.find('h1');
-    expect(header.text()).toBe('my table');
+    expect(header.text()).toBe('mytable');
   });
 
   it('renders the Overview link', () => {

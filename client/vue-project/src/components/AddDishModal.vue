@@ -12,24 +12,15 @@ const props = defineProps({
           <div class="modal-header">
             <slot name="header"></slot>
           </div>
-
           <div class="modal-body">
             <slot name="body"></slot>
           </div>
-
           <div class="flex justify-between p-4 modal-footer">
             <button
-            class="inline-flex justify-center rounded-full border border-transparent bg-violet-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
-            id="submit-button"
-
-                @click="$emit('submit')"
-              >Add</button>
-
-              <button
-                id="close-button"
-                class="modal-default-button"
-                @click="$emit('close')"
-              > <font-awesome-icon icon="fa-solid fa-xmark" /></button>
+              class="inline-flex justify-center rounded-full border border-transparent bg-violet-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+              id="submit-button" @click="$emit('submit')">Add</button>
+            <button id="close-button" class="modal-default-button" @click="$emit('close')"> <font-awesome-icon
+                icon="fa-solid fa-xmark" /></button>
           </div>
         </div>
       </div>
@@ -53,7 +44,7 @@ const props = defineProps({
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
-} 
+}
 
 .modal-container {
   width: 40vw;
