@@ -77,30 +77,35 @@ async function sendOrder() {
         </div>
 
         
-      <!-- <div v-if="(orderStore.currentOrder)" class="z-10 flex fixed bottom-0 w-full bg-white h-20 flex p-2 justify-center items-center">
-        <button v-if="(orderStore.currentOrder)" class="bg-gray-900 text-white font-semibold w-5/6 h-5/6 rounded-lg flex flex-row items-center justify-center" @click="sendOrder"> <p class="font-normal text-lg"> ORDER for {{ orderStore.currentTotal }} EUR</p></button>
-      </div> -->
+    
       </div>
-      
-
-      
-      
-        <!-- <ul class="flex flex-col items-center p-4">
-          <div v-for="dish in orderStore.currentOrder">
-            <li>{{ dish.name }}, {{ dish.amount }} u's</li>
-          </div>
-        </ul> -->
+    
        
       </div>
 
-      <div v-if="(orderStore.currentOrder)" class="z-10 flex fixed bottom-0 w-full bg-white h-20 p-2 justify-center items-center">
-        <button v-if="(orderStore.currentOrder)" class="bg-gray-900 text-white font-semibold w-5/6 h-5/6 rounded-lg flex flex-row items-center justify-center"
-         @click="sendOrder"> <p class="font-normal text-lg"> ORDER for {{ orderStore.currentTotal }} EUR</p></button>
-      </div>
+      <Transition>
+  <div v-if="(orderStore.currentOrder)" class="z-10 flex fixed bottom-0 w-full bg-transparent h-20 p-2 justify-center items-center">
+    <button v-if="(orderStore.currentOrder)" class="bg-gray-900 text-white font-semibold w-5/6 h-5/6 rounded-lg flex flex-row items-center justify-center"
+     @click="sendOrder"> <p class="font-normal text-lg"> ORDER for {{ orderStore.currentTotal }} EUR</p></button>
+  </div>
+</Transition>
 
 
-    </div>
- </div>
+</div>
+</div>
 
 
 </template>
+
+<style>
+.v-enter-active,
+.v-leave-active {
+transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+opacity: 0;
+}
+</style>
+
