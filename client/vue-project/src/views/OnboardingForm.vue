@@ -5,7 +5,10 @@ import {Auth} from 'aws-amplify';
 import restaurantAPIService from '../services/restaurantAPI';
 import { useRouter } from "vue-router";
 import LoadingSpinner from './../components/LoadingSpinner.vue';
+import countryList from '../countries'
 
+
+//const listOfCountries = ref(countryList);
 const isLoading = ref(true);
 const restName = ref("");
 const bankName = ref("");
@@ -32,6 +35,7 @@ Auth.currentAuthenticatedUser().then((u)=>{
 })()
 });
 
+
 async function submitForm() {
   console.log("Form submitted!");
   if(staff.value > 50 || Number(tables.value) > 50) {
@@ -40,8 +44,6 @@ async function submitForm() {
   }
   const formInput = {
     restName: restName.value,
-    bankName: bankName.value,
-    IBAN: IBAN.value,
     street: street.value,
     city: city.value,
     zip: zip.value,
@@ -62,15 +64,15 @@ async function submitForm() {
 </script>
 
 <template>
+  <TopNavbarVue></TopNavbarVue>
     <div v-if="isLoading">
     <LoadingSpinner/>
   </div>
-  <div v-else>
-  <div>
-    <TopNavbarVue></TopNavbarVue>
-    <div class="container mx-auto content-center max-w-5xl">
-      <div class="shadow sm:overflow-hidden sm:rounded-md mb-4 mt-4">
-        <div class="space-y-4 bg-gray-100 px-4 py-5 sm:p-6">
+  <div v-else id="main" class="h-full flex justify-center items-start mt-5">
+    
+    <div class=" mx-auto max-w-5xl flex flex-col justify-center items-center">
+      <div class="shadow sm:overflow-hidden sm:rounded-md mb-4 mt-4 w-2/3">
+        <div class="space-y-4 bg-violet-100 px-4 py-5 sm:p-6">
           <h1 class="text-2xl">Welcome to mytable!</h1>
           <h3 class="text-sm font-medium text-gray-700">
             You're almost ready to start.
@@ -81,7 +83,7 @@ async function submitForm() {
         </div>
       </div>
 
-      <div class="mt-10 sm:mt-0">
+      <div  class="mt-10 sm:mt-0 w-2/3">
         <div class="md:grid md:grid-cols-6 md:gap-6">
           <div class="mt-5 md:col-span-6 md:col-start-1 md:mt-0">
             <form action="#" @submit.prevent="submitForm" method="POST">
@@ -103,39 +105,7 @@ async function submitForm() {
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       />
                     </div>
-
-                    <div class="col-span-6 sm:col-span-3">
-                      <label
-                        for="first-name"
-                        class="block text-sm font-medium text-gray-700"
-                        >Bank Name</label
-                      >
-                      <input
-                        v-model="bankName"
-                        type="text"
-                        required
-                        name="bank-name"
-                        id="bank-name"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      />
-                    </div>
-
-                    <div class="col-span-6 sm:col-span-3">
-                      <label
-                        for="last-name"
-                        class="block text-sm font-medium text-gray-700"
-                        >IBAN</label
-                      >
-                      <input
-                        v-model="IBAN"
-                        type="text"
-                        required
-                        name="IBAN"
-                        id="IBAN"
-                        autocomplete="IBAN"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      />
-                    </div>
+                   
 
                     <div class="col-span-6">
                       <label
@@ -201,9 +171,7 @@ async function submitForm() {
                         autocomplete="country-name"
                         class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       >
-                        <option>United States</option>
-                        <option>Canada</option>
-                        <option>Mexico</option>
+                        <option v-for="item in countryList">{{item}}</option>
                       </select>
                     </div>
 
@@ -236,18 +204,21 @@ async function submitForm() {
                       <label
                         for="waiter-name"
                         class="block text-sm font-medium text-gray-700"
-                        >Your staff</label
+                        >How many waiters are there in your team? </label
                       >
-                      <input
+                      <select
                         v-model="staff"
                         type="number"
                         name="waiter-name"
                         id="waiter-name"
                         autocomplete="waiter-name"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      />
+                        class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+                        
+                        <option v-for="num in 30" :key="num">{{ num }}</option>
+                      
+                    </select>
                       <p class="mt-2 text-sm text-gray-500">
-                        How many waiters are there in your team? You will be able to edit
+                        You will be able to edit
                         this later.
                       </p>
                       <div class="flex flex-row flex-wrap">
@@ -259,7 +230,7 @@ async function submitForm() {
                 <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
                   <button
                     type="submit"
-                    class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="inline-flex justify-center rounded-md border border-transparent bg-violet-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
                     Save
                   </button>
@@ -270,7 +241,7 @@ async function submitForm() {
         </div>
       </div>
     </div>
-  </div>
+
   <div>
   </div>
 </div>
