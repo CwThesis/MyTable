@@ -83,7 +83,7 @@ async function handleTableCreation() {
     <button class="bg-violet-700 hover:bg-violet-500 text-white font-semibold py-2 px-4 rounded-full" id="show-modal"
       @click="showModal = true">New Table</button>
   </div>
-  <div id="table" class="py-12 px-4 sm:px-6 lg:px-8">
+  <div id="table" class="p-10 mb-10 overflow-y-scroll" style="height:78vh">
     <Teleport to="body">
       <ModalView :show="showModal" @submit="handleTableCreation" @close="showModal = false">
         <template #header>
