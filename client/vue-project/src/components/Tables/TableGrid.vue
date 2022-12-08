@@ -138,7 +138,7 @@ function downloadDocument() {
   <div v-if="showToast">
     <Toast :title="toastTitle" :type="toastType" />
   </div>
-  <div>
+  <div >
     <table v-if="filteredData?.length" class="sm:rounded-lg">
       <thead>
         <tr class="overflow-hidden bg-white shadow sm:rounded-lg">

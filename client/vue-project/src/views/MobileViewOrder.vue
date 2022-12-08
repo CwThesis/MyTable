@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { Dish, DishIdWithAmount } from "../types";
-import DishCardMobile from "../components/Mobile/DishCardMobile.vue";
+
 import type { Ref } from 'vue';
 import { ref, toRaw, watch } from "vue";
 import { useOrderStore } from "../stores/order.store";
@@ -16,8 +15,7 @@ const orders: Ref<any[]> = ref([]);
 const waiter: Ref<string> = ref("");
 const restName: Ref<string> = ref("");
 const loading: Ref<boolean> = ref(true);
-const menuName: Ref<string> = ref("");
-const banner: Ref<string> = ref("");
+
 
 // If both params exist -> fetch ticketDATA ---->
 if (route.params.restID && route.params.tableID) {
@@ -58,7 +56,7 @@ async function seeTicket() {
     <div v-if="loading">
       <LoadingSpinner />
     </div>
-    <div class="flex flex-col h-full content-center self-center " v-if="(orderStore.currentOrder.length>0)">
+    <div class="flex flex-col h-full content-center self-center " v-if="(orderStore.currentOrder && orderStore.currentOrder.length>0)">
       <div class="flex flex-col h-full py-2 bg-gray-200 items-center">
         
         <div class="flex z-40 fixed bottom-0 w-full bg-transparent h-20 flex p-2 justify-center ">
@@ -69,19 +67,19 @@ async function seeTicket() {
 
 
 
-        <div class="flex h-screen w-80 flex-col items-center">
+        <div v-if="! loading" class="flex h-screen w-80 flex-col items-center">
           <div class="flex flex-col h-full px-8 bg-white rounded-md">
             
             <h1 class="space-y-4 py-5 sm:py-6 text-xl content-center">{{ restName }} - Your Order</h1>
 
             <div class="mt-10">
               Your Order:
-              <ul class="flex items-center">
+              <ul class="pt-4 flex flex-col items-start">
                 <div v-for="dish in orderStore.currentOrder">
                   <li>{{ dish.name }}, {{ dish.amount }} u's</li>
                 </div>
               </ul>
-              <div class="flex items-center">new order total: {{ orderStore.currentTotal }}</div>
+              <div class="flex pt-4 items-center">new order total: {{ orderStore.currentTotal }}</div>
             </div>
             </div>
             <div class="flex mb-20 w-full bg-transparent h-20 flex p-2 justify-center ">
