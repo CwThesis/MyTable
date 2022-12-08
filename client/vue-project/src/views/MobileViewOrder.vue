@@ -76,7 +76,7 @@ async function seeTicket() {
               Your Order:
               <ul class="pt-4 flex flex-col items-start">
                 <div v-for="dish in orderStore.currentOrder">
-                  <li>{{ dish.name }}, {{ dish.amount }} u's</li>
+                  <li>{{ dish.name }}, {{ dish.amount }} u's, {{ dish.price }} </li>
                 </div>
               </ul>
               <div class="flex pt-4 items-center">new order total: {{ orderStore.currentTotal }}</div>

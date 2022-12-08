@@ -32,7 +32,7 @@ const orderStore = useOrderStore();
             <div class="flex gap-2 bg-white rounded-full items-center justify-center">
               <p v-if="(orderStore.amountById(props.dish.id)> 0)" class="font-semibold text-gray-500 pl-2">{{orderStore.amountById(props.dish.id)}}</p>
               <button class="p-2 bg-white rounded-full w-8 h-8 flex justify-center items-center"
-                @click="orderStore.addToOrder({ id: props.dish.id, name: props.dish.title, img: props.dish.imgUrl, amount: 1 }, props.dish.price)">
+                @click="orderStore.addToOrder({ id: props.dish.id, name: props.dish.title, img: props.dish.imgUrl, amount: 1, price: props.dish.price}, props.dish.price)">
                 <font-awesome-icon icon="fa-solid fa-plus fa-xs" class="text-gray-500"/></button>
             </div>
               

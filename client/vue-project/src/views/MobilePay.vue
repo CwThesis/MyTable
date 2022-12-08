@@ -160,7 +160,7 @@ function backToMenu() {
     <div v-if="loading">
       <LoadingSpinner />
     </div>
-    <div class="flex flex-col content-center self-center py-10 ">
+    <div v-if="! loading" class="flex flex-col content-center self-center py-10 ">
       <div class="flex flex-col py-2 bg-gray-200 items-center">
         <div class="flex z-40 fixed bottom-0 w-full bg-transparent h-20 flex p-2 justify-center ">
           <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded"
@@ -207,12 +207,16 @@ function backToMenu() {
             <div class="flex px-8 w-full justify-center bg-white content-center">
               <h1 class="space-y-4 w-full py-5 sm:py-6 text-xl content-center">Ticket - {{ restName }}</h1>
             </div>
-            <ul class="flex flex-col w-full items-center p-4 bg-white content-center">
+            <ul class="flex pl-8 flex-col w-full items-start p-3 bg-white content-center">
               <div v-for="order in orders">
                 <div v-for="curr in order.CO">
-                  <li>{{ curr.name }} , {{ curr.amount }} </li>
+                  <li>{{ curr.name }} , {{ curr.amount }}, EUR {{ curr.price }} </li>
                 </div>
-                {{ order.CT }} EUR
+              </div>
+              <div class="pt-4">
+                <h1>
+              Total : EUR {{orderTotal}}  
+               </h1>
               </div>
             </ul>
             <div class="flex flex-row w-full overflow-hidden content-center">
