@@ -5,6 +5,9 @@ import tableAPIService from '../..//services/tableAPI';
 import { Auth } from 'aws-amplify';
 import ModalView from '../ModalView.vue';
 import Toast from "../Toasts/Toast.vue";
+import LoadingSpinner from "../LoadingSpinner.vue";
+
+const isLoading = ref(true);
 
 const showToast = ref(false);
 const toastTitle = ref("");
@@ -33,6 +36,7 @@ Auth.currentAuthenticatedUser().then((u) => {
         QR: el.qr,
       }
     });
+    isLoading.value = false;
   }
   )()
 })
@@ -65,6 +69,9 @@ async function handleTableCreation() {
 </script>
 
 <template>
+    <div v-if="isLoading" class="h-full"> 
+      <LoadingSpinner />
+    </div>
   <div v-if="showToast">
     <Toast :title="toastTitle" :type="toastType" />
   </div>

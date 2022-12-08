@@ -11,9 +11,12 @@ import  dishAPIService  from "../../services/dishAPI"
 import { Auth } from 'aws-amplify';
 import menuAPIService from "../../services/menuAPI"
 import { useMenuStore } from "../../stores/menu.store"
+import LoadingSpinner from "../LoadingSpinner.vue";
+
 
 
 const store = useMenuStore();
+const isLoading = ref(true);
 let userId = "";
 const editMode = ref(false);
 const activeMenu: Ref<Dish[]> = ref([]);
@@ -32,6 +35,7 @@ Auth.currentAuthenticatedUser().then((u) => {
     activeMenu.value = dishesArray.filter((dish: { menu: boolean; }) => dish.menu === true)
     const res2 = await menuAPIService.getBanner(userId);
     banner.value = res2.body;
+    isLoading.value = false;
   })()
 });
 
@@ -55,6 +59,9 @@ watch(() => store.dishes, () => {
     <SideNavbar />
     <div class="flex-1">
       <TopNavbar />
+      <div v-if="isLoading" class="h-full"> 
+          <LoadingSpinner />
+        </div>
       <main class="flex flex-1 justify-center w-full xl:w-11/12">
           <div id="menu" class="w-1/2 p-7 flex justify-center">
             <div id="active-menu" class="max-w-xl">
