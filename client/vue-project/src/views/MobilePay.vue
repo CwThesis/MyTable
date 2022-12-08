@@ -24,7 +24,7 @@ const splitNum = ref(1);
 const splitSet = ref(0);
 const itemSet = ref(0);
 const splitItems = ref(false);
-const splitType= ref();
+const splitType = ref();
 const route = useRoute();
 const router = useRouter();
 const orders: Ref<any[]> = ref([]);
@@ -34,7 +34,7 @@ const restName: Ref<string> = ref("");
 const loading: Ref<boolean> = ref(true);
 const menuName: Ref<string> = ref("");
 const banner: Ref<string> = ref("");
-const orderTotal =ref(0)
+const orderTotal = ref(0)
 
 // If both params exist -> fetch ticketDATA ---->
 if (route.params.restID && route.params.tableID) {
@@ -46,10 +46,10 @@ if (route.params.restID && route.params.tableID) {
       if (result.ticket.length > 0) orders.value = result.ticket[0].orders;
       waiter.value = result.waiter;
       restName.value = result.restName;
-      orderTotal.value = orders.value.flatMap(obj=>obj.CT).reduce((a,b)=>a+b);
+      orderTotal.value = orders.value.flatMap(obj => obj.CT).reduce((a, b) => a + b);
     }
     loading.value = false;
-    
+
   }
   )()
 }
@@ -65,10 +65,10 @@ async function payFullOrder() {
 
 async function payEqualSplit() {
   const pay = toRaw(orders.value)
-  splitEqual.value=true;
-  splitItems.value=false;
+  splitEqual.value = true;
+  splitItems.value = false;
   console.log("split form input", splitNum.value);
-  const res = await orderAPIService.paySplitEqual(pay, splitNum.value, route.params.restID, route.params.tableID); 
+  const res = await orderAPIService.paySplitEqual(pay, splitNum.value, route.params.restID, route.params.tableID);
   console.log('return--->', JSON.stringify(res));
   window.location.assign(res.body);
   //handle response
@@ -76,10 +76,10 @@ async function payEqualSplit() {
 }
 
 async function paySetAmount() {
-  splitEqual.value=true;
-  splitItems.value=false;
+  splitEqual.value = true;
+  splitItems.value = false;
   console.log("split form input", splitSet.value);
-  const res = await orderAPIService.paySetAmount( splitSet.value, route.params.restID, route.params.tableID); 
+  const res = await orderAPIService.paySetAmount(splitSet.value, route.params.restID, route.params.tableID);
   console.log('return--->', JSON.stringify(res));
   window.location.assign(res.body);
   //handle response
@@ -87,80 +87,89 @@ async function paySetAmount() {
 }
 
 async function payByItems() {
-  splitEqual.value=true;
-  splitItems.value=false;
+  splitEqual.value = true;
+  splitItems.value = false;
   console.log("split form input", itemSet.value);
-  const res = await orderAPIService.payTicket( itemSet.value, route.params.restID, route.params.tableID); 
+  const res = await orderAPIService.payTicket(itemSet.value, route.params.restID, route.params.tableID);
   console.log('return--->', JSON.stringify(res));
   window.location.assign(res.body);
   //handle response
   //orderStore.emptyOrder();
 }
 
-async function paySplitOrder () {
-  showModal.value=true;
+async function paySplitOrder() {
+  showModal.value = true;
 }
 
 function backToMenu() {
-  router.push("/customer/"+route.params.restID+'/'+route.params.tableID);
+  router.push("/customer/" + route.params.restID + '/' + route.params.tableID);
 }
 </script>
 
 <template>
   <Teleport to="body">
-        <!-- use the modal component, pass in the prop -->
-        <MobileModal :show="showModal" @submit="splitType" @close="showModal = false">
-          <template #header>
-            <p>Choose how you want to split your bill:</p>
-          </template>
-          <template #body>
-<!-- SPLIT EQUALLY -->
+    <!-- use the modal component, pass in the prop -->
+    <MobileModal :show="showModal" @submit="splitType" @close="showModal = false">
+      <template #header>
+        <p>Choose how you want to split your bill:</p>
+      </template>
+      <template  #body>
 
-            <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded"
-            @click="(()=>
-            {
-              modeSplit.item=false;
-              modeSplit.set=false;
+        <div class="flex flex-crow">
+
+          <!-- SPLIT EQUALLY -->
+          <div class="flex">
+
+            <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold rounded" @click="(() => {
+              modeSplit.item = false;
+              modeSplit.set = false;
               splitType = payEqualSplit;
               return splitType;
-
+            
             })"> = Split Equally</button>
-            <p v-if="(splitType==payEqualSplit)">
-            Total bill: EUR {{orderTotal}} 
-          </p>
-            <p v-if="(splitType==payEqualSplit)">
-            Split by:
+            <p v-if="(splitType == payEqualSplit)">
+              Total bill: EUR {{ orderTotal }}
             </p>
-            <input min=1 class="mt-1 shadow appearance-none border rounded-lg w-full" v-if="(splitType==payEqualSplit)" v-model="splitNum" type="number" placeholder="0-9" required/>
-            <p v-if="(splitType==payEqualSplit)">
-            You will be paying: EUR {{(orderTotal/splitNum)}}
+            <p v-if="(splitType == payEqualSplit)">
+              Split by:
             </p>
-  <!-- SET AMOUNT -->
-            <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded"
-            @click="(()=>
-            {
-              modeSplit.equal=false;
-              modeSplit.set=false;
+            <input min=1 class="mt-1 shadow appearance-none border rounded-lg w-full"
+              v-if="(splitType == payEqualSplit)" v-model="splitNum" type="number" placeholder="0-9" required />
+            <p v-if="(splitType == payEqualSplit)">
+              You will be paying: EUR {{ (orderTotal / splitNum) }}
+            </p>
+          </div>
+          <div class="flex">
+            <!-- SET AMOUNT -->
+            <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold rounded" @click="(() => {
+              modeSplit.equal = false;
+              modeSplit.set = false;
               return splitType = paySetAmount;
-              })">$ Set exact Amount</button>
-              <p v-if="(splitType==paySetAmount)">
-            Total bill: EUR {{orderTotal}} 
-          </p>
-            <p v-if="(splitType==paySetAmount)">
-            Split by:
+            })">$ Set exact Amount</button>
+            <p v-if="(splitType == paySetAmount)">
+              Total bill: EUR {{ orderTotal }}
             </p>
-            <input class="mt-1 shadow appearance-none border rounded-lg w-full" v-if="(splitType==paySetAmount)" v-model="splitSet" type="number" placeholder="100" required/>
-  <!-- SELECT ITEMS -->
-            <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded"
-            @click="(()=>splitType = payByItems)">... Split by item</button> 
-          </template>
-        </MobileModal>
-      </Teleport>
+            <p v-if="(splitType == paySetAmount)">
+              Split by:
+            </p>
+            <input class="mt-1 shadow appearance-none border rounded-lg w-full" v-if="(splitType == paySetAmount)"
+              v-model="splitSet" type="number" placeholder="100" required />
+          </div>
+          <div class="flex">
+
+            <!-- SELECT ITEMS -->
+            <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold rounded"
+              @click="(() => splitType = payByItems)">... Split by item</button>
+          </div>
+        </div>
+      </template>
+    </MobileModal>
+  </Teleport>
   <div class="bg-gray-200 overflow-y-scroll h-full rounded-lg">
     <div v-if="loading">
       <LoadingSpinner />
     </div>
-    <div v-if="! loading" class="flex flex-col content-center self-center py-10 ">
+    <div v-if="!loading" class="flex flex-col content-center self-center py-10 ">
       <div class="flex flex-col py-2 bg-gray-200 items-center">
         <div class="flex z-40 fixed bottom-0 w-full bg-transparent h-20 flex p-2 justify-center ">
           <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded"
@@ -215,8 +224,8 @@ function backToMenu() {
               </div>
               <div class="pt-4">
                 <h1>
-              Total : EUR {{orderTotal}}  
-               </h1>
+                  Total : EUR {{ orderTotal }}
+                </h1>
               </div>
             </ul>
             <div class="flex flex-row w-full overflow-hidden content-center">
@@ -250,19 +259,18 @@ function backToMenu() {
             </div>
           </div>
           <div class="flex mb-20 w-full bg-transparent h-20 flex p-2 justify-center ">
-              <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded" @click="backToMenu">Back
-                to Menu</button>
+            <div class="bg-violet-transparent pt-2 m-1 hover:font-bold text-violet-700 font-semibold w-full rounded"
+              @click="backToMenu"> {{ "<" }} Back to Menu</div>
             </div>
-          
+
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
 </template>
 
 <style>
-
 .arrow-up {
   width: 0;
   height: 0;

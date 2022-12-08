@@ -68,26 +68,27 @@ async function seeTicket() {
 
 
         <div v-if="! loading" class="flex h-screen w-80 flex-col items-center">
-          <div class="flex flex-col h-full px-8 bg-white rounded-md">
+          <div class="mt-4 flex flex-col h-screen px-14 bg-white rounded-md">
             
-            <h1 class="space-y-4 py-5 sm:py-6 text-xl content-center">{{ restName }} - Your Order</h1>
-
-            <div class="mt-10">
-              Your Order:
-              <ul class="pt-4 flex flex-col items-start">
-                <div v-for="dish in orderStore.currentOrder">
-                  <li>{{ dish.name }}, {{ dish.amount }} u's, {{ dish.price }} </li>
+            <h1 class="space-y-4 pt-12 sm:py- text-l content-center">{{ restName }}</h1>
+            
+            <div class="mt-4">
+              <h1 class="space-y-4 pt-4 sm:py-6 text-xl content-center">Your Order:</h1>
+              
+              <ul class="pt-4 flex flex-col">
+                <div class="w-full flex align-items justify-center" v-for="dish in orderStore.currentOrder">
+                  <div class="flex w-52 flex-row justify-between" ><p>{{ dish.name }} ,</p> <p>{{ dish.amount }} u's,</p>  <p>{{ dish.price }}</p> </div>
                 </div>
               </ul>
-              <div class="flex pt-4 items-center">new order total: {{ orderStore.currentTotal }}</div>
-            </div>
+              <div class="flex w-full pt-4 justify-end font-bold">new order total: EUR {{ orderStore.currentTotal }}</div>
             </div>
             <div class="flex mb-20 w-full bg-transparent h-20 flex p-2 justify-center ">
-              <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded" @click="backToMenu">Back
-                to Menu</button>
-              <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded" @click="seeTicket">See
-                your ticket</button>
+              <div class="bg-violet-transparent pt-4 m-1 hover:font-bold text-violet-700 font-semibold rounded" @click="backToMenu"> <font-awesome-icon icon="fa-solid fa-utensils" pull="left" class="pt-1 pr-1" /> Menu</div>
+              <button class="bg-violet-700 m-1 hover:bg-violet-500 text-white font-semibold w-full rounded" @click="seeTicket"> <font-awesome-icon icon="fa-solid fa-receipt" pull="left" class="pt-1 pl-4"/> See
+                your bill </button>
             </div>
+            </div>
+            
         </div>
       </div>
     </div>
