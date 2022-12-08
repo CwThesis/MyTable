@@ -58,6 +58,10 @@ Auth.currentAuthenticatedUser().then((u) => {
     <div v-if="isLoading">
     <LoadingSpinner />
     </div>
-    <TicketsGrid v-else :userData="userData" :waiters="waiters" :data="gridData" :columns="gridColumns"> </TicketsGrid>
+    <div v-else>
+    <div id="TicketsGrid" v-if="gridData.length" class="p-10 mb-10 overflow-y-scroll" style="height:78vh">
+    <TicketsGrid :userData="userData" :waiters="waiters" :data="gridData" :columns="gridColumns"/>
   </div>
+ </div>
+</div>
 </template>
