@@ -3,17 +3,22 @@ import { ref, computed, toRaw } from "vue";
 import EditWaiterModal from "../EditWaiterModal.vue";
 import ticketAPIService from '../../services/ticketAPI';
 import Toast from "../Toasts/Toast.vue";
-import type { Dish } from "@/types";
+import type { Dish } from "../../types";
+import type { Ref } from "vue";
+import type { Waiter } from "../../types";
+import type { Entry } from "../../types";
+import { anyTypeAnnotation } from "@babel/types";
 
 const props = defineProps({
   data: Array,
   columns: Array,
   waiters: Array,
-  userData: Object
+  userData: Object,
+  filterKey: String,
 });
 
 const toggleView = ref(false);
-const ticketViewData = ref([]);
+//const ticketViewData = ref([]);
 const showToast = ref(false);
 const toastTitle = ref("");
 const toastType = ref("success");
@@ -22,7 +27,7 @@ const selectedWaiter = ref("");
 const selectedTable = ref("");
 const sortKey = ref("");
 const sortOrders = ref(
-  props.columns!.reduce((o, key) => ((o[key] = 1), o), {})
+  props.columns!.reduce((o: any, key) => ((o[key as string] = 1), o), {})
 );
 
 const filteredData = computed(() => {
@@ -38,8 +43,8 @@ const filteredData = computed(() => {
 
   const key = sortKey.value;
   if (key) {
-    const order = sortOrders.value[key];
-    data = data?.slice().sort((a, b) => {
+    const order = (sortOrders as any).value[key];
+    data = data?.slice().sort((a: any, b: any) => {
       a = a[key];
       b = b[key];
       return (a === b ? 0 : a > b ? 1 : -1) * order;
@@ -50,24 +55,24 @@ const filteredData = computed(() => {
 
 function sortBy(key: any) {
   sortKey.value = key;
-  sortOrders.value[key] *= -1;
+  (sortOrders as any).value[key] *= -1;
 }
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function handleTicketEdit(table: any) {
+function handleTicketEdit(table: string) {
   showModal.value = true
   selectedTable.value = table;
 }
 
 function ticketViewResult(order: any) {
   order = (toRaw(order))
-  const result = [];
-  order.forEach((or) => {
+  const result: any[] = [];
+  order.forEach((or: any) => {
     toRaw(or.CO).forEach(
-      (el) => {
+      (el: any) => {
         if (result.some((e) => e.name === el.name)) {
           result.forEach((e) => {
             if (e.name === el.name) {
@@ -83,8 +88,8 @@ function ticketViewResult(order: any) {
 }
 
 async function handleWaiterEdit(waiter: string) {
-  const newWaiter = props.waiters.filter((el) => el.name === waiter)[0];
-  const res = await ticketAPIService.updateWaiter(toRaw(newWaiter), props.userData.username, toRaw(selectedTable.value));
+  const newWaiter = props.waiters?.filter((el) => (el as Waiter).name === waiter)[0];
+  const res = await ticketAPIService.updateWaiter(toRaw(newWaiter), props.userData?.username, toRaw(selectedTable.value));
   if (res && res.success) {
     showModal.value = false;
     selectedWaiter.value = "";
@@ -124,7 +129,7 @@ async function handleWaiterEdit(waiter: string) {
           <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }"
             class="text-sm font-medium text-gray-500">
             {{ capitalize(key as any) }}
-            <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+            <span class="arrow" :class="(sortOrders as any)[key as number] > 0 ? 'asc' : 'dsc'">
             </span>
           </th>
         </tr>
@@ -136,7 +141,7 @@ async function handleWaiterEdit(waiter: string) {
             class="p-2 divide-y divide-gray-200 rounded-md  h-4/5 overflow-y-scroll bg-white rounded-lg min-w-full">
             <!-- Normal View -->
             <div v-if="!toggleView">
-              <div class="flex flex-col items-start py-3 pl-3 pr-4 text-sm" v-for="order in entry[key]">
+              <div class="flex flex-col items-start py-3 pl-3 pr-4 text-sm" v-for="order in (entry as Entry)[key]">
                 <div v-for="dish in order.CO">
                   <div class="mt-1 text-sm text-gray-900 flex flex-row">
                     <p class="pr-2">{{ dish.amount }}</p>{{ dish.name }}
@@ -147,7 +152,7 @@ async function handleWaiterEdit(waiter: string) {
             <!-- Simplified View -->
             <div v-else>
               <div class="flex flex-col items-start py-3 pl-3 pr-4 text-sm">
-                <div v-for="result in ticketViewResult(entry[key])">
+                <div v-for="result in ticketViewResult((entry as Entry)[key])">
                   <div class="mt-1 text-sm text-gray-900 flex flex-row">
                     <p class="pr-2">{{ result.amount }}</p>{{ result.name }}
                   </div>
@@ -157,21 +162,21 @@ async function handleWaiterEdit(waiter: string) {
 
           </td>
           <td v-else-if="key === 'total'">
-            <div class="flex flex-row mt-1 text-sm text-gray-900">{{ entry[key] }}<p class="pl-2">EUR</p>
+            <div class="flex flex-row mt-1 text-sm text-gray-900">{{ (entry as Entry)[key] }}<p class="pl-2">EUR</p>
             </div>
           </td>
           <td v-else-if="key === 'waiter'" class="mt-1 text-sm text-gray-900">
             <div>
-              {{ entry[key] || "Assign" }}
+              {{ (entry as Entry)[key] || "Assign" }}
               <button
                 class="inline-flex justify-center rounded-full border border-violet-700 bg-transparent py-2 px-4 text-sm font-medium text-violet-700 shadow-sm hover:bg-violet-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
-                @click="handleTicketEdit(entry['table'])">
+                @click="handleTicketEdit((entry as Entry)['table'])">
                 <font-awesome-icon icon="fa-solid fa-chevron-down" />
               </button>
             </div>
           </td>
           <td v-else-if="key === 'table'" class="mt-1 text-sm text-gray-900">
-            {{ entry[key].name }}
+            {{ ((entry as Entry)[key] as any).name }}
           </td>
           </td>
         </tr>
@@ -187,8 +192,8 @@ async function handleWaiterEdit(waiter: string) {
       </template>
       <template #body>
         <select class="shadow" v-model="selectedWaiter">
-          <option v-for="waiter in props.waiters" :key="waiter.name" :value="waiter.name">
-            {{ waiter.name }}
+          <option v-for="waiter in props.waiters" :key="(waiter as Waiter).name" :value="(waiter as Waiter).name">
+            {{ (waiter as Waiter).name }}
           </option>
         </select>
       </template>
