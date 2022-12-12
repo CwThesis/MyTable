@@ -35,7 +35,10 @@
   },
   "devDependencies": {
     "@testing-library/vue": "^6.6.1",
+    "@types/html-to-pdfmake": "^2.1.1",
     "@types/node": "^18.11.9",
+    "@types/pdfmake": "^0.2.2",
+    "@types/qrcode-svg": "^1.1.1",
     "@vitejs/plugin-vue": "^3.2.0",
     "@vitejs/plugin-vue-jsx": "^2.1.1",
     "@vue/test-utils": "^2.2.6",
