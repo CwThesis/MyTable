@@ -4,7 +4,7 @@ import QRCode from 'qrcode-svg'
 import ModalView from "../ModalView.vue";
 import tableAPIService from '../../services/tableAPI';
 import pdfMake from "pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import htmlToPdfmake from "html-to-pdfmake";
 import QRModal from '../QRModal.vue';
 import Toast from "../Toasts/Toast.vue";
@@ -29,7 +29,7 @@ const showModal = ref(false)
 const showQRModal = ref(false)
 const buttonToDeleteID = ref("");
 const targetQRUrl = ref("");
-const QRToDownload = ref(null);
+const QRToDownload = ref("");
 const targetQRTableName = ref("");
 
 const filteredData = computed(() => {
@@ -128,10 +128,10 @@ function handleQRDownload(tablename: string, QRUrl: string) {
 
 function downloadDocument() {
   const pdfTable = document.getElementById(targetQRTableName.value);
-  let html = htmlToPdfmake(pdfTable?.innerHTML);
+  let html = htmlToPdfmake((pdfTable as HTMLElement).innerHTML);
   const documentDefinition = { content: html };
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  pdfMake.createPdf(documentDefinition).download();
+  (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+  (pdfMake as any).createPdf(documentDefinition).download();
 }
 </script>
 

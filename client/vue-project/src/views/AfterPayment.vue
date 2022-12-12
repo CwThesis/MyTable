@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import type { Dish, DishIdWithAmount } from "../types";
-import DishCardMobile from "../components/Mobile/DishCardMobile.vue";
 import type { Ref } from 'vue';
-import { ref, toRaw, watch } from "vue";
+import { ref } from "vue";
 import { useOrderStore } from "../stores/order.store";
 import orderAPIService from "../services/orderAPI";
 import { useRoute, useRouter } from "vue-router";
 import LoadingSpinner from '../components/LoadingSpinner.vue';
-import { ConsoleLogger } from "@aws-amplify/core";
 
 
 const orderStore = useOrderStore();
@@ -46,7 +43,7 @@ function backToMenu() {
 }
 async function seeTicket() {
   account.value = await orderAPIService.getAccount(String(route.params.restID), String(route.params.tableID));
-  account.value = JSON.parse(account.value.body);
+  account.value = JSON.parse((account.value as any).body);
   console.log(account.value)
 }
 </script>
@@ -66,7 +63,7 @@ async function seeTicket() {
       </h1>
       <p v-if="!showTicket" class="text-base font-light text-center">Thank you for dinning with us. We hope you enjoy your meal and wish you a good day.</p>
       
-      <div v-if="(account.orders != 0)" class="flex flex-col content-center self-center py-10 ">
+      <div v-if="((account as any).orders != 0)" class="flex flex-col content-center self-center py-10 ">
           
 
           <div  v-if="showTicket" class=" TICKET flex w-80 mt-4 flex-col items-center">
@@ -105,7 +102,7 @@ async function seeTicket() {
               <h1 class="space-y-4 py-5 sm:py-6 text-xl content-center">Ticket – {{ restName }}</h1>
             </div>
             <ul class="flex flex-col w-full items-center p-4 bg-white content-center text-black">
-              <div v-for="order in account.orders">
+              <div v-for="order in (account as any).orders">
                 <div v-for="curr in order.CO">
                   <li>{{ curr.name }} , {{ curr.amount }} </li>
                 </div>
