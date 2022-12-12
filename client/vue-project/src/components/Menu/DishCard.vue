@@ -14,7 +14,7 @@ const props = defineProps({
 let dishStatus = ref(props.dish?.menu);
 
 async function toggleBtn() {
-  const res = await menuAPIService.toggleDish(props.dish?.id, props.userId);
+  const res = await menuAPIService.toggleDish(props.dish?.id, props.userId as string);
   const dishes = await dishAPIService.getAllDishes(props.userId as string)
   store.dishes = dishes.body;
 }

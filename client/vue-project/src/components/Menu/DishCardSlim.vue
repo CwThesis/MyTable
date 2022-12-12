@@ -36,12 +36,6 @@ function openUploadModal() {
     (error: Error, result: any) => {
       if (!error && result && result.event === "success") {
         updatedDishUrl.value = result.info.url;
-        toastTitle.value = "Image uploaded successfully!";
-        toastType.value = "success";
-        showToast.value = true;
-        setTimeout(() => {
-          showToast.value = false;
-        }, 1000);
       }
     }).open();
 }
@@ -71,20 +65,20 @@ async function editOneDish(event: Event) {
   let newCurrency = document.getElementById('currency') as HTMLInputElement | null
   let newCategory = document.getElementById('category') as HTMLInputElement | null
 
-  const updatedDish = {
-    title: newTitle?.value,
-    description: newDescription?.value,
-    price: newPrice?.value,
-    currency: newCurrency?.value,
-    category: newCategory?.value,
-    id: dishToEdit.value?.id,
-    imgUrl: updatedDishUrl.value,
-    menu: dishToEdit.value?.menu,
+  const updatedDish: Dish = {
+    title: newTitle?.value ? newTitle?.value : 'empty',
+    description: newDescription?.value ? newDescription?.value : 'empty',
+    price: newPrice?.value ? Number(newPrice?.value) : 0,
+    currency: newCurrency?.value ? newCurrency?.value : 'empty',
+    category: (newCategory?.value === "mains" || newCategory?.value === "starters" || newCategory?.value === "soups" || newCategory?.value === "desserts" || newCategory?.value === "drinks") ? newCategory?.value : 'mains',
+    id: dishToEdit.value?.id ? dishToEdit.value?.id : 'empty',
+    imgUrl: updatedDishUrl.value ? updatedDishUrl.value : 'empty',
+    menu: dishToEdit.value?.menu ? dishToEdit.value?.menu : false
   }
-  const res = await dishAPIService.updateDish(updatedDish, props.userId as string);
+  const res = await dishAPIService.updateDish(updatedDish as Dish, props.userId as string);
   if (res && res.success) {
     showModal.value = false;
-    store.updateDish(updatedDish);
+    store.updateDish(updatedDish as Dish);
     dishToEdit.value = null;
   } else {
     alert('Could not update a dish');
@@ -118,7 +112,7 @@ async function editOneDish(event: Event) {
           class="inline-flex absolute items-center cursor-pointer top-2 right-2 text-gray-300 hover:text-gray-700">
           <font-awesome-icon icon="fa-solid fa-trash fa-lg" />
         </button>
-        <button @click="handleDishToEdit(props.dish)"
+        <button @click="handleDishToEdit(props.dish as Dish)"
           class="inline-flex absolute items-center cursor-pointer top-10 right-2 text-gray-300 hover:text-gray-700">
           <font-awesome-icon icon="fa-solid fa-pen fa-lg" />
         </button>
@@ -178,7 +172,7 @@ async function editOneDish(event: Event) {
                       <label for="currency" class="sr-only">Currency</label>
                       <select id="currency" name="currency" placeholder="EUR"
                         class="h-full rounded-md border-transparent bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        <option selected="selected">{{ dishToEdit?.currency }}</option>
+                        <option selected="true">{{ dishToEdit?.currency }}</option>
                         <option>USD</option>
                         <option>CAD</option>
                         <option>EUR</option>
@@ -189,7 +183,7 @@ async function editOneDish(event: Event) {
                 <div class="col-span-1 col-start-3">
                   <select :value="dishToEdit?.category" id="category"
                     class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
-                    <option selected="selected">{{ dishToEdit?.category }}</option>
+                    <option selected="true">{{ dishToEdit?.category }}</option>
                     <option>Mains</option>
                     <option>Starters</option>
                     <option>Soups</option>

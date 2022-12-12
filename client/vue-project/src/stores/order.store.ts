@@ -1,9 +1,9 @@
-import { ref, toRaw } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { DishIdWithAmount } from '../types'
 
 export const useOrderStore = defineStore('order', () => {
-  const dataFromStorage = localStorage.getItem('order')
+  const dataFromStorage = localStorage.getItem('order') as string;
   const parsedDataFromStorage = JSON.parse(dataFromStorage)
 
   const currentOrder = ref<DishIdWithAmount[] | null>(
@@ -39,10 +39,10 @@ export const useOrderStore = defineStore('order', () => {
     if (currentOrder.value !== null) {
       const dish = currentOrder.value.find((d) => d.id === id)
       currentOrder.value = currentOrder.value.filter((d) => d.id !== id)
-      dish.amount = dish.amount - 1
+      dish!.amount = dish!.amount - 1
       currentTotal.value = currentTotal.value - price
-      if (dish.amount > 0) {
-        currentOrder.value.push(dish)
+      if (dish!.amount > 0) {
+        currentOrder.value.push(dish!)
         localStorage.setItem(
           'order',
           JSON.stringify({ CO: currentOrder.value, CT: currentTotal.value }),

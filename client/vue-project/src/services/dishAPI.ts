@@ -1,6 +1,8 @@
+import type {Dish} from '../types'
 const BE_URL = import.meta.env.VITE_AWS_CLOUD_LOGIC_ENDPOINT
 const dishAPIService = {
-  newDish: async (dish: any, userID: string) => {
+
+  newDish: async (dish: Dish, userID: string) => {
     try {
       const res = await fetch(`${BE_URL}/dishes/${userID}/addDish`, {
         method: 'POST',
@@ -42,7 +44,7 @@ const dishAPIService = {
     }
   },
 
-  updateDish: async (dish: any, userID: string) => {
+  updateDish: async (dish: Dish, userID: string) => {
     try {
       const res = await fetch(`${BE_URL}/dishes/${userID}/editDish`, {
         method: 'PUT',

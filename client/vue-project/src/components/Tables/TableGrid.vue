@@ -4,10 +4,11 @@ import QRCode from 'qrcode-svg'
 import ModalView from "../ModalView.vue";
 import tableAPIService from '../../services/tableAPI';
 import pdfMake from "pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import htmlToPdfmake from "html-to-pdfmake";
 import QRModal from '../QRModal.vue';
 import Toast from "../Toasts/Toast.vue";
+import type { EntryTable } from "../../types";
 
 const showToast = ref(false);
 const toastTitle = ref("");
@@ -22,13 +23,13 @@ const props = defineProps({
 
 const sortKey = ref("");
 const sortOrders = ref(
-  props.columns?.reduce((o, key) => ((o[key] = 1), o), {})
+  props.columns!.reduce((o: any, key) => ((o[key as string] = 1), o), {})
 );
 const showModal = ref(false)
 const showQRModal = ref(false)
 const buttonToDeleteID = ref("");
 const targetQRUrl = ref("");
-const QRToDownload = ref(null);
+const QRToDownload = ref("");
 const targetQRTableName = ref("");
 
 const filteredData = computed(() => {
@@ -43,8 +44,8 @@ const filteredData = computed(() => {
   }
   const key = sortKey.value;
   if (key) {
-    const order = sortOrders.value[key];
-    data = data?.slice().sort((a, b) => {
+    const order = (sortOrders as any).value[key];
+    data = data?.slice().sort((a: any, b: any) => {
       a = a[key];
       b = b[key];
       return (a === b ? 0 : a > b ? 1 : -1) * order;
@@ -55,7 +56,7 @@ const filteredData = computed(() => {
 
 function sortBy(key: any) {
   sortKey.value = key;
-  sortOrders.value[key] *= -1;
+  (sortOrders as any).value[key] *= -1;
 }
 
 function capitalize(str: string) {
@@ -63,7 +64,7 @@ function capitalize(str: string) {
 }
 
 async function handleTableDeletion() {
-  const res = await tableAPIService.deleteTable(buttonToDeleteID.value, props.userData.username);
+  const res = await tableAPIService.deleteTable(buttonToDeleteID.value, props.userData?.username as string);
   if (res && res.success) {
     showModal.value = false;
     toastTitle.value = "Table deleted!";
@@ -85,7 +86,7 @@ async function handleTableDeletion() {
 }
 
 async function handlePinRefresh(tableID: string) {
-  const res = await tableAPIService.refreshPin(tableID, props.userData.username);
+  const res = await tableAPIService.refreshPin(tableID, props.userData?.username);
   if (res && res.success) {
     toastTitle.value = "Pin refreshed!";
     toastType.value = "success";
@@ -127,10 +128,10 @@ function handleQRDownload(tablename: string, QRUrl: string) {
 
 function downloadDocument() {
   const pdfTable = document.getElementById(targetQRTableName.value);
-  let html = htmlToPdfmake(pdfTable?.innerHTML);
+  let html = htmlToPdfmake((pdfTable as HTMLElement).innerHTML);
   const documentDefinition = { content: html };
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  pdfMake.createPdf(documentDefinition).download();
+  (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+  (pdfMake as any).createPdf(documentDefinition).download();
 }
 </script>
 
@@ -145,7 +146,7 @@ function downloadDocument() {
           <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }"
           class="text-sm font-medium text-gray-500">
             {{ capitalize(key as any) }}
-            <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+            <span class="arrow" :class="(sortOrders as any)[key as number] > 0 ? 'asc' : 'dsc'">
             </span>
           </th>
         </tr>
@@ -155,26 +156,26 @@ function downloadDocument() {
           <td v-for="key in columns" class="border-y">
           <td v-if="key === 'QR'">
             <div class="flex direction-row">
-              <button @click="handleQRDownload(entry.table, entry[key])"
+              <button @click="handleQRDownload((entry as EntryTable).table, (entry as EntryTable)[key])"
                 class="bg-transparent text-zinc-500 hover:text-black font-bold py-1 px-3 rounded-lg">
                 <font-awesome-icon icon="fa-solid fa-file-arrow-down fa-lg" />
               </button>
             </div>
           </td>
           <td v-else-if="key === 'actions'">
-            <button @click="tableToDelete(entry[key])"
+            <button @click="tableToDelete((entry as EntryTable)[key])"
               class="text-zinc-500 hover:text-black  font-bold py-4 px-4 rounded-full">
               <font-awesome-icon icon="fa-solid fa-trash fa-lg" />
             </button>
           </td>
           <td v-else-if="key === 'pincode'" class="text-sm text-gray-900">
-            {{ entry[key] }}
-            <button @click="handlePinRefresh(entry['actions'])"
+            {{ (entry as EntryTable)[key] }}
+            <button @click="handlePinRefresh((entry as EntryTable)['actions'])"
               class="bg-transparent p-4 text-zinc-500 hover:text-black">
               <font-awesome-icon icon="fa-solid fa-arrows-rotate fa-lg" class="text-violet-700" />
             </button>
           </td>
-          <td v-else class="text-sm text-gray-900"> {{ entry[key] }}</td>
+          <td v-else class="text-sm text-gray-900"> {{ (entry as any)[key as string] }}</td>
           </td>
         </tr>
       </tbody>

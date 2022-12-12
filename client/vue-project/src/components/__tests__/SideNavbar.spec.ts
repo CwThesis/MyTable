@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { describe, it, expect } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import { DOMWrapper, shallowMount } from "@vue/test-utils";
 import SideNavbar from '../SideNavbar.vue'
 
 describe('SideNav', () => {
@@ -12,13 +12,13 @@ describe('SideNav', () => {
 
   it('renders the correct navigation links', () => {
     const wrapper = shallowMount(SideNavbar);
-    const links = wrapper.findAll('a');
+    const links: DOMWrapper<HTMLAnchorElement>[]= wrapper.findAll('a');
     expect(links.length).toBe(5);
-    expect(links.at(0).text()).toBe('mytable');
-    expect(links.at(1).text()).toBe('Overview');
-    expect(links.at(2).text()).toBe('Tickets');
-    expect(links.at(3).text()).toBe('Tables');
-    expect(links.at(4).text()).toBe('Menu');
+    expect(links.at(0)!.text()).toBe('mytable');
+    expect(links.at(1)!.text()).toBe('Overview');
+    expect(links.at(2)!.text()).toBe('Tickets');
+    expect(links.at(3)!.text()).toBe('Tables');
+    expect(links.at(4)!.text()).toBe('Menu');
   });
 
   it('renders the correct header text', () => {

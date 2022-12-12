@@ -47,7 +47,7 @@ const orderAPIService = {
       return console.log("Error getting the ticket: ", err);
     }
   },
-   
+  
   payTicket : async (order: any[], restID: string, tableID: string) => {
     
     try {

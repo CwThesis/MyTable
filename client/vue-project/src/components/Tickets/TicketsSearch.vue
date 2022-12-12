@@ -25,7 +25,7 @@ Auth.currentAuthenticatedUser().then((u) => {
     console.log(result);
     gridData.value = fetchData.value.map((el) => {
       if(el.ticket.length) {
-        function orderTotal (ticket){
+        function orderTotal (ticket: { orders: string | any[]; }){
         let orderTotal = 0
         for (let i = 0; i < ticket.orders.length; i++) {
           orderTotal += ticket.orders[i].CT
@@ -37,11 +37,8 @@ Auth.currentAuthenticatedUser().then((u) => {
       return {
         table: {name: el.tableName, id: el.tableId},
         orders: el.ticket[0].orders,
-        //total: el.ticket[0].orders,
         waiter: el.waiter,
         total: orderTotal(el.ticket[0]),
-        /* totalPayed: el.ticket[0].payments[0].CT,
-        leftToPay: (ticketAPIService.orderTotal(el.ticket[0])) - (el.ticket[0].payments[0].CT) */
       }
     }
   }); 

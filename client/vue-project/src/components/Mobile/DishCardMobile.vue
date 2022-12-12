@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, toRaw } from "vue";
-import type { Dish } from "../../types";
 import { useOrderStore } from "../../stores/order.store";
 
 const props = defineProps({
@@ -21,7 +19,7 @@ const orderStore = useOrderStore();
         {{ props.dish?.description }}
       </p>
       <p class="ml-5 text-gray-700 font-sans font-semibold tracking-wide">
-        {{ props.dish?.price }} {{ props.dish.currency }}
+        {{ props.dish?.price }} {{ props.dish!.currency }}
       </p>
     </div>
     
@@ -30,19 +28,19 @@ const orderStore = useOrderStore();
         <!-- <div class="flex flex-col content-end mt-4 ml-16 p-2" style="width: 3.4rem"> -->
           <div class="absolute top-3 right-3 flex flex-col items-end gap-2">
             <div class="flex gap-2 bg-white rounded-full items-center justify-center">
-              <p v-if="(orderStore.amountById(props.dish.id)> 0)" class="font-semibold text-gray-500 pl-2">{{orderStore.amountById(props.dish.id)}}</p>
+              <p v-if="(orderStore.amountById(props.dish!.id)> 0)" class="font-semibold text-gray-500 pl-2">{{orderStore.amountById(props.dish!.id)}}</p>
               <button class="p-2 bg-white rounded-full w-8 h-8 flex justify-center items-center"
-                @click="orderStore.addToOrder({ id: props.dish.id, name: props.dish.title, img: props.dish.imgUrl, amount: 1, price: props.dish.price}, props.dish.price)">
+                @click="orderStore.addToOrder({ id: props.dish!.id, name: props.dish!.title, img: props.dish!.imgUrl, amount: 1, price: props.dish!.price}, props.dish!.price)">
                 <font-awesome-icon icon="fa-solid fa-plus fa-xs" class="text-gray-500"/></button>
             </div>
               
-            <button class="p-2 bg-white  rounded-full w-8 h-8 flex justify-center items-center" v-show="orderStore.amountById(props.dish.id)"
-            @click="orderStore.decrementAmountById(props.dish.id, props.dish.price)">
+            <button class="p-2 bg-white  rounded-full w-8 h-8 flex justify-center items-center" v-show="orderStore.amountById(props.dish!.id)"
+            @click="orderStore.decrementAmountById(props.dish!.id, props.dish!.price)">
             <font-awesome-icon icon="fa-solid fa-minus fa-xs" class="text-gray-500"/></button>
           </div>
         <!-- <label class="inline-flex absolute items-center cursor-pointer bottom-3 right-3"> -->
         <!-- </label> -->
-       <!--  </div> -->
+        <!--  </div> -->
     </div>
 
   </div>

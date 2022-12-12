@@ -6,7 +6,7 @@ import ModalView from '../ModalView.vue';
 
 describe('TablesSearch', () => {
   it("doesn't render the TableGrid component when userData prop is null", () => {
-    const wrapper = shallowMount(TablesSearch, {
+    const wrapper = shallowMount(TablesSearch as any, {
       propsData: {
         userData: null
       }

@@ -8,8 +8,9 @@ import staffAPIService from '../../services/staffAPI';
 import { useRouter } from "vue-router";
 import LoadingSpinner from "../LoadingSpinner.vue";
 import type { Ref } from "vue";
-import type { Banner } from "../../types"
+import type { Banner, Staff } from "../../types"
 import Toast from "../Toasts/Toast.vue";
+import type { E } from "vitest/dist/types-1cf24598";
 
 const showToast = ref(false);
 const toastTitle = ref("");
@@ -22,18 +23,15 @@ let street = ref("");
 let city = ref("");
 let zip = ref("");
 let country = ref("");
-const staff = ref<Object[]>([]);
+const staff = ref<Staff[]>([]);
 const userData: any = ref(null);
 const router = useRouter();
 const editMode = ref(false);
 const editRestInfo = ref(false);
 const newStaffMember = ref("");
-const staffMemberToEdit = ref("");
 const stripeId = ref("");
-let staffMembers: Ref<Object[]> = ref([]);
+let staffMembers: Ref<Staff[]> = ref([]);
 let banner: Ref<Banner> = ref({ url: "http://res.cloudinary.com/dvyn9lzkf/image/upload/v1669984775/vfk6kogi0wbbbeu5eroc.jpg", title: "Your Menu" });
-
-const connectedToStripe = ref(false);
 
 Auth.currentAuthenticatedUser().then((u) => {
   const email = u.attributes.email;
@@ -67,7 +65,7 @@ Auth.currentAuthenticatedUser().then((u) => {
 async function handleDeleteStaffMember(staffID: string) {
   const res = await staffAPIService.deleteStaff(staffID, userData.value.username);
   if (res && res.success) {
-    staffMembers.value = staffMembers.value.filter((member) => member.id !== res.body.id)
+    staffMembers.value = staffMembers.value.filter((member: any) => member.id !== res.body.id)
     toastTitle.value = "Staff member deleted successfully!";
     toastType.value = "success";
     showToast.value = true;
@@ -106,7 +104,7 @@ async function handleNewStaffMemberSubmit() {
   }
 }
 
-async function handleEditStaff(staff: Object, newName: string) {
+async function handleEditStaff(staff: Staff, newName: string) {
   staff = toRaw(staff);
   staff.name = newName
   const res = await staffAPIService.updateStaff(staff, userData.value.username, staff.id);
@@ -151,8 +149,8 @@ async function handleStripeRegistration(userID: string) {
 }
 
 async function handleEditRestaurantInfo(item: string, event: string) {
-  const updatedInfo = {}
-  updatedInfo[item] = event;
+  let key: string = item;
+  const updatedInfo: { [key: string]: string } = { [key]: event };
   const res = await restaurantAPIService.updateRestaurant(updatedInfo, userData.value.username);
   if (res && res.success) {
     if (item === "restName") restName.value = event;
@@ -185,7 +183,7 @@ async function handleStripeRedirect() {
   <div v-if="showToast">
     <Toast :title="toastTitle" :type="toastType" />
   </div>
-  <div v-else>
+  <div>
     <div class="flex min-h-screen">
       <SideNavbar />
       <div class="flex-1">
@@ -211,31 +209,31 @@ async function handleStripeRedirect() {
                     <dt class="text-sm font-medium text-gray-500">Business name</dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0" id="restName"
                       :contenteditable="editRestInfo"
-                      @blur="((e) => handleEditRestaurantInfo(e.target.id, e.target.innerText))">{{ restName }}</dd>
+                      @blur="((e: Event) => handleEditRestaurantInfo((e.target as HTMLInputElement).id, (e.target as HTMLInputElement).innerText))">{{ restName }}</dd>
                   </div>
                   <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">Street address</dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0" id="street"
                       :contenteditable="editRestInfo"
-                      @blur="((e) => handleEditRestaurantInfo(e.target.id, e.target.innerText))">{{ street }}</dd>
+                      @blur="((e: Event) => handleEditRestaurantInfo((e.target as HTMLInputElement).id, (e.target as HTMLInputElement).innerText))">{{ street }}</dd>
                   </div>
                   <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">City</dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0" id="city"
                       :contenteditable="editRestInfo"
-                      @blur="((e) => handleEditRestaurantInfo(e.target.id, e.target.innerText))">{{ city }}</dd>
+                      @blur="((e: Event) => handleEditRestaurantInfo((e.target as HTMLInputElement).id, (e.target as HTMLInputElement).innerText))">{{ city }}</dd>
                   </div>
                   <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">ZIP code</dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0" id="zip"
                       :contenteditable="editRestInfo"
-                      @blur="((e) => handleEditRestaurantInfo(e.target.id, e.target.innerText))">{{ zip }}</dd>
+                      @blur="((e: Event) => handleEditRestaurantInfo((e.target as HTMLInputElement).id, (e.target as HTMLInputElement).innerText))">{{ zip }}</dd>
                   </div>
                   <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">Country</dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0" id="country"
                       :contenteditable="editRestInfo"
-                      @blur="((e) => handleEditRestaurantInfo(e.target.id, e.target.innerText))">{{ country }}</dd>
+                      @blur="((e: Event) => handleEditRestaurantInfo((e.target as HTMLInputElement).id, (e.target as HTMLInputElement).innerText))">{{ country }}</dd>
                   </div>
                 </dl>
               </div>
@@ -282,10 +280,10 @@ async function handleStripeRedirect() {
                 <ul role="list"
                   class="p-2 divide-y divide-gray-200 rounded-md border border-gray-200 h-4/5 overflow-y-scroll">
                   <!-- here starts STAFF MEMBER  -->
-                  <li v-for="item in staffMembers" :key="item"
+                  <li v-for="item in staffMembers" :key="(item.id)"
                     class="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
                     <div class="flex w-0 flex-1 items-center" :contenteditable="editMode"
-                      @blur="((e) => handleEditStaff(item, e.target.innerText))">
+                      @blur="((e: Event) => handleEditStaff(item as Staff, (e.target as HTMLInputElement).innerText))">
                       <font-awesome-icon icon="fa-solid fa-user fa-lg" class="text-gray-400" />
                       <span class="ml-2 w-0 flex-1 truncate">{{ item.name || "No staff members yet." }}</span>
                     </div>

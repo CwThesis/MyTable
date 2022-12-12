@@ -31,3 +31,32 @@ export type DishIdWithAmount = {
   img: string
   price: number
 }
+
+export type Waiter = {
+  name: string
+}
+
+export type Table = {
+  name: string
+}
+
+export type Entry = {
+  table: string
+  total: number
+  waiter: Waiter
+  orders: any
+}
+
+export type EntryTable = {
+  table: string
+  pincode: number
+  actions: any
+  QR: string
+}
+
+export type Staff = {
+  id: string
+  name: string
+  restaurantId: string
+  role: number
+}
