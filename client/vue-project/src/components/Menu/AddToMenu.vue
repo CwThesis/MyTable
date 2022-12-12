@@ -5,6 +5,7 @@ import { Auth } from 'aws-amplify';
 import AddDishModal from "../AddDishModal.vue";
 import { useMenuStore } from "../../stores/menu.store";
 import Toast from "../Toasts/Toast.vue";
+import type {Dish} from "../../types";
 
 const store = useMenuStore();
 const showToast = ref(false);
@@ -40,15 +41,17 @@ function openUploadModal() {
 }
 
 async function addDish(event: Event) {
-  const formInput = {
+  const formInput: Dish= {
     title: dishTitle.value,
     description: dishDescription.value,
     price: dishPrice.value,
     currency: dishCurrency.value,
-    category: dishCategory.value,
-    imgUrl: dishImgUrl,
+    category: (dishCategory.value === "mains" || dishCategory.value === "starters" || dishCategory.value === "soups" || dishCategory.value === "desserts" || dishCategory.value === "drinks") ? dishCategory.value : 'mains',
+    imgUrl: dishImgUrl.value,
+    id: "",
+    menu: false,
   };
-  const res = await dishAPIService.newDish(formInput, userId);
+  const res = await dishAPIService.newDish(formInput as Dish, userId);
   if (res && res.success) {
     showModal.value = false;
     store.currentNewDish = res.body;

@@ -56,7 +56,7 @@ if (route.params.restID && route.params.tableID) {
 
 async function payFullOrder() {
   const pay = toRaw(orders.value)
-  const res = await orderAPIService.payTicket(pay as any[], route.params.restID, route.params.tableID);
+  const res = await orderAPIService.payTicket(pay as any[], route.params.restID as string, route.params.tableI as string);
   console.log('URL', res);
   window.location.assign(res.body);
   //handle response
@@ -68,7 +68,7 @@ async function payEqualSplit() {
   splitEqual.value = true;
   splitItems.value = false;
   console.log("split form input", splitNum.value);
-  const res = await orderAPIService.paySplitEqual(pay, splitNum.value, route.params.restID, route.params.tableID);
+  const res = await orderAPIService.paySplitEqual(pay, splitNum.value, route.params.restID as string, route.params.tableID as string);
   console.log('return--->', JSON.stringify(res));
   window.location.assign(res.body);
   //handle response
@@ -78,8 +78,7 @@ async function payEqualSplit() {
 async function paySetAmount() {
   splitEqual.value = true;
   splitItems.value = false;
-  console.log("split form input", splitSet.value);
-  const res = await orderAPIService.paySetAmount(splitSet.value, route.params.restID, route.params.tableID);
+  const res = await orderAPIService.paySetAmount(splitSet.value, route.params.restID as string, route.params.tableID as string);
   console.log('return--->', JSON.stringify(res));
   window.location.assign(res.body);
   //handle response
@@ -89,8 +88,7 @@ async function paySetAmount() {
 async function payByItems() {
   splitEqual.value = true;
   splitItems.value = false;
-  console.log("split form input", itemSet.value);
-  const res = await orderAPIService.payTicket(itemSet.value, route.params.restID, route.params.tableID);
+  const res = await orderAPIService.payTicket([], route.params.restID as string, route.params.tableID as string);
   console.log('return--->', JSON.stringify(res));
   window.location.assign(res.body);
   //handle response

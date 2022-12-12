@@ -16,7 +16,7 @@ export type Dish = {
   price: number
   currency: string
   menu: boolean
-  category: 'mains' | 'starters' | 'soups' | 'desserts' | 'drinks'
+  category: 'mains' | 'starters' | 'soups' | 'desserts' | 'drinks' 
   id: string
 }
 export type Banner = {
@@ -30,4 +30,11 @@ export type DishIdWithAmount = {
   name: string
   img: string
   price: number
+}
+
+export type Staff = {
+  id: string
+  name: string
+  restaurantId: string
+  role: number
 }

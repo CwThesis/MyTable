@@ -35,7 +35,7 @@ if (route.params.restID && route.params.tableID) {
 }
 
 async function sendOrder() {
-  const res = await orderAPIService.newOrder(toRaw(orderStore.currentOrder) as any, orderStore.currentTotal, route.params.restID, route.params.tableID)
+  const res = await orderAPIService.newOrder(toRaw(orderStore.currentOrder) as any, orderStore.currentTotal, route.params.restID as string, route.params.tableID as string)
   //handle response
   orderStore.emptyOrder();
   router.push(route.path+'/served');
