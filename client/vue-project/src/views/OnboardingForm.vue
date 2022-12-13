@@ -1,18 +1,14 @@
 <script setup lang="ts">
 import TopNavbarVue from "../components/TopNavbar.vue";
-import { ref, toRaw } from "vue";
+import { ref } from "vue";
 import {Auth} from 'aws-amplify';
 import restaurantAPIService from '../services/restaurantAPI';
 import { useRouter } from "vue-router";
 import LoadingSpinner from './../components/LoadingSpinner.vue';
 import countryList from '../countries'
 
-
-//const listOfCountries = ref(countryList);
 const isLoading = ref(true);
 const restName = ref("");
-const bankName = ref("");
-const IBAN = ref("");
 const street = ref("");
 const city = ref("");
 const zip = ref("");
@@ -29,7 +25,6 @@ Auth.currentAuthenticatedUser().then((u)=>{
   userData.value = user;
   (async () => {
     const restaurant = await restaurantAPIService.getRestaurant(user.username);
-    console.log("result:",restaurant)
     isLoading.value=false;
     if (restaurant.length > 0) router.push('/dashboard/overview');
 })()
@@ -37,7 +32,6 @@ Auth.currentAuthenticatedUser().then((u)=>{
 
 
 async function submitForm() {
-  console.log("Form submitted!");
   if(staff.value > 50 || Number(tables.value) > 50) {
     alert("You can't have more than 50 tables or staff members!");
     return;
@@ -52,15 +46,12 @@ async function submitForm() {
     staff: staff.value
   };
   const res = await restaurantAPIService.newRestaurant(formInput, userData.value.username)
-  console.log(res.body)
-  if(res.body.bankName){
+  if(res.body.restName){
     router.push('/dashboard/overview')
   } else {
-    alert(res)
+    alert("Something went wrong, please try again later.")
   }
 }
-
-
 </script>
 
 <template>
