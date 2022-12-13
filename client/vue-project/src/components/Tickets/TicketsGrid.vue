@@ -3,11 +3,8 @@ import { ref, computed, toRaw } from "vue";
 import EditWaiterModal from "../EditWaiterModal.vue";
 import ticketAPIService from '../../services/ticketAPI';
 import Toast from "../Toasts/Toast.vue";
-import type { Dish } from "../../types";
-import type { Ref } from "vue";
 import type { Waiter } from "../../types";
 import type { Entry } from "../../types";
-import { anyTypeAnnotation } from "@babel/types";
 
 const props = defineProps({
   data: Array,
@@ -18,7 +15,6 @@ const props = defineProps({
 });
 
 const toggleView = ref(false);
-//const ticketViewData = ref([]);
 const showToast = ref(false);
 const toastTitle = ref("");
 const toastType = ref("success");

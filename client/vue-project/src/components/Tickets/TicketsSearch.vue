@@ -5,7 +5,6 @@ import ticketAPIService from '../..//services/ticketAPI';
 import { Auth } from 'aws-amplify';
 import LoadingSpinner from "../LoadingSpinner.vue";
 
-//const searchQuery = ref("");
 const userData: any = ref(null)
 const fetchData = ref<any[]>([]);
 const gridData = ref<any[]>([]);
@@ -22,7 +21,6 @@ Auth.currentAuthenticatedUser().then((u) => {
     const result = await ticketAPIService.getAllTickets(username)
     isLoading.value = false
     fetchData.value = result;
-    console.log(result);
     gridData.value = fetchData.value.map((el) => {
       if(el.ticket.length) {
         function orderTotal (ticket: { orders: string | any[]; }){
@@ -30,7 +28,6 @@ Auth.currentAuthenticatedUser().then((u) => {
         for (let i = 0; i < ticket.orders.length; i++) {
           orderTotal += ticket.orders[i].CT
         }
-        console.log(orderTotal)
         return orderTotal
       }
   
@@ -58,6 +55,9 @@ Auth.currentAuthenticatedUser().then((u) => {
     <div v-else>
     <div id="TicketsGrid" v-if="gridData.length" class="p-10 mb-10 overflow-y-scroll" style="height:78vh">
     <TicketsGrid :userData="userData" :waiters="waiters" :data="gridData" :columns="gridColumns"/>
+  </div>
+  <div v-else>
+    <p class="text-1xl text-center">Oops, looks like there's no open tickets...</p>
   </div>
  </div>
 </div>
