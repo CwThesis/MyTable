@@ -6,7 +6,6 @@ import type { Dish } from '../types'
 
 export const useMenuStore = defineStore('menu', () => {
   let currentNewDish: Ref<any> = ref()
-
   let dishes: Ref<Dish[]> = ref([])
 
   function addToDishes(newDish: Dish) {

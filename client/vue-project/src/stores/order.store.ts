@@ -32,7 +32,7 @@ export const useOrderStore = defineStore('order', () => {
       'order',
       JSON.stringify({ CO: currentOrder.value, CT: currentTotal.value }),
     )
-    return currentOrder.value
+    return currentOrder.value;
   }
 
   function decrementAmountById(id: string, price: number) {

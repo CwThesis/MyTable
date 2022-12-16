@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed, toRaw } from "vue";
+import { ref, watch, toRaw } from "vue";
 import type { Ref } from 'vue'
 import SideNavbar from "../SideNavbar.vue";
 import TopNavbar from "../TopNavbar.vue";
@@ -13,15 +13,15 @@ import menuAPIService from "../../services/menuAPI"
 import { useMenuStore } from "../../stores/menu.store"
 import LoadingSpinner from "../LoadingSpinner.vue";
 
-
-
 const store = useMenuStore();
 const isLoading = ref(true);
 let userId = "";
 const editMode = ref(false);
-const activeMenu: Ref<Dish[]> = ref([]);
 let banner: Ref<Banner> = ref({url: "http://res.cloudinary.com/dvyn9lzkf/image/upload/v1669984775/vfk6kogi0wbbbeu5eroc.jpg", title:""}); // some initial value needed here! (placeholder before it is loaded)
 const searchQuery = ref("");
+
+const activeKey = ref(0);
+const dishesKey = ref(1000);
 
 Auth.currentAuthenticatedUser().then((u) => {
   const email = u.attributes.email;
@@ -32,7 +32,6 @@ Auth.currentAuthenticatedUser().then((u) => {
     const res = await dishAPIService.getAllDishes(userId);
     store.dishes = res.body;
     const dishesArray = toRaw(store.dishes)
-    activeMenu.value = dishesArray.filter((dish: { menu: boolean; }) => dish.menu === true)
     const res2 = await menuAPIService.getBanner(userId);
     banner.value = res2.body;
     isLoading.value = false;
@@ -47,10 +46,12 @@ Auth.currentAuthenticatedUser().then((u) => {
     }
   }
 
-watch(() => store.dishes, () => {
-  const dishesArray = toRaw(store.dishes)
-  activeMenu.value = dishesArray.filter((dish: { menu: boolean; }) => dish.menu === true)
-})
+const reRenderFn = () => {
+  activeKey.value += 1;
+};
+const reRenderFn2 = () => {
+  dishesKey.value += 1;
+};
 
 </script>
 
@@ -81,13 +82,14 @@ watch(() => store.dishes, () => {
               <h1 class="absolute text-8xl text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-josefin">Our Menu</h1>
             </div>
             <!-- BANNER ends -->
+            <div :key="activeKey">
             <div
-              v-for="dish in activeMenu"
-              :key="dish.title"
+              v-for="dish in (store.dishes.filter((dish: Dish) => dish.menu === true))"
               class="px-4 py-3"
             >
-              <DishCard :dish="dish" :userId="userId"></DishCard>
+              <DishCard :fn="reRenderFn2" :dish="dish" :userId="userId"/>
             </div>
+          </div>
           </div>
         </div>
         </div>
@@ -102,15 +104,16 @@ watch(() => store.dishes, () => {
               <AddToMenu />
             </div>
             <div class="overflow-y-scroll h-[80vh] rounded-xl bg-gray-50">
-            <div
-              v-for="dish in (store.dishes.filter((el)=>{
-                return el.title.toLowerCase().includes(searchQuery.toLowerCase())
-              }))"
-              :key="dish.title"
+              <div :key="dishesKey">
+                <div
+                v-for="dish in (store.dishes.filter((el)=>{
+                  return el.title.toLowerCase().includes(searchQuery.toLowerCase())
+                }))"
               class="px-4 pt-2"
-            >
-              <DishCardSlim :dish="dish" :userId="userId"></DishCardSlim>
+              >
+              <DishCardSlim :fn="reRenderFn" :dish="dish" :userId="userId"/>
             </div>
+          </div>
             </div>
           </div>
       </main>

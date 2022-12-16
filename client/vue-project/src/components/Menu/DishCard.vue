@@ -9,6 +9,7 @@ const store = useMenuStore();
 const props = defineProps({
   dish: Object,
   userId: String,
+  fn: Function
 });
 
 let dishStatus = ref(props.dish?.menu);
@@ -16,7 +17,9 @@ let dishStatus = ref(props.dish?.menu);
 async function toggleBtn() {
   const res = await menuAPIService.toggleDish(props.dish?.id, props.userId as string);
   const dishes = await dishAPIService.getAllDishes(props.userId as string)
+  dishStatus.value = !dishStatus.value;
   store.dishes = dishes.body;
+  if (props.fn) props.fn();
 }
 
 </script>
