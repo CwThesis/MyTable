@@ -10,7 +10,6 @@ import LoadingSpinner from "../LoadingSpinner.vue";
 import type { Ref } from "vue";
 import type { Banner, Staff } from "../../types"
 import Toast from "../Toasts/Toast.vue";
-import type { E } from "vitest/dist/types-1cf24598";
 
 const showToast = ref(false);
 const toastTitle = ref("");

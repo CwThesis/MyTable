@@ -13,6 +13,7 @@ const store = useMenuStore();
 const props = defineProps({
   dish: Object,
   userId: String,
+  fn: Function
 });
 
 let updatedDishUrl = ref(props.dish?.imgUrl);
@@ -24,8 +25,9 @@ let dishStatus = ref(props.dish?.menu);
 
 async function toggleBtn() {
   await menuAPIService.toggleDish(props.dish?.id, props.userId as string);
-  const dishes = await dishAPIService.getAllDishes(props.userId as string)
+  const dishes = await dishAPIService.getAllDishes(props.userId as string);
   store.dishes = dishes.body;
+  if (props.fn) props.fn();
 }
 function openUploadModal() {
   window.cloudinary.openUploadWidget(
@@ -81,7 +83,7 @@ async function editOneDish(event: Event) {
     store.updateDish(updatedDish as Dish);
     dishToEdit.value = null;
   } else {
-    alert('Could not update a dish');
+      alert('Could not update a dish');
   }
 }
 

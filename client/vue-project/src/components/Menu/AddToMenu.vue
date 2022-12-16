@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 import dishAPIService from "../../services/dishAPI";
 import { Auth } from 'aws-amplify';
 import AddDishModal from "../AddDishModal.vue";
@@ -35,7 +35,9 @@ function openUploadModal() {
     },
     (error: Error, result: any) => {
       if (!error && result && result.event === "success") {
-        dishImgUrl = result.info.url;
+        dishImgUrl.value = result.info.url;
+      } else if(error){
+        console.log("error:", error)
       }
     }).open();
 }
@@ -51,6 +53,7 @@ async function addDish(event: Event) {
     id: "",
     menu: false,
   };
+
   const res = await dishAPIService.newDish(formInput as Dish, userId);
   if (res && res.success) {
     showModal.value = false;
@@ -116,8 +119,8 @@ async function addDish(event: Event) {
                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <span class="text-gray-500 sm:text-sm">€</span>
                 </div>
-                <input type="text" name="dish-price" id="dish-price" v-model="dishPrice"
-                  class="shadow appearance-none border rounded-lg w-full" placeholder="0.00" />
+                <input type="number" min="1" name="dish-price" id="dish-price" v-model="dishPrice"
+                  class="shadow appearance-none border rounded-lg w-full" placeholder="1" />
                 <div class="absolute inset-y-0 right-0 flex items-center">
                   <label for="currency" class="sr-only">Currency</label>
                   <select id="currency" name="currency" placeholder="EUR" v-model="dishCurrency"

@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import type { Dish, DishIdWithAmount } from "../types";
-import DishCardMobile from "../components/Mobile/DishCardMobile.vue";
 import type { Ref } from 'vue';
 import { ref, toRaw, watch } from "vue";
 import { useOrderStore } from "../stores/order.store";
 import orderAPIService from "../services/orderAPI";
 import { useRoute, useRouter } from "vue-router";
 import LoadingSpinner from '../components/LoadingSpinner.vue';
-import { ConsoleLogger } from "@aws-amplify/core";
 import MobileModal from './MobileModal.vue';
 
 const initSplit = {
