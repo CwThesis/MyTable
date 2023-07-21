@@ -40,25 +40,6 @@ The application utilizes the following technologies:
 - Vite: Fast and efficient development build tool
 - Vue Testing Library and Cypress: Testing frameworks to ensure app reliability and robustness
 
-## Installation
-
-Follow these steps to set up the MyTable application locally:
-
-1. Clone this repository to your local machine.
-2. Install the required dependencies for the back end using Node.js package manager (npm).
-3. Configure the AWS services (Amplify, Cognito, API Gateway, Lambda, and DynamoDB) with your AWS credentials.
-4. Set up the front end dependencies using npm.
-5. Customize the app to match your specific restaurant needs.
-
-## Getting Started
-
-Once the application is set up, follow these steps to launch and use MyTable:
-
-1. Start the back end server using Node.js and deploy the AWS services.
-2. Launch the front end application using Vite's development server.
-3. Customers can scan the QR codes at their tables to access the menu, place orders, and make payments.
-4. Restaurant managers can log in to the admin view to manage the menu, prices, staff, and view analytics.
-
 ## Contributing
 
 We welcome contributions from the open-source community. If you find any issues or have suggestions for improvements, please feel free to submit a pull request.
