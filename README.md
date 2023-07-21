@@ -16,7 +16,7 @@ Feel free to sign up and try out the app to experience the seamless QR code-base
 
 ## Watch MyTable In Action
 
-[![MyTable Demo Video](https://example.com/mytable-demo-thumbnail.jpg)](https://example.com/mytable-demo-video.mp4)
+[![MyTable Demo Video](https://i9.ytimg.com/vi_webp/627vQScxaMA/mqdefault.webp?v=64ba755b&sqp=CJjr6aUG&rs=AOn4CLBJWKQVg2ZVn78GnSkVjVnAVCKImA)](https://www.youtube.com/watch?v=627vQScxaMA)
 
 Click the image above to watch the demo video showcasing MyTable in action.
 
